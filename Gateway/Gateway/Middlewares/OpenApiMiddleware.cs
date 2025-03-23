@@ -34,23 +34,27 @@ namespace Gateway.Middlewares
                 && context.Request.Path.HasValue 
                 && context.Request.Path.Value == _options.OpenApiPathPrefixSegment)
             {
+                var openApiDocuments = await Task.WhenAll(_options.ServiceConfigs.Select(GetDocumentationForService));
+
+                var nullStreamsCount = openApiDocuments.Count(c => c == null);
+                if (nullStreamsCount > 0)
+                {
+                    _logger.LogWarning("Couldn't recieve openApi documents from {invalidRequestsCount} services", nullStreamsCount);
+                }
+                else
+                {
+                    _logger.LogInformation("All requests for openApi documents succeded");
+                }
+
+                var documentStreamsToHandle = openApiDocuments.Where(c => c != null);
+
+                OpenApiStreamReader openApiReader = new();
+                
                 OpenApiDocument? resultDocument = null;
 
-                foreach (var serviceConfig in _options.ServiceConfigs)
-                {
-                    var res = await GetDocumentationForService(serviceConfig);
-
-                    if (string.IsNullOrEmpty(res))
-                    {
-                        continue;
-                    }
-
-                    var stream = new MemoryStream(Encoding.UTF8.GetBytes(res));
-
-                    OpenApiStreamReader openApiReader = new();
-
-                    OpenApiDocument openApiDoc = openApiReader.Read(stream, out var diagnostic);
-
+                foreach (var openApiDocument in documentStreamsToHandle)
+                { 
+                    OpenApiDocument openApiDoc = openApiReader.Read(openApiDocument, out var diagnostic);
                     if (diagnostic.Errors.Count > 0)
                     {
                         var concatedErrors = string.Join("\r\n", diagnostic.Errors.Select(e => e.Message));
@@ -64,41 +68,14 @@ namespace Gateway.Middlewares
                         continue;
                     }
 
-                    foreach (var path in openApiDoc.Paths)
-                    {
-                        resultDocument.Paths.Add(path.Key, path.Value);
-                    }
-
-                    foreach (var ext  in openApiDoc.Components.Extensions)
-                    {
-                        resultDocument.Components.Extensions.Add(ext);
-                    }
-
-                    foreach (var schema in openApiDoc.Components.Examples)
-                    {
-                        resultDocument.Components.Examples.Add(schema.Key, schema.Value);
-                    }
-
-                    foreach (var schema in openApiDoc.Components.Schemas)
-                    {
-                        resultDocument.Components.Schemas.Add(schema.Key, schema.Value);
-                    }
-
-                    foreach (var schema in openApiDoc.Components.Responses)
-                    {
-                        resultDocument.Components.Responses.Add(schema.Key, schema.Value);
-                    }
-
-                    foreach (var schema in openApiDoc.Components.RequestBodies)
-                    {
-                        resultDocument.Components.RequestBodies.Add(schema.Key, schema.Value);
-                    }
+                    CombineOpenApiDocuments(resultDocument, openApiDoc);
                 }
 
                 if (resultDocument == null)
                 {
-                    _logger.LogError("Couldn't aggregate openApi docs");
-                    WriteTextResponse(context, "Couldn't aggregate openApi docs", 500);
+                    var message = "Couldn't aggregate openApi docs";
+                    _logger.LogError(message);
+                    WriteTextResponse(context, message, 500);
                     return;
                 }
 
@@ -122,7 +99,7 @@ namespace Gateway.Middlewares
             }
         }
 
-        private async Task<string> GetDocumentationForService(ServiceConfig serviceConfig)
+        private async Task<Stream?> GetDocumentationForService(ServiceConfig serviceConfig)
         {
             try
             {
@@ -132,17 +109,15 @@ namespace Gateway.Middlewares
                 if (!result.IsSuccessStatusCode)
                 {
                     _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" with uri \"{serviceSwaggerUrl}\"", serviceConfig, uri);
-                    return string.Empty;
+                    return null;
                 }
 
-                var str = await result.Content.ReadAsStringAsync();
-
-                return str;
+                return await result.Content.ReadAsStreamAsync();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" exception: {ex}", serviceConfig, ex);
-                return string.Empty;
+                return null;
             }
         }
 
@@ -151,6 +126,40 @@ namespace Gateway.Middlewares
             context.Response.StatusCode = statusCode;
             context.Response.WriteAsync(message);
             context.Response.ContentType = "text/html";
+        }
+
+        private static void CombineOpenApiDocuments(OpenApiDocument destinationDocument, OpenApiDocument sourceDocument) 
+        {
+
+            foreach (var path in sourceDocument.Paths)
+            {
+                destinationDocument.Paths.Add(path.Key, path.Value);
+            }
+
+            foreach (var ext in sourceDocument.Components.Extensions)
+            {
+                destinationDocument.Components.Extensions.Add(ext);
+            }
+
+            foreach (var schema in sourceDocument.Components.Examples)
+            {
+                destinationDocument.Components.Examples.Add(schema.Key, schema.Value);
+            }
+
+            foreach (var schema in sourceDocument.Components.Schemas)
+            {
+                destinationDocument.Components.Schemas.Add(schema.Key, schema.Value);
+            }
+
+            foreach (var schema in sourceDocument.Components.Responses)
+            {
+                destinationDocument.Components.Responses.Add(schema.Key, schema.Value);
+            }
+
+            foreach (var schema in sourceDocument.Components.RequestBodies)
+            {
+                destinationDocument.Components.RequestBodies.Add(schema.Key, schema.Value);
+            }
         }
     }
 }
