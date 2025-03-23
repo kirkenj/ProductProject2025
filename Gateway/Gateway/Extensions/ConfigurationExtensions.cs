@@ -1,4 +1,5 @@
-﻿using Gateway.Models;
+﻿using System.Text;
+using Gateway.Models;
 
 namespace Gateway.Extensions
 {
@@ -6,12 +7,8 @@ namespace Gateway.Extensions
     {
         public static void ConfigureOcelot(this IConfigurationBuilder configuration, ServicesSettings openApiServiceSettings)
         {
-            var fileName = $"{Guid.NewGuid()}.json";
-            FileInfo fileInfo = new(fileName);
-            using var stream = fileInfo.Exists ? fileInfo.Open(FileMode.Truncate) : fileInfo.Create();
-
-            using var sb = new StreamWriter(stream);
-            sb.Write("{\"Routes\": [");
+            var sb = new StringBuilder();
+            sb.Append("{\"Routes\": [");
 
             var serviceConfigs = openApiServiceSettings.ServiceConfigs.Select(config =>
                 "{" +
@@ -29,13 +26,19 @@ namespace Gateway.Extensions
                 "}");
 
             var joinedServiceConfigs = string.Join(", ", serviceConfigs);
-            sb.Write(joinedServiceConfigs + "]}");
+            sb.Append(joinedServiceConfigs + "]}");
 
-            sb.Close();
-            stream.Close();
+            var str = sb.ToString();
 
-            configuration.AddJsonFile(fileInfo.FullName);
-            fileInfo.Delete();
+            using var memStream = new MemoryStream();
+
+            var bytes = Encoding.UTF8.GetBytes(str);
+
+            memStream.Write(bytes, 0, bytes.Length);
+
+            memStream.Position = 0;
+
+            configuration.AddJsonStream(memStream);
         }
     }
 }
