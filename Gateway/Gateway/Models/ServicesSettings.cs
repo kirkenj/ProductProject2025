@@ -1,8 +1,9 @@
 ﻿namespace Gateway.Models
 {
-    public class OpenApiServiceSettings
+    public class ServicesSettings
     {
         public string OpenApiPathPrefixSegment { get; set; } = string.Empty;
+        public string GatewayOpenApiDocumentName { get; set; } = string.Empty;
         public ICollection<ServiceConfig> ServiceConfigs { get; set; } = null!;
     }
     

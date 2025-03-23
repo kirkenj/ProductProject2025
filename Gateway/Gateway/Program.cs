@@ -1,37 +1,21 @@
-using Gateway.Controllers;
 using Gateway.Extensions;
+using Gateway.Middlewares;
 using Gateway.Models;
-using Gateway.Services;
-using Gateway.Services.Interfaces;
-using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-
-
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddHttpClient();
-
-builder.Services.AddScoped<IOpenApiService, OpenApiService>();
 
 builder.Services.AddScoped<OpenApiMiddleware>();
 
-var openApiSettingsSection = builder.Configuration.GetSection(nameof(OpenApiServiceSettings));
-builder.Services.Configure<OpenApiServiceSettings>(openApiSettingsSection);
-var openApiSettings = openApiSettingsSection.Get<OpenApiServiceSettings>()
-    ?? throw new Exception($"Couldn't get {nameof(OpenApiServiceSettings)}");
+var openApiSettingsSection = builder.Configuration.GetSection(nameof(ServicesSettings));
+builder.Services.Configure<ServicesSettings>(openApiSettingsSection);
+var openApiSettings = openApiSettingsSection.Get<ServicesSettings>()
+    ?? throw new Exception($"Couldn't get {nameof(ServicesSettings)}");
 
-
-builder.Configuration.AddJsonFile("ocelot.json", false, true);
-
-//builder.Configuration.ConfigureOcelot(openApiSettings);
+builder.Configuration.ConfigureOcelot(openApiSettings);
 
 builder.Services.AddOcelot(builder.Configuration);
 
@@ -43,19 +27,12 @@ app.UseSwagger();
 
 app.UseSwaggerUI(c =>
 {
-    foreach (var service in openApiSettings.ServiceConfigs)
-    {
-        c.SwaggerEndpoint($"/{openApiSettings.OpenApiPathPrefixSegment}/{service.Name}", $"{service.Name} Api");
-    }
+    c.SwaggerEndpoint($"{openApiSettings.OpenApiPathPrefixSegment}", "API V1");
 });
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
 app.UseMiddleware<OpenApiMiddleware>();
+
+app.UseHttpsRedirection();
 
 await app.UseOcelot();
 
