@@ -1,0 +1,54 @@
+﻿@inherits Front.Components.Common.CustomComponentBase
+
+@if (Disabled)
+{
+    <input type="@Type" @bind-value=Value class="@Class" disabled/>
+}
+else
+{
+    <input type="@Type" @bind-value=Value class="@Class" />
+}
+
+@code {
+    private bool _disabled = false;
+    private string _value = string.Empty;
+    private bool _render = false;
+
+    public bool Disabled 
+    {
+        get => _disabled;
+        set
+        {
+            _disabled = value;
+            if (_render)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    public string Value 
+    {
+        get => _value;
+        set
+        {
+            _value = value;
+            if (_render)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    [Parameter]
+    public string Type { get; set; } = null!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnFirstRender()
+    {
+        _render = true;
+        StateHasChanged();
+    }
+}

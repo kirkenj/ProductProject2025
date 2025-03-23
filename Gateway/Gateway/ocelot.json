@@ -1,0 +1,28 @@
+{
+    "Routes": [
+        {
+            "UpstreamPathTemplate": "/Auth/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Put", "Post", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/Auth/{everything}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7067
+                }
+            ]
+        },
+            {
+                "UpstreamPathTemplate": "/Product/{everything}",
+                "UpstreamHttpMethod": [ "Get", "Put", "Post", "Patch", "Delete" ],
+                "DownstreamPathTemplate": "/Product/{everything}",
+                "DownstreamScheme": "https",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "localhost",
+                        "Port": 7198
+                    }
+                ]
+            }
+    ]
+}

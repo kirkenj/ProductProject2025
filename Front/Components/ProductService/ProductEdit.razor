@@ -1,0 +1,406 @@
+﻿@using Clients.CustomGateway
+@using Front.Extensions
+@inject Front.Services.CustomAuthStateProvider stateProvider;
+@inject NavigationManager navManager
+@inject Clients.CustomGateway.IGatewayClient gatewyClient;
+
+<h3>EditProduct</h3>
+
+<Front.Components.Modals.MessageBox @ref="MessageBox" />
+<Front.Components.Modals.UserSelectInputBox @ref="UserSelect" />
+
+
+@if (!(stateProvider.CurrentUser != null && (stateProvider.CurrentUser.Id == productDto.ProducerId || stateProvider.CurrentUser.IsAdmin)))
+{
+    <div>You have no rights to edit this product</div>
+    <button class="btn btn-primary" @onclick="OnCancelClicked">To the product</button>
+    return;
+}
+
+
+<table>
+    <tr>
+        <td colspan="2">@Id</td>
+    </tr>
+    @if (!string.IsNullOrEmpty(NameMessage))
+    {
+        <tr>
+            <td colspan="2">
+                <div class="alert-danger">
+                    @NameMessage
+                </div>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>
+            Name
+        </th>
+        <td>
+            <input class="input-group-text" type="text" @bind-value=productDto.Name />
+        </td>
+    </tr>
+    @if (!string.IsNullOrEmpty(PriceMessage))
+    {
+        <tr>
+            <td colspan="2">
+                <div class="alert-danger">
+                    @PriceMessage
+                </div>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>
+            Price
+        </th>
+        <td>
+            <input class="input-group-text" type="number" @bind-value=productDto.Price />
+        </td>
+    </tr>
+    @if (!string.IsNullOrEmpty(IsAvailableMessage))
+    {
+        <tr>
+            <td colspan="2">
+                <div class="alert-danger">
+                    @IsAvailableMessage
+                </div>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>
+            Available now
+        </th>
+        <td align="right">
+            <input class="form-check-input" type="checkbox" @bind=productDto.IsAvailable />
+        </td>
+    </tr>
+
+    @if (stateProvider.CurrentUser?.IsAdmin ?? false)
+    {
+        @if (!string.IsNullOrEmpty(DateMessage))
+        {
+            <tr>
+                <td colspan="2">
+                    <div class="alert-danger">
+                        @DateMessage
+                    </div>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <th>
+                Creation date
+            </th>
+            <td>
+                <input class="input-group-text" type="date" @bind-value=productDto.CreationDate />
+            </td>
+        </tr>
+        @if (!string.IsNullOrEmpty(ProducerMessage))
+        {
+            <tr>
+                <td colspan="2">
+                    <div class="alert-danger">
+                        @ProducerMessage
+                    </div>
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>
+                Producer
+            </th>
+            <td>
+                <input class="input-group-text" type="text" disabled hidden @bind-value=productDto.ProducerId />
+                <input class="input-group-text" type="text" disabled @bind-value=ProducerName />
+            </td>
+            <td>
+                <button class="btn btn-primary" @onclick="OnSelectUserClicked">Select</button>
+            </td>
+        </tr>
+    }
+    @if (!string.IsNullOrEmpty(DescriptionMessage))
+    {
+        <tr>
+            <td colspan="2">
+                <div class="alert-danger">
+                    @DescriptionMessage
+                </div>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>
+            Description
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea class="input-group-text" type="text" @bind=productDto.Description style="width:100%" cols="30" rows="10" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <button class="btn btn-danger" @onclick="OnDeleteClicked">Delete</button>
+        </td>
+        <td>
+            <button class="btn btn-secondary" @onclick="OnCancelClicked">Cancel</button>
+        </td>
+        <td>
+            <button class="btn btn-primary" @onclick="OnSubmitClicked">Submit</button>
+        </td>
+    </tr>
+</table>
+
+
+
+@code {
+    private Clients.CustomGateway.UpdateProductModel productDto = new()
+        {
+            CreationDate = DateTime.Now.Date
+        };
+
+    private Clients.CustomGateway.ProductDto source = null!;
+
+    private Front.Components.Modals.MessageBox MessageBox = null!;
+
+    private Front.Components.Modals.UserSelectInputBox UserSelect = null!;
+
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    private string? NameMessage;
+    private string? DescriptionMessage;
+    private string? PriceMessage;
+    private string? IsAvailableMessage;
+    private string? ProducerMessage;
+    private string? DateMessage;
+
+
+    private string ProducerName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id == null)
+        {
+            Console.WriteLine("Guid is null");
+            return;
+        }
+        source = await gatewyClient.ProductGETAsync(Id.Value);
+
+        var t = System.Text.Json.JsonSerializer.Serialize(source);
+        productDto = System.Text.Json.JsonSerializer.Deserialize<Clients.CustomGateway.UpdateProductModel>(t) ?? throw new Exception("Couldn't copy with json");
+        ProducerName = (await gatewyClient.UsersGETAsync(productDto.ProducerId)).Login;
+
+    }
+
+    bool ValidateProduct()
+    {
+        var ret = true;
+
+        if (productDto.CreationDate == default)
+        {
+            DateMessage = "Creation date not set";
+            ret = false;
+        }
+
+        if (productDto.CreationDate > DateTime.Now)
+        {
+            DateMessage = "Creation date can not be later than now";
+            ret = false;
+        }
+
+        if (productDto.ProducerId == default)
+        {
+            ProducerMessage = "Producer id not set";
+            ret = false;
+        }
+
+        if (string.IsNullOrEmpty(productDto.Name))
+        {
+            NameMessage = "Name not set";
+            ret = false;
+        }
+
+        if (string.IsNullOrEmpty(productDto.Description))
+        {
+            DescriptionMessage = "Description not set";
+            ret = false;
+        }
+
+        if (productDto.Price <= 0)
+        {
+            PriceMessage = "Price is less or equal to 0";
+            ret = false;
+        }
+
+        return ret;
+    }
+
+    private async void OnSubmitClicked(MouseEventArgs e)
+    {
+        NameMessage = null;
+        DescriptionMessage = null;
+        PriceMessage = null;
+        IsAvailableMessage = null;
+        ProducerMessage = null;
+        DateMessage = null;
+
+
+        if (stateProvider.CurrentUser == null)
+        {
+            Console.WriteLine("Authrnticated user is null");
+            return;
+        }
+
+        if (!stateProvider.CurrentUser.IsAdmin)
+        {
+            productDto.CreationDate = DateTime.Now.Date;
+            productDto.ProducerId = stateProvider.CurrentUser.Id;
+        }
+
+        if (productDto.ProducerId == default)
+        {
+            productDto.ProducerId = stateProvider.CurrentUser.Id;
+        }
+
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(productDto));
+        var isValid = ValidateProduct();
+        StateHasChanged();
+
+        if (!isValid)
+        {
+            return;
+        }
+
+        try
+        {
+            var result = await gatewyClient.ProductPUTAsync(Id ?? Guid.Empty, productDto);
+            MessageBox.ClearOnCloseEvent();
+            MessageBox.OnClose += (cancelled) =>
+            {
+                navManager.NavigateTo("Products");
+                return Task.CompletedTask;
+            };
+            MessageBox.ModalShow("Success", result);
+        }
+        catch (Clients.CustomGateway.GatewayException ex)
+        {
+            await HandleGatewayExceptionAsync(ex);
+        }
+    }
+    private void OnSelectUserClicked(MouseEventArgs e)
+    {
+        UserSelect.OnCloseAsync += OnUserSelectClosed;
+        UserSelect.ModalShow("Select user");
+    }
+
+    private async Task OnUserSelectClosed(bool isCancelled, UserDto? resulId)
+    {
+        if (isCancelled)
+        {
+            return;
+        }
+
+        if (resulId == null)
+        {
+            Console.WriteLine("Result id is null");
+            return;
+        }
+
+        productDto.ProducerId = resulId.Id;
+        ProducerName = (await gatewyClient.UsersGETAsync(productDto.ProducerId)).Login;
+        StateHasChanged();
+    }
+
+    private void OnCancelClicked(MouseEventArgs e)
+    {
+        navManager.NavigateTo($"Product/{Id}");
+    }
+
+
+    private void OnDeleteClicked(MouseEventArgs e)
+    {
+        if (!Id.HasValue)
+        {
+            return;
+        }
+
+        MessageBox.OnClose += async (cancelled) =>
+        {
+            if (cancelled)
+            {
+                return;
+            }
+
+            try
+            {
+                await gatewyClient.ProductDELETEAsync(Id.Value);
+                MessageBox.ClearOnCloseEvent();
+                MessageBox.OnClose += (c) => { navManager.NavigateTo("Products"); return Task.CompletedTask; };
+                MessageBox.ModalShow("Success", "Product removed");
+            }
+            catch (Clients.CustomGateway.GatewayException ex)
+            {
+                await HandleGatewayExceptionAsync(ex);
+            }
+        };
+        MessageBox.ModalShow("Warning", "The product will be deleted", "btn btn-danger");
+    }
+
+    Task HandleGatewayExceptionAsync(GatewayException ex){
+
+        if (ex.IsValidationException(out IEnumerable<FluentValidation.Results.ValidationFailure>? failures) && failures != null)
+        {
+            HandleValidationFailure(failures);
+            return Task.CompletedTask;
+        }
+
+        MessageBox.ModalShow("Error", ex.Response);
+        return Task.CompletedTask;
+    }
+
+    void HandleValidationFailure(IEnumerable<FluentValidation.Results.ValidationFailure> failures)
+    {
+        if (failures == null || !failures.Any())
+        {
+            return;
+        }
+
+        Clients.CustomGateway.UpdateProductModel q;
+
+        foreach (var f in failures)
+        {
+            switch (f.PropertyName.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[1])
+            {
+                case nameof(q.CreationDate):
+                    DateMessage = f.ErrorMessage;
+                    break;
+                case nameof(q.Price):
+                    PriceMessage = f.ErrorMessage;
+                    break;
+                case nameof(q.Name):
+                    NameMessage = f.ErrorMessage;
+                    break;
+                case nameof(q.ProducerId):
+                    ProducerMessage = f.ErrorMessage;
+                    break;
+                case nameof(Id):
+                    MessageBox.ModalShow("Error", f.ErrorMessage);
+                    break;
+                case nameof(q.Description):
+                    DescriptionMessage = f.ErrorMessage;
+                    break;
+                case nameof(q.IsAvailable):
+                    IsAvailableMessage = f.ErrorMessage;
+                    break;
+            }
+        }
+
+        StateHasChanged();
+    }
+
+}

@@ -1,0 +1,37 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:52468",
+      "sslPort": 44326
+    }
+  },
+  "profiles": {
+    "ProductAPI": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7198;http://localhost:5175",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "RedisUri": "localhost:3300",
+            "UseDefaultCache": "true",
+            "ProductDbConnectionString": "Host=localhost;Port=5432;Database=productService;User Id=postgres;Password=hello world;",
+            //"ProductDbConnectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;Database=ProductDb",
+            "JwtSettings": "{\"Audience\": \"Little cats\", \"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"Key\": \"qADyPp0pMJxKU9xyjzPlqExULaXs7RD0qSTcWoalU8A=\", \"SecurityAlgorithm\": \"HS256\"}",
+            "AuthApiUri": "https://localhost:7067"
+        }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

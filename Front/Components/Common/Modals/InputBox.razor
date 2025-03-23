@@ -1,0 +1,78 @@
+﻿@namespace Front.Components.Modals
+
+@if (showModal)
+{
+    <div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">@HeaderText</h4>
+                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div>@Message</div>
+                    <div class="text-danger">@OwnMessage</div>
+                    <InputText @bind-Value="@Text"/>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
+                    <button type="button" class="btn btn-success" @onclick=@ModalOk>Submit</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    public string HeaderText { get; set; } = null!;
+
+    public string Message { get; set; } = string.Empty;
+
+    public string OwnMessage { get; set; } = string.Empty;
+
+    private string Text { get; set; } = string.Empty;
+
+    bool showModal = false;
+
+    public delegate void OnCloseCallback(bool cancelled, string? resultString);
+
+    public event OnCloseCallback OnClose = (c, r) => { };
+
+    public void ModalShow(string header, string? message = null, string? value = null)  
+    {
+        HeaderText = header;
+        Message = string.IsNullOrEmpty(message) ? string.Empty : message;
+        Text = string.IsNullOrEmpty(value) ? string.Empty : value;
+        OwnMessage = string.Empty;
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private void ModalCancel() 
+    {
+        showModal = false;
+        OnClose(true, null);
+    }
+
+    private void ModalOk()
+    {
+        if (string.IsNullOrEmpty(Text))
+        {
+            OwnMessage = "value can not be empty";
+        }
+        else 
+        {
+            OwnMessage = string.Empty;
+            showModal = false;
+            OnClose(false, Text);
+        } 
+    }
+}

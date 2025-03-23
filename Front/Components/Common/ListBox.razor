@@ -1,0 +1,129 @@
+﻿@inherits Front.Components.Common.CustomComponentBase
+@typeparam TKey
+
+@{#pragma warning disable CS0162}
+
+@if (Disabled)
+{
+    <select disabled @onchange="@OnChange" class="@Class">
+
+        @foreach (var p in keyValuePairs)
+        {
+            var key = p.Key;
+            var value = Value;
+            var cmpRes = key?.Equals(Value) ?? false;
+            if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine($"Key:{key}, BoxValue:{Value}, Are equal:{cmpRes}, value on key:{p.Value}");
+            if (cmpRes)
+            {
+                <option value="@p.Key" selected>@p.Value</option>
+            }
+            else
+            {
+                <option value="@p.Key">@p.Value</option>
+            }
+        }
+    </select>
+}
+else
+{
+    <select @onchange="@OnChange" class="@Class">
+        @foreach (var p in keyValuePairs)
+        {
+
+            var key = p.Key;
+            var value = Value;
+            var cmpRes = key?.Equals(Value) ?? false;
+            if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine($"Key:{key}, BoxValue:{Value}, Are equal:{cmpRes}, value on key:{p.Value}");
+            if (cmpRes)
+            {
+                <option value="@p.Key" selected>@p.Value</option>
+            }
+            else
+            {
+                <option value="@p.Key">@p.Value</option>
+            }
+        }
+    </select>
+}
+
+
+@code {
+    private bool _disabled = false;
+    private TKey _value = default!;
+    private bool _render = false;
+
+    private const bool SPAM_CHAT_DEBUG_INFO = false;
+
+    [Parameter]
+    public IEnumerable<KeyValuePair<TKey, string>> keyValuePairs { get; set; } = default!;
+
+    [Parameter]
+    public Func<string, TKey> ParseDelegate { get; set; } = null!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    public bool Disabled
+    {
+        get => _disabled;
+        set
+        {
+            _disabled = value;
+            if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine("Disabled changed:" + value);
+            if (_render)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    public TKey Value
+    {
+        get => _value;
+        set
+        {
+            if (!keyValuePairs.Select(k => k.Key).Contains(value))
+            {
+                return;    
+            }
+
+            if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine("Value changed:" + value);
+
+            _value = value;
+
+            if (_render)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override void OnFirstRender()
+    {
+        _render = true;
+        StateHasChanged();
+    }
+    private void OnChange(ChangeEventArgs e)
+    {
+        if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine(e.Value ?? "null");
+
+        if (e.Value == null)
+        {
+            return;
+        }
+
+        if (e is TKey key)
+        {
+            Value = key;
+        }
+        else if (e.Value is string strVal)
+        {
+            Value = ParseDelegate(strVal);
+        }
+        else
+        {
+            if (SPAM_CHAT_DEBUG_INFO) Console.WriteLine($"e.value is not TKEY or string:{e.Value.GetType().Name}");
+        }
+    }
+
+}

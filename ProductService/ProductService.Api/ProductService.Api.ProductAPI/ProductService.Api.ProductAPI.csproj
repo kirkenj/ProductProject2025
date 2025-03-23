@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>35420e7d-527a-4426-bc22-7921bf3a146d</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Constants\Constants.csproj" />
+    <ProjectReference Include="..\..\..\Common\Extensions\Extensions.csproj" />
+    <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Application\ProductService.Core.Application.csproj" />
+    <ProjectReference Include="..\..\ProductService.Infrastucture\ProductService.Infrastucture.Persistence\ProductService.Infrastucture.Persistence.csproj" />
+    <ProjectReference Include="..\..\ProductService.Infrastucture\ProductService.Infrastucture.Infrastucture\ProductService.Infrastucture.Infrastucture.csproj" />
+  </ItemGroup>
+
+</Project>

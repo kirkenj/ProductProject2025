@@ -1,0 +1,121 @@
+﻿@using Front.Models
+@using Front.Components.Modals;
+@using Clients.CustomGateway
+@inherits Front.Components.Common.CustomComponentBase
+@inject Clients.CustomGateway.IGatewayClient gatewayClient
+@inject Front.Services.CustomAuthStateProvider authStateProvider
+@inject NavigationManager navManager
+
+
+@if (productDto != null)
+{
+    <Front.Components.Modals.MessageBox @ref=messageBox />
+
+    <table>
+        <tr>
+            <th>
+                Name
+            </th>
+            <td align="right">
+                @productDto.Name
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Price
+            </th>
+            <td align="right">
+                @productDto.Price
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Available now
+            </th>
+            <td align="right">
+                @(productDto.IsAvailable ? "Yes": "No")
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Creation date
+            </th>
+            <td align="right">
+                @productDto.CreationDate.ToString("dd MMM yyyy")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Producer
+            </th>
+            <td align="right">
+                @producerDto.Name
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description
+            </th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @productDto.Description
+            </td>
+        </tr>
+        @if(authStateProvider.CurrentUser != null && (authStateProvider.CurrentUser.Id == productDto.ProducerId || authStateProvider.CurrentUser.IsAdmin))
+        {
+            <tr>
+                <td></td>
+                <td><button class="btn btn-primary" @onclick="OnEditClicked">Edit</button></td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div>Nothing here...</div>
+}
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private User? User => authStateProvider.CurrentUser;
+
+    private bool IsAdminOrOwner => User != null && (User.Id == Id || IsAdmin);
+    private bool IsAdmin => User != null && User.IsAdmin;
+
+    MessageBox messageBox = null!;
+
+    private ProductDto productDto = null!;
+    private UserDto producerDto = null!;
+
+
+    protected override void OnSecondRender()
+    {
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            productDto = await gatewayClient.ProductGETAsync(Id);
+            producerDto = await gatewayClient.UsersGETAsync(productDto.ProducerId);
+        }
+        catch (Clients.CustomGateway.GatewayException ex)
+        {
+            messageBox.ModalShow("Error", ex.Message);
+        }
+
+        StateHasChanged();
+    }
+    private void OnEditClicked(MouseEventArgs e)
+    {
+        navManager.NavigateTo($"Product/{Id}/edit");
+    }
+}

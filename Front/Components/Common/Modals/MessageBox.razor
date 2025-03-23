@@ -1,0 +1,69 @@
+﻿@namespace Front.Components.Modals
+
+@if (showModal)
+{
+    <div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">@HeaderText</h4>
+                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div>@Message</div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="@(OkButtonCssClass ?? "btn btn-success")" @onclick=@ModalOk>Ok</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    public string HeaderText { get; set; } = null!;
+
+    public string Message { get; set; } = string.Empty;
+
+    public string? OkButtonCssClass = null;
+
+    bool showModal = false;
+
+    public delegate Task OnCloseAsyncCallback(bool cancelled);
+
+    public event OnCloseAsyncCallback OnClose = (cancelled) => { return Task.CompletedTask; };
+
+    public void ModalShow(string header, string? message = null, string? OkButtonCssClass = null)
+    {
+        this.OkButtonCssClass = OkButtonCssClass;
+        HeaderText = header;
+        Message = string.IsNullOrEmpty(message) ? string.Empty : message;
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private async Task ModalCancel()
+    {
+        showModal = false;
+        await OnClose(true);
+    }
+
+    private async Task ModalOk()
+    {
+        showModal = false;
+        await OnClose(false);
+    }
+
+    public void ClearOnCloseEvent()
+    {
+        OnClose = (cancelled) => { return Task.CompletedTask; };
+    }
+}

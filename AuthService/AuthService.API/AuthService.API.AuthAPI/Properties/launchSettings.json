@@ -1,0 +1,44 @@
+{
+  "profiles": {
+    "AuthAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "UseDefaultCache": "true",
+            "AuthDbConnectionString": "Host=localhost;Port=5432;Database=userService;User Id=postgres;Password=hello world;",
+            "JwtSettings": "{\"Audience\": \"Little cats\", \"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"Key\": \"qADyPp0pMJxKU9xyjzPlqExULaXs7RD0qSTcWoalU8A=\", \"SecurityAlgorithm\": \"HS256\"}"
+        },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7067;http://localhost:5035"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:55531",
+      "sslPort": 44336
+    }
+  }
+}

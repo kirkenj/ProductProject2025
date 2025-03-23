@@ -1,0 +1,54 @@
+﻿<h3>CustomComponentBase</h3>
+
+@code {
+    private bool? secondRender = null;
+
+    protected sealed override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (secondRender.HasValue && !secondRender.Value)
+        {
+            OnMoreThanSecondRender();
+        }
+
+        if (secondRender.HasValue && secondRender.Value)
+        {
+            secondRender = false;
+            OnSecondRender();
+        }
+
+        if (firstRender)
+        {
+            secondRender = true;
+            OnFirstRender();
+        }
+    }
+
+
+    /// <summary>
+    /// Supposed to be called once when method OnAfterRender called with <param name="firstRender"/> value true
+    /// </summary>
+    protected virtual void OnFirstRender()
+    {
+
+    }
+
+
+    /// <summary>
+    /// Supposed to be called always after "OnSecondRender" called
+    /// </summary>
+    protected virtual void OnMoreThanSecondRender()
+    {
+
+    }
+
+
+    /// <summary>
+    /// Supposed to be called once when method OnAfterRender called with <param name="firstRender"/> value false at first time
+    /// </summary>
+    protected virtual void OnSecondRender()
+    {
+        
+    }
+}

@@ -1,0 +1,72 @@
+services:
+  redis:
+    image: redis
+    volumes:
+      - redis_volume:/data
+  sqlServer:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - MSSQL_SA_PASSWORD=${DbSaPassword}
+      - ACCEPT_EULA=Y
+    volumes:
+      - sql_volume:/var/opt/mssql/
+      
+  authApi:
+    image: kirkenj/authapi
+    environment:
+      - RedisUri=redis
+      - AuthDbConnectionString=Server=sqlServer;Database=AuthDb;User Id=SA;Password=${DbSaPassword};TrustServerCertificate=true;
+      - JwtSettings=${JwtSettings}
+      - EmailSettings=${EmailSettings}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    ports:
+      - "5900:80"
+    depends_on:
+      - sqlServer
+      - redis  
+
+  productApi:
+    image: kirkenj/productapi
+    environment:
+      - RedisUri=redis
+      - ProductDbConnectionString=Server=sqlServer;Database=ProductDb;User Id=SA;Password=${DbSaPassword};TrustServerCertificate=true;
+      - JwtSettings=${JwtSettings}
+      - EmailSettings=${EmailSettings}
+      - AuthApiUri=http://authApi
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - UseDefaultCache=false
+    ports:
+      - "5901:80"
+    depends_on:
+      - sqlServer
+      - redis  
+      - authApi
+
+  gateway:
+    image: kirkenj/gateway
+    environment:
+      - RedisUri=redis
+      - JwtSettings=${JwtSettings}
+      - AuthApiUri=http://authapi
+      - ProductApiUri=http://productApi
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    ports:
+      - "5902:80"
+    depends_on:
+      - authApi
+      - productApi
+
+  front:
+    image: kirkenj/front
+    environment:
+      - URL_BACKEND=http://localhost:5902
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+      
+volumes:
+  sql_volume:
+    external: true
+  redis_volume:
+    external: true

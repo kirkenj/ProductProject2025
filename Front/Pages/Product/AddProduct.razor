@@ -1,0 +1,10 @@
+﻿@inject Front.Services.CustomAuthStateProvider stateProvider;
+@inject NavigationManager navManager
+@page "/AddProduct"
+
+@if (stateProvider.CurrentUser == null)
+{
+    navManager.NavigateTo("Products");
+}
+
+<Front.Components.ProductService.ProductAdd/>

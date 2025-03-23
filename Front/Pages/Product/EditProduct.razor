@@ -1,0 +1,12 @@
+﻿@inject Front.Services.CustomAuthStateProvider stateProvider;
+@inject NavigationManager navManager
+@inject Clients.CustomGateway.IGatewayClient gatewyClient;
+@page "/Product/{Id:guid}/Edit"
+
+
+<Front.Components.ProductService.ProductEdit Id="@Id" />
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; }
+}

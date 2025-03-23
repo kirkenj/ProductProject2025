@@ -1,0 +1,177 @@
+﻿@page "/register"
+@using Front.Models
+@using Front.Extensions
+@inject Front.Services.CustomAuthStateProvider authStateProvider
+@inject NavigationManager navManager
+@inject Clients.CustomGateway.IAuthGatewayClient authClient
+
+
+@if (User == null)
+{
+    <PageTitle>Registration</PageTitle>
+
+    <h1>Registration</h1>
+
+    <Front.Components.Modals.MessageBox @ref="messageBox"/>
+    
+    
+    <div>
+        Email
+        @if (!string.IsNullOrEmpty(EmailMessage))
+        {
+            <div class="text-danger">
+                @EmailMessage
+            </div>
+        }
+        <input class="input-group-text" @bind="Email"/>
+    </div>
+
+    
+    <div>
+        Name
+        @if (!string.IsNullOrEmpty(NameMessage))
+        {
+            <div class="text-danger">
+                @NameMessage
+            </div>
+        }
+        <input class="input-group-text" @bind="Name" />
+    </div>
+    
+    <div>
+        Address
+        @if (!string.IsNullOrEmpty(AddressMessage))
+        {
+            <div class="text-danger">
+                @AddressMessage
+            </div>
+        }
+        <input class="input-group-text" @bind="Address" />
+    </div>
+    <button class="btn btn-primary" @onclick="OnSubmitClicked">Submit</button>
+}
+else
+{
+    <div>
+        Redirecting to user page
+    </div>
+
+    navManager.NavigateTo($"user/{User.Id}");
+}
+
+
+
+@code {
+    private string Email = string.Empty;
+    private string Name = string.Empty;
+    private string Address = string.Empty;
+
+    private string? EmailMessage;
+    private string? NameMessage;
+    private string? AddressMessage;
+
+    private User? User { get; set; }
+
+    Front.Components.Modals.MessageBox messageBox = null!;
+
+    protected override void OnInitialized()
+    {
+        authStateProvider.AuthenticationStateChanged += AuthStateChanged;
+        User = authStateProvider.CurrentUser;
+        base.OnInitialized();
+    }
+
+    private void AuthStateChanged(Task<AuthenticationState> authenticationState)
+    {
+        User = authStateProvider.CurrentUser;
+        StateHasChanged();
+    }
+
+
+    private async Task OnSubmitClicked(MouseEventArgs e)
+    {
+        EmailMessage = null;
+        NameMessage = null;
+        AddressMessage = null;
+
+        try
+        {
+            var dto = new Clients.CustomGateway.CreateUserDto() { Address = this.Address, Email = this.Email, Name = this.Name };
+
+            if (!IsValid(dto)) return;
+
+            var result = await authClient.RegisterAsync(dto);
+            messageBox.ClearOnCloseEvent();
+            messageBox.OnClose += (c) => { messageBox.ClearOnCloseEvent(); navManager.NavigateTo(""); return Task.CompletedTask; };
+            messageBox.ModalShow("Success", result);
+        }
+        catch (Clients.CustomGateway.GatewayException ex)
+        {
+            bool isFailure = ex.IsValidationException(out IEnumerable<FluentValidation.Results.ValidationFailure>? failures);
+
+            if (isFailure && failures != null)
+            {
+                HandleValidationFailure(failures);
+                return;
+            }
+
+            messageBox.ModalShow("Error", ex.Message);
+        }
+    }
+
+    void HandleValidationFailure(IEnumerable<FluentValidation.Results.ValidationFailure> failures)
+    {
+        if (failures == null || !failures.Any())
+        {
+            return;
+        }
+
+        Clients.CustomGateway.CreateUserDto q;
+        
+        foreach (var f in failures)
+        {
+            switch (f.PropertyName.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[1])
+            {
+                case nameof(q.Email):
+                    EmailMessage = f.ErrorMessage;    
+                    break;
+                case nameof(q.Address):
+                    AddressMessage = f.ErrorMessage;    
+                    break;
+                case nameof(q.Name):
+                    NameMessage = f.ErrorMessage;    
+                    break;
+            }
+        }
+    }
+
+
+    bool IsValid(Clients.CustomGateway.CreateUserDto userDto)
+    {
+        var result = true;
+
+        userDto.Email = userDto.Email.Trim();
+        userDto.Name = userDto.Name.Trim();
+        userDto.Address = userDto.Address.Trim();
+
+        if (!System.Net.Mail.MailAddress.TryCreate(userDto.Email, out System.Net.Mail.MailAddress? a))
+        {
+            EmailMessage = "That is not a valid email";
+            result = false;
+        }
+
+        if (string.IsNullOrEmpty(userDto.Name))
+        {
+            NameMessage = "Can not be empty";
+            result = false;
+        }
+
+        if (string.IsNullOrEmpty(userDto.Address))
+        {
+            AddressMessage = "Can not be empty";
+            result = false;
+        }
+
+        return result;        
+    }
+}

@@ -1,0 +1,16 @@
+﻿@using Front.Models
+@using Front.Services
+@inject NavigationManager navManager
+@page "/product/{ProductId:guid}"
+
+<PageTitle>Product</PageTitle>
+
+<Front.Components.ProductService.ProductInfo Id="@ProductId" />
+
+
+@code {
+    [Parameter]
+    public Guid ProductId { get; set; }
+
+    private User? User { get; set; }
+}

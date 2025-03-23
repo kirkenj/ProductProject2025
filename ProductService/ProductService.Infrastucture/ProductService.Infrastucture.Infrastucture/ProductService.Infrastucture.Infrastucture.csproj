@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Cache\Cache.csproj" />
+    <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.csproj" />
+    <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
+    <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Application\ProductService.Core.Application.csproj" />
+  </ItemGroup>
+	
+</Project>

@@ -1,0 +1,95 @@
+﻿@page "/login"
+@using Front.Models
+@inject Front.Services.CustomAuthStateProvider authStateProvider
+@inject NavigationManager navManager
+
+
+@if (User == null)
+{
+    <PageTitle>Login</PageTitle>
+
+    <h1>Login</h1>
+
+    <div class="text-danger">
+        @LoginResult
+    </div>
+    <div>
+        Email
+        <input name="email" class="input-group-text" @bind="Email"/>
+    </div>
+    <div>
+        Password
+        <input name="pwd" type="password" class="input-group-text" @bind="Password" />
+    </div>
+    <div>
+        <button class="btn btn-secondary" @onclick="OnForgotPasswordClicked">Forgot password</button>
+        <button class="btn btn-primary" @onclick="OnLoginClicked">Log in</button>
+    </div>
+    <button class="btn btn-primary" @onclick="OnRegisterClicked">Register</button>
+}
+else
+{
+    <div>
+        Redirecting to user page
+    </div>
+
+    navManager.NavigateTo($"user/{User.Id}");
+}
+
+
+
+@code {
+    private string Email = string.Empty;
+    private string Password = string.Empty;
+    private string LoginResult = string.Empty;
+    private User? User { get; set; }
+
+    protected override void OnInitialized()
+    {
+        authStateProvider.AuthenticationStateChanged += AuthStateChanged;
+        User = authStateProvider.CurrentUser;
+        base.OnInitialized();
+    }
+
+    private void AuthStateChanged(Task<AuthenticationState> authenticationState)
+    {
+        User = authStateProvider.CurrentUser;
+        StateHasChanged();
+    }
+
+    private async void OnLoginClicked(MouseEventArgs e)
+    {
+        LoginResult = string.Empty;
+        try
+        {
+            await authStateProvider.LoginAsync(Email, Password);
+            LoginResult = string.Empty;
+            Password = string.Empty;
+            Email = string.Empty;
+            navManager.NavigateTo("");
+        }
+        catch(Clients.CustomGateway.GatewayException ex)
+        {
+            LoginResult = ex.Response;
+        }
+        catch(Exception ex)
+        {
+            LoginResult = ex.Message;
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnLogOutClicked(MouseEventArgs e)
+    {
+        authStateProvider.Logout();
+    }
+    private void OnRegisterClicked(MouseEventArgs e)
+    {
+        navManager.NavigateTo("register");
+    }
+    private void OnForgotPasswordClicked(MouseEventArgs e)
+    {
+        navManager.NavigateTo("passwordrecovery");
+    }
+}
