@@ -1,10 +1,10 @@
-﻿using AuthAPI.Contracts;
-using AuthAPI.Models.TokenTracker;
+﻿using AuthAPI.Models.TokenTracker;
+using AuthService.API.AuthAPI.Contracts;
 using Cache.Contracts;
 using HashProvider.Contracts;
 using Microsoft.Extensions.Options;
 
-namespace AuthAPI.Services
+namespace AuthService.API.AuthAPI.Services
 {
     public class TokenTracker<TUserIdType> : ITokenTracker<TUserIdType> where TUserIdType : struct
     {
@@ -17,10 +17,7 @@ namespace AuthAPI.Services
             _settings = options.Value;
             _memoryCache = memoryCache;
             _keyGeneratingDelegate = (value) => _settings.CacheSeed + value;
-            HashProvider = hashProvider;
         }
-
-        public IHashProvider HashProvider { get; private set; }
 
         public async Task InvalidateUser(TUserIdType userId, DateTime time)
         {
@@ -39,14 +36,14 @@ namespace AuthAPI.Services
             return;
         }
 
-        public async Task<bool> IsValid(string tokenHash)
+        public async Task<bool> IsValid(string token)
         {
-            if (string.IsNullOrEmpty(tokenHash))
+            if (string.IsNullOrEmpty(token))
             {
                 return false;
             }
 
-            var key = _keyGeneratingDelegate(tokenHash);
+            var key = _keyGeneratingDelegate(token);
             var trackInfo = await _memoryCache.GetAsync<AssignedTokenInfo<TUserIdType>>(key);
 
             if (trackInfo == null)
@@ -67,9 +64,7 @@ namespace AuthAPI.Services
 
         public async Task Track(string token, TUserIdType userId, DateTime tokenRegistrationTime)
         {
-            var jwtHash = HashProvider.GetHash(token ?? throw new ArgumentNullException(nameof(token)));
-
-            var cahceKey = _keyGeneratingDelegate(jwtHash);
+            var cahceKey = _keyGeneratingDelegate(token);
             await _memoryCache.SetAsync(
                 cahceKey,
                 new AssignedTokenInfo<TUserIdType> { DateTime = tokenRegistrationTime, UserId = userId },

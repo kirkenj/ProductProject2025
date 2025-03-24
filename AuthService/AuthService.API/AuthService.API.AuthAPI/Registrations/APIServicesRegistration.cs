@@ -1,10 +1,10 @@
-﻿using AuthAPI.Contracts;
-using AuthAPI.Models.TokenTracker;
+﻿using AuthAPI.Models.TokenTracker;
 using AuthAPI.Services;
 using AuthService.API.AuthAPI.Contracts;
+using AuthService.API.AuthAPI.Services;
 
 
-namespace AuthAPI.Registrations
+namespace AuthService.API.AuthAPI.Registrations
 {
     public static class APIServicesRegistration
     {

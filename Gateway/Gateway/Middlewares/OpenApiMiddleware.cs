@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Text;
+using System.Text.Json.Nodes;
 using Gateway.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Readers;
@@ -77,7 +78,7 @@ namespace Gateway.Middlewares
             {
                 var message = "Couldn't aggregate openApi docs";
                 _logger.LogError(message);
-                WriteResponse(context, message, 500);
+                await WriteResponseAsync(context, message, 500);
                 return;
             }
 
@@ -98,7 +99,7 @@ namespace Gateway.Middlewares
 
             string openApiString = stringWriter.ToString();
 
-            WriteResponse(context, openApiString, 200, "application/json");
+            await WriteResponseAsync(context, openApiString, 200, "application/json");
         }
 
         private static string CombineOpenApiDocuments(string firstDocument, string secondDocument)
@@ -153,11 +154,12 @@ namespace Gateway.Middlewares
             }
         }
 
-        private static void WriteResponse(HttpContext context, string message, int statusCode, string contentType = "text/html")
+        private static async Task WriteResponseAsync(HttpContext context, string message, int statusCode, string contentType = "text/html")
         {
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = contentType;
-            context.Response.WriteAsync(message);
+            var bytes = Encoding.UTF8.GetBytes(message);
+            await context.Response.Body.WriteAsync(bytes);
         }
     }
 }

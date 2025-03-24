@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using AuthAPI.Contracts;
 using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.Contracts;
 using AuthService.Core.Application.Features.User.CreateUserComand;

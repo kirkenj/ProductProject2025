@@ -20,7 +20,7 @@
             "RedisUri": "localhost:3300",
             "UseDefaultCache": "false",
             "ProductDbConnectionString": "Host=localhost;Port=5432;Database=productService;User Id=postgres;Password=hello world;",
-            "JwtSettings": "{\"Audience\": \"Little cats\", \"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"Key\": \"qADyPp0pMJxKU9xyjzPlqExULaXs7RD0qSTcWoalU8A=\", \"SecurityAlgorithm\": \"HS256\"}",
+            "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}",
             "AuthApiUri": "https://localhost:7067"
         }
     },

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.Models.User;
 using AuthAPI.ActionFIlters;
-using AuthAPI.Contracts;
 using AuthAPI.Models.Requests;
+using AuthService.API.AuthAPI.Contracts;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
 using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;

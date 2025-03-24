@@ -1,5 +1,4 @@
 using AuthAPI.Middlewares;
-using AuthAPI.Registrations;
 using AuthService.API.AuthAPI.Registrations;
 using AuthService.Core.Application;
 using AuthService.Infrastructure.Infrastructure;
@@ -55,12 +54,8 @@ app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
