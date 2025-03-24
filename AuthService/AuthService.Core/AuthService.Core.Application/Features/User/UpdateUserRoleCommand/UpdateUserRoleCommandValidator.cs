@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.DTOs.User.Validators;
+using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
@@ -8,7 +8,8 @@ namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
     {
         public UpdateUserRoleCommandValidator(IRoleRepository roleRepository)
         {
-            RuleFor(r => r.UpdateUserRoleDTO).NotNull().SetValidator(new UpdateUserRoleDTOValidator(roleRepository));
+            Include(new IIdDtoValidator<Guid>());
+            Include(new IRoleDtoValidator(roleRepository));
         }
     }
 }

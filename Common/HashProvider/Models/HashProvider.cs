@@ -1,7 +1,7 @@
-﻿using HashProvider.Contracts;
-using Microsoft.Extensions.Options;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using HashProvider.Contracts;
+using Microsoft.Extensions.Options;
 
 namespace HashProvider.Models
 {
@@ -40,6 +40,8 @@ namespace HashProvider.Models
 
         public Encoding Encoding { get; set; }
 
+#pragma warning disable SYSLIB0045 // Type or member is obsolete
         private static HashAlgorithm? GetHashAlgorithm(string name) => HashAlgorithm.Create(name);
+#pragma warning restore SYSLIB0045 // Type or member is obsolete
     }
 }

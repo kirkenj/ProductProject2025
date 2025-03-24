@@ -26,21 +26,21 @@ namespace ProductService.Core.Application.Features.Products.UpdateProduct
 
         public async Task<Response<string>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetAsync(request.UpdateProductDto.Id);
+            var product = await _productRepository.GetAsync(request.Id);
 
             if (product == null)
             {
                 return Response<string>.NotFoundResponse(nameof(product.Id), true);
             }
 
-            var newOwnerId = request.UpdateProductDto.ProducerId;
+            var newOwnerId = request.ProducerId;
 
             if (product.ProducerId != newOwnerId)
             {
                 await NotifyProducers(product, newOwnerId);
             }
 
-            _mapper.Map(request.UpdateProductDto, product);
+            _mapper.Map(request, product);
             await _productRepository.UpdateAsync(product);
             return Response<string>.OkResponse("Success", "Product updated");
         }

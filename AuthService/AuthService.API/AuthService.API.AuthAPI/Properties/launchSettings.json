@@ -6,7 +6,8 @@
       "launchUrl": "swagger",
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development",
-            "UseDefaultCache": "true",
+            "UseDefaultCache": "false",
+            "RedisUri": "localhost:3300",
             "AuthDbConnectionString": "Host=localhost;Port=5432;Database=userService;User Id=postgres;Password=hello world;",
             "JwtSettings": "{\"Audience\": \"Little cats\", \"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"Key\": \"qADyPp0pMJxKU9xyjzPlqExULaXs7RD0qSTcWoalU8A=\", \"SecurityAlgorithm\": \"HS256\"}"
         },

@@ -1,6 +1,7 @@
-﻿using Application.Models.User;
+﻿using System.Text;
+using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.GetUserDto;
+using AuthService.Core.Application.Features.User.DTOs;
 using AutoMapper;
 using Cache.Contracts;
 using CustomResponse;
@@ -8,7 +9,6 @@ using EmailSender.Contracts;
 using HashProvider.Contracts;
 using MediatR;
 using Microsoft.Extensions.Options;
-using System.Text;
 
 namespace AuthService.Core.Application.Features.User.Login
 {
@@ -35,7 +35,7 @@ namespace AuthService.Core.Application.Features.User.Login
 
         public async Task<Response<UserDto>> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            string loginEmail = request.LoginDto.Email;
+            string loginEmail = request.Email;
 
             string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, loginEmail);
 
@@ -52,7 +52,7 @@ namespace AuthService.Core.Application.Features.User.Login
             _hashProvider.HashAlgorithmName = userToHandle.HashAlgorithm;
             _hashProvider.Encoding = Encoding.GetEncoding(userToHandle.StringEncoding);
 
-            string loginPasswordHash = _hashProvider.GetHash(request.LoginDto.Password);
+            string loginPasswordHash = _hashProvider.GetHash(request.Password);
 
             if (loginPasswordHash != userToHandle.PasswordHash)
             {

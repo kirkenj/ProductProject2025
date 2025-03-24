@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.DTOs.User.Validators;
+﻿using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler
@@ -7,7 +7,8 @@ namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHan
     {
         public UpdateUserPasswordComandValidator()
         {
-            RuleFor(r => r.UpdateUserPasswordDto).NotNull().SetValidator(new UpdateUserPasswordDTOValidator());
+            Include(new IPasswordDtoValidator());
+            Include(new IIdDtoValidator<Guid>());
         }
     }
 }

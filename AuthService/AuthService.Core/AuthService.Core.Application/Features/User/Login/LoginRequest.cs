@@ -1,12 +1,13 @@
-﻿using AuthService.Core.Application.DTOs.User;
-using AuthService.Core.Application.Features.User.GetUserDto;
+﻿using AuthService.Core.Application.Features.User.DTOs;
+using AuthService.Core.Application.Features.User.Interfaces;
 using CustomResponse;
 using MediatR;
 
 namespace AuthService.Core.Application.Features.User.Login
 {
-    public class LoginRequest : IRequest<Response<UserDto>>
+    public class LoginRequest : IRequest<Response<UserDto>>, IEmailDto, IPasswordDto
     {
-        public LoginDto LoginDto { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 }

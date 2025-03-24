@@ -27,13 +27,13 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
 
         public async Task<Response<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = _mapper.Map<Product>(request.CreateProductDto);
+            Product product = _mapper.Map<Product>(request);
 
             var addTask = _productRepository.AddAsync(product);
 
             var msgTask = Task.Run(async () =>
             {
-                var producerId = request.CreateProductDto.ProducerId;
+                var producerId = request.ProducerId;
 
                 var userResponse = await _authClientService.GetUser(producerId);
 

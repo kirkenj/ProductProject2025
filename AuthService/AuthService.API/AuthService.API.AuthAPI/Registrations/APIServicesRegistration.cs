@@ -1,6 +1,7 @@
 ﻿using AuthAPI.Contracts;
 using AuthAPI.Models.TokenTracker;
 using AuthAPI.Services;
+using AuthService.API.AuthAPI.Contracts;
 
 
 namespace AuthAPI.Registrations

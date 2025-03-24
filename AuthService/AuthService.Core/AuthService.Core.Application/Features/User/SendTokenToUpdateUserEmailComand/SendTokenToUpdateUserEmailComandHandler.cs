@@ -29,7 +29,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
 
         public async Task<Response<string>> Handle(SendTokenToUpdateUserEmailRequest request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.UpdateUserEmailDto.Id);
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
 
             if (user == null)
             {
@@ -47,7 +47,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
 
             bool isEmailSent = await _emailSender.SendEmailAsync(new Email
             {
-                To = request.UpdateUserEmailDto.Email,
+                To = request.Email,
                 Subject = "Change email confirmation",
                 Body = string.Format(_updateUserEmailSettings.UpdateUserEmailMessageBodyFormat, token)
             });
@@ -59,7 +59,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
 
             await _memoryCache.SetAsync(
                 string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, token),
-                request.UpdateUserEmailDto,
+                request,
                 TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours));
 
             return Response<string>.OkResponse("Check emails to get further details", string.Empty);

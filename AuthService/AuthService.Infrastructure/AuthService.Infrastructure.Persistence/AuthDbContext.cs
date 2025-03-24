@@ -1,7 +1,7 @@
-﻿using AuthService.Core.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using AuthService.Core.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Infrastructure.Persistence
 {

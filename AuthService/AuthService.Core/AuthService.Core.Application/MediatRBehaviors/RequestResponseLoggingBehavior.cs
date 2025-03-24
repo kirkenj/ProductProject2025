@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using System.Text.Json;
+using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace Application.MediatRBehaviors
 {

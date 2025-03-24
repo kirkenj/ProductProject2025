@@ -1,6 +1,6 @@
-﻿using Repository.Contracts;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Repository.Contracts;
 
 namespace AuthService.Core.Domain.Models
 {

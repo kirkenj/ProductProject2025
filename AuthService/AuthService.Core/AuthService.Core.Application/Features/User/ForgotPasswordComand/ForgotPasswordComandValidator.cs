@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.DTOs.User.Validators;
+﻿using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.ForgotPasswordComand
@@ -7,7 +7,7 @@ namespace AuthService.Core.Application.Features.User.ForgotPasswordComand
     {
         public ForgotPasswordComandValidator()
         {
-            RuleFor(r => r.ForgotPasswordDto).NotNull().SetValidator(new ForgotPasswordDtoValidator());
+            Include(new IEmailDtoValidator());
         }
     }
 }

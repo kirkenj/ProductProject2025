@@ -1,11 +1,12 @@
-﻿using AuthService.Core.Application.DTOs.User;
-using CustomResponse;
+﻿using CustomResponse;
 using MediatR;
+using Repository.Contracts;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserLoginComand
 {
-    public class UpdateUserLoginComand : IRequest<Response<string>>
+    public class UpdateUserLoginComand : IRequest<Response<string>>, IIdObject<Guid>
     {
-        public UpdateUserLoginDto UpdateUserLoginDto { get; set; } = null!;
+        public Guid Id { get; set; }
+        public string NewLogin { get; set; } = null!;
     }
 }

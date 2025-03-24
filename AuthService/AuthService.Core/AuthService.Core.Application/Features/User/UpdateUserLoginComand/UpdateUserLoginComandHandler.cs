@@ -21,7 +21,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserLoginComand
 
         public async Task<Response<string>> Handle(UpdateUserLoginComand request, CancellationToken cancellationToken)
         {
-            var newLogin = request.UpdateUserLoginDto.NewLogin;
+            var newLogin = request.NewLogin;
 
             Domain.Models.User? userWithNewlogin = await _userRepository.GetAsync(new UserFilter() { AccurateLogin = newLogin });
 
@@ -30,7 +30,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserLoginComand
                 return Response<string>.BadRequestResponse("This login is already taken");
             }
 
-            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.UpdateUserLoginDto.Id);
+            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.Id);
 
             if (userToUpdate == null)
             {

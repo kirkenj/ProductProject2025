@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.DTOs.User.Validators;
+using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
@@ -8,7 +8,8 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
     {
         public ConfirmEmailChangeComandValidator(IUserRepository userRepository)
         {
-            RuleFor(r => r.ConfirmEmailChangeDto).NotNull().SetValidator(new ConfirmEmailChangeDtoValidator(userRepository));
+            Include(new IIdDtoValidator<Guid>());
+            RuleFor(u => u.Token).NotEmpty().NotNull();
         }
     }
 }

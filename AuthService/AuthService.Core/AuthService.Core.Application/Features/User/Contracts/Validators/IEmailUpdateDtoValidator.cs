@@ -1,9 +1,8 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.DTOs.User.Interfaces;
 using FluentValidation;
 
-namespace AuthService.Core.Application.DTOs.User.Validators.Shared
+namespace AuthService.Core.Application.Features.User.Interfaces.Validators
 {
     public class IEmailUpdateDtoValidator : AbstractValidator<IEmailUpdateDto>
     {

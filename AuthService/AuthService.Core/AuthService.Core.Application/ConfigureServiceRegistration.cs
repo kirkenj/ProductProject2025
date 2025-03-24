@@ -1,12 +1,12 @@
-﻿using Application.MediatRBehaviors;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using Application.MediatRBehaviors;
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace AuthService.Core.Application

@@ -6,7 +6,7 @@
         public string GatewayOpenApiDocumentName { get; set; } = string.Empty;
         public ICollection<ServiceConfig> ServiceConfigs { get; set; } = null!;
     }
-    
+
     public class ServiceConfig
     {
         public string DownstreamScheme { get; set; } = string.Empty;

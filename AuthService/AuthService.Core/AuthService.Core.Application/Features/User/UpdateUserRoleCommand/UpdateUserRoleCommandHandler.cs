@@ -6,25 +6,23 @@ namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
 {
     public class UpdateUserRoleCommandHandler : IRequestHandler<UpdateUserRoleCommand, Response<string>>
     {
-        private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserRoleCommandHandler(IRoleRepository roleRepository, IUserRepository userRepository)
+        public UpdateUserRoleCommandHandler(IUserRepository userRepository)
         {
-            _roleRepository = roleRepository;
             _userRepository = userRepository;
         }
 
         public async Task<Response<string>> Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.UpdateUserRoleDTO.Id);
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
 
             if (user == null)
             {
                 return Response<string>.NotFoundResponse(nameof(user.Email), true);
             }
 
-            user.RoleID = request.UpdateUserRoleDTO.RoleID;
+            user.RoleID = request.RoleID;
 
             await _userRepository.UpdateAsync(user);
 

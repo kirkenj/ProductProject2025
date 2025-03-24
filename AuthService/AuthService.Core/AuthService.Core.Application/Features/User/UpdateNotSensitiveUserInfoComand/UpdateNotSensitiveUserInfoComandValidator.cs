@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.DTOs.User.Validators;
+﻿using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand
@@ -7,7 +7,8 @@ namespace AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoC
     {
         public UpdateNotSensitiveUserInfoComandValidator()
         {
-            RuleFor(r => r.UpdateUserInfoDto).NotNull().SetValidator(new UpdateUserInfoDtoValidator());
+            Include(new IIdDtoValidator<Guid>());
+            Include(new IUserInfoDtoValidator());
         }
     }
 }

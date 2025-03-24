@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ProductService.Core.Application.Contracts.AuthService;
-using ProductService.Core.Application.DTOs.Product.Validators;
+using ProductService.Core.Application.Features.Products.Contracts;
 
 namespace ProductService.Core.Application.Features.Products.CreateProduct
 {
@@ -8,7 +8,12 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
     {
         public CreateProductCommandValidator(IAuthApiClientService authApiClient)
         {
-            RuleFor(o => o.CreateProductDto).NotNull().SetValidator(new CreateProductDtoValidator(authApiClient));
+            Include(new IEditProductValidator());
+            RuleFor(x => x.ProducerId).MustAsync(async (id, token) =>
+            {
+                var result = await authApiClient.GetUser(id);
+                return result.Success;
+            });
         }
     }
 }

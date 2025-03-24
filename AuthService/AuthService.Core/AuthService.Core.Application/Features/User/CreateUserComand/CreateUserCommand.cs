@@ -1,11 +1,13 @@
-﻿using AuthService.Core.Application.DTOs.User;
+﻿using AuthService.Core.Application.Features.User.Interfaces;
 using CustomResponse;
 using MediatR;
 
 namespace AuthService.Core.Application.Features.User.CreateUserComand
 {
-    public class CreateUserCommand : IRequest<Response<Guid>>
+    public class CreateUserCommand : IRequest<Response<Guid>>, IEmailUpdateDto, IUserInfoDto
     {
-        public CreateUserDto CreateUserDto { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
     }
 }

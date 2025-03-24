@@ -1,6 +1,6 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.DTOs.User;
+using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
 using Cache.Contracts;
 using CustomResponse;
 using MediatR;
@@ -24,8 +24,8 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
 
         public async Task<Response<string>> Handle(ConfirmEmailChangeComand request, CancellationToken cancellationToken)
         {
-            var cacheKey = string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, request.ConfirmEmailChangeDto.Token);
-            UpdateUserEmailDto? cachedDetailsValue = await _memoryCache.GetAsync<UpdateUserEmailDto>(cacheKey);
+            var cacheKey = string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, request.Token);
+            SendTokenToUpdateUserEmailRequest? cachedDetailsValue = await _memoryCache.GetAsync<SendTokenToUpdateUserEmailRequest>(cacheKey);
 
             if (cachedDetailsValue == null)
             {
@@ -37,7 +37,7 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
                 return Response<string>.BadRequestResponse("Email has already been taken");
             }
 
-            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.ConfirmEmailChangeDto.Id);
+            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.Id);
 
             if (userToUpdate == null || userToUpdate.Id != cachedDetailsValue.Id)
             {

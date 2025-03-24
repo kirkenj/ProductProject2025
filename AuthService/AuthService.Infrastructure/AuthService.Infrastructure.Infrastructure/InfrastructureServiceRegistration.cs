@@ -1,4 +1,5 @@
-﻿using AuthService.Core.Application.Contracts.Infrastructure;
+﻿using System.Text.Json;
+using AuthService.Core.Application.Contracts.Infrastructure;
 using Cache.Contracts;
 using Cache.Models;
 using EmailSender.Contracts;
@@ -8,7 +9,6 @@ using HashProvider.Contracts;
 using HashProvider.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
 namespace AuthService.Infrastructure.Infrastructure
 {

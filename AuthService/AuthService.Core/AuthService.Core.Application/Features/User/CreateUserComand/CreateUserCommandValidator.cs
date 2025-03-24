@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.DTOs.User.Validators;
+using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.CreateUserComand
@@ -8,7 +8,9 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
     {
         public CreateUserCommandValidator(IUserRepository userRepository)
         {
-            RuleFor(r => r.CreateUserDto).NotNull().SetValidator(new CreateUserDtoValidator(userRepository));
+            Include(new IUserInfoDtoValidator());
+
+            Include(new IEmailUpdateDtoValidator(userRepository));
         }
     }
 }

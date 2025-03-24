@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AuthAPI.Contracts;
 using AuthAPI.Models.Requests;
-using AuthService.Core.Application.DTOs.User;
+using AuthService.API.AuthAPI.Contracts;
 using AuthService.Core.Application.Features.User.CreateUserComand;
+using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.ForgotPasswordComand;
-using AuthService.Core.Application.Features.User.GetUserDto;
 using AuthService.Core.Application.Features.User.Login;
 using CustomResponse;
 using MediatR;
@@ -30,9 +30,9 @@ namespace AuthService.API.AuthAPI.Controllers
 
         [Produces("text/plain")]
         [HttpPost("Register")]
-        public async Task<ActionResult<string>> Register([FromBody] CreateUserDto createUserDto)
+        public async Task<ActionResult<string>> Register([FromBody] CreateUserCommand createUserDto)
         {
-            Response<Guid> result = await _mediator.Send(new CreateUserCommand() { CreateUserDto = createUserDto });
+            Response<Guid> result = await _mediator.Send(createUserDto);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -42,9 +42,9 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<LoginResultModel>> Login(LoginDto loginDto)
+        public async Task<ActionResult<LoginResultModel>> Login(LoginRequest loginDto)
         {
-            Response<UserDto> response = await _mediator.Send(new LoginRequest { LoginDto = loginDto });
+            Response<UserDto> response = await _mediator.Send(loginDto);
 
             if (!response.Success)
             {
@@ -69,10 +69,7 @@ namespace AuthService.API.AuthAPI.Controllers
         {
             Response<string> result = await _mediator.Send(new ForgotPasswordComand
             {
-                ForgotPasswordDto = new ForgotPasswordDto
-                {
-                    Email = email
-                }
+                Email = email
             });
             return result.GetActionResult();
         }

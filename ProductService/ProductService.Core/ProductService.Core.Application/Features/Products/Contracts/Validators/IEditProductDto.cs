@@ -1,4 +1,4 @@
-﻿namespace ProductService.Core.Application.DTOs.Product.Contracts
+﻿namespace ProductService.Core.Application.Features.Products.Contracts.Validators
 {
     public interface IEditProductDto
     {

@@ -32,7 +32,7 @@ namespace AuthService.Core.Application.Features.User.ForgotPasswordComand
 
         public async Task<Response<string>> Handle(ForgotPasswordComand request, CancellationToken cancellationToken)
         {
-            string emailAddress = request.ForgotPasswordDto.Email;
+            string emailAddress = request.Email;
 
             Domain.Models.User? user = await _userRepository.GetAsync(new UserFilter { AccurateEmail = emailAddress });
 

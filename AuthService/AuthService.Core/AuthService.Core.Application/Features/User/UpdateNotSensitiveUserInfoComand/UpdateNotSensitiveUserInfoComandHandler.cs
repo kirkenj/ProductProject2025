@@ -18,14 +18,14 @@ namespace AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoC
 
         public async Task<Response<string>> Handle(UpdateNotSensitiveUserInfoComand request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.UpdateUserInfoDto.Id);
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
 
             if (user == null)
             {
-                return Response<string>.NotFoundResponse(nameof(request.UpdateUserInfoDto.Id), true);
+                return Response<string>.NotFoundResponse(nameof(request.Id), true);
             }
 
-            _mapper.Map(request.UpdateUserInfoDto, user);
+            _mapper.Map(request, user);
 
             await _userRepository.UpdateAsync(user);
 

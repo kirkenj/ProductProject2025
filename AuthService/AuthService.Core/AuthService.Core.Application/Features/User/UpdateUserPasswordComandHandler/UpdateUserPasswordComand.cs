@@ -1,11 +1,13 @@
-﻿using AuthService.Core.Application.DTOs.User;
+﻿using AuthService.Core.Application.Features.User.Interfaces;
 using CustomResponse;
 using MediatR;
+using Repository.Contracts;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler
 {
-    public class UpdateUserPasswordComand : IRequest<Response<string>>
+    public class UpdateUserPasswordComand : IRequest<Response<string>>, IPasswordDto, IIdObject<Guid>
     {
-        public UpdateUserPasswordDto UpdateUserPasswordDto { get; set; } = null!;
+        public Guid Id { get; set; }
+        public string Password { get; set; } = null!;
     }
 }

@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.DTOs.User.Validators;
+﻿using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
 namespace AuthService.Core.Application.Features.User.Login
@@ -7,7 +7,7 @@ namespace AuthService.Core.Application.Features.User.Login
     {
         public LoginRequestValidator()
         {
-            RuleFor(r => r.LoginDto).NotNull().SetValidator(new LoginDtoValidator());
+            Include(new IEmailDtoValidator());
         }
     }
 }

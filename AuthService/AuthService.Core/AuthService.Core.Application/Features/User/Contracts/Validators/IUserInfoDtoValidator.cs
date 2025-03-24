@@ -1,7 +1,6 @@
-﻿using AuthService.Core.Application.DTOs.User.Interfaces;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace AuthService.Core.Application.DTOs.User.Validators.Shared
+namespace AuthService.Core.Application.Features.User.Interfaces.Validators
 {
     public class IUserInfoDtoValidator : AbstractValidator<IUserInfoDto>
     {

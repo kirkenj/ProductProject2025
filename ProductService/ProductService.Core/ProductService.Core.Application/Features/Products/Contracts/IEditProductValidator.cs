@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using ProductService.Core.Application.DTOs.Product.Contracts;
+using ProductService.Core.Application.Features.Products.Contracts.Validators;
 
 
-namespace ProductService.Core.Application.DTOs.Product.Validators
+namespace ProductService.Core.Application.Features.Products.Contracts
 {
     public class IEditProductValidator : AbstractValidator<IEditProductDto>
     {

@@ -1,7 +1,7 @@
 ﻿using AuthAPI.Contracts;
 using AuthAPI.Models.Requests;
-using AuthService.Core.Application.DTOs.User;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
+using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;
 using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
 using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand;
@@ -47,12 +47,9 @@ namespace AuthService.API.AuthAPI.Controllers
         {
             Response<string> result = await _mediator.Send(new UpdateNotSensitiveUserInfoComand
             {
-                UpdateUserInfoDto = new UpdateUserInfoDto
-                {
-                    Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id"),
-                    Address = updateUserModel.Address,
-                    Name = updateUserModel.Name
-                }
+                Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id"),
+                Address = updateUserModel.Address,
+                Name = updateUserModel.Name
             });
 
             return result.GetActionResult();
@@ -64,11 +61,8 @@ namespace AuthService.API.AuthAPI.Controllers
         {
             Response<string> result = await _mediator.Send(new UpdateUserPasswordComand
             {
-                UpdateUserPasswordDto = new UpdateUserPasswordDto
-                {
-                    Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id"),
-                    Password = request
-                }
+                Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id"),
+                Password = request
             });
 
             return result.GetActionResult();
@@ -82,11 +76,8 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new UpdateUserLoginComand
             {
-                UpdateUserLoginDto = new()
-                {
-                    Id = userId,
-                    NewLogin = newLogin
-                }
+                Id = userId,
+                NewLogin = newLogin
             });
 
             if (result.Success)
@@ -104,11 +95,8 @@ namespace AuthService.API.AuthAPI.Controllers
         {
             Response<string> result = await _mediator.Send(new SendTokenToUpdateUserEmailRequest
             {
-                UpdateUserEmailDto = new UpdateUserEmailDto
-                {
-                    Email = newEmail,
-                    Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id")
-                }
+                Email = newEmail,
+                Id = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id")
             });
 
             return result.GetActionResult();
@@ -122,11 +110,8 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new ConfirmEmailChangeComand
             {
-                ConfirmEmailChangeDto = new ConfirmEmailChangeDto
-                {
-                    Id = userId,
-                    Token = confirmationToken
-                }
+                Id = userId,
+                Token = confirmationToken
             });
 
             if (result.Success)

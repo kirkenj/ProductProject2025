@@ -1,6 +1,6 @@
-﻿using Cache.Contracts;
+﻿using System.Text.Json;
+using Cache.Contracts;
 using StackExchange.Redis;
-using System.Text.Json;
 
 namespace Cache.Models
 {

@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.DTOs.Role;
+﻿using AuthService.Core.Application.Features.Role.DTOs;
 using CustomResponse;
 using MediatR;
 

@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using System.Text.Json;
+﻿using System.Text.Json;
+using FluentValidation;
 
 namespace ProductService.Api.ProductAPI.Middlewares
 {

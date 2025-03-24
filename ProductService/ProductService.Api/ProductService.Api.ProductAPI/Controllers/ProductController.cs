@@ -43,14 +43,14 @@ namespace ProductService.Api.ProductAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Guid>> Post([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<Guid>> Post([FromBody] CreateProductCommand createProductComand)
         {
             if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME))
             {
-                createProductDto.ProducerId = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id");
+                createProductComand.ProducerId = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id");
             }
 
-            Response<Guid> result = await _mediator.Send(new CreateProductCommand() { CreateProductDto = createProductDto });
+            Response<Guid> result = await _mediator.Send(createProductComand);
             return result.GetActionResult();
         }
 
@@ -83,16 +83,13 @@ namespace ProductService.Api.ProductAPI.Controllers
 
             UpdateProductCommand updateProductCommand = new()
             {
-                UpdateProductDto = new()
-                {
-                    Id = id,
-                    CreationDate = updateProductModel.CreationDate,
-                    Description = updateProductModel.Description,
-                    IsAvailable = updateProductModel.IsAvailable,
-                    Name = updateProductModel.Name,
-                    Price = updateProductModel.Price,
-                    ProducerId = updateProductModel.ProducerId
-                }
+                Id = id,
+                CreationDate = updateProductModel.CreationDate,
+                Description = updateProductModel.Description,
+                IsAvailable = updateProductModel.IsAvailable,
+                Name = updateProductModel.Name,
+                Price = updateProductModel.Price,
+                ProducerId = updateProductModel.ProducerId
             };
 
             var result = await _mediator.Send(updateProductCommand);

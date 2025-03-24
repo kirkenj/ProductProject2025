@@ -1,11 +1,13 @@
-﻿using AuthService.Core.Application.DTOs.User;
+﻿using AuthService.Core.Application.Features.User.Interfaces;
 using CustomResponse;
 using MediatR;
+using Repository.Contracts;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
 {
-    public class UpdateUserRoleCommand : IRequest<Response<string>>
+    public class UpdateUserRoleCommand : IRequest<Response<string>>, IRoleDto, IIdObject<Guid>
     {
-        public UpdateUserRoleDTO UpdateUserRoleDTO { get; set; } = null!;
+        public Guid Id { get; set; }
+        public int RoleID { get; set; }
     }
 }

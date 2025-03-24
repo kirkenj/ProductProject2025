@@ -1,6 +1,6 @@
 ﻿using Repository.Contracts;
 
-namespace AuthService.Core.Application.DTOs.Role
+namespace AuthService.Core.Application.Features.Role.DTOs
 {
     public class RoleDto : IIdObject<int>
     {

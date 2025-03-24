@@ -1,7 +1,6 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Domain.Models;
-using AuthService.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 

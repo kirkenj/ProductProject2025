@@ -1,7 +1,6 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Infrastructure;
-using AuthService.Core.Application.Contracts.Persistence;
 using AutoMapper;
 using Cache.Contracts;
 using CustomResponse;
@@ -35,7 +34,7 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
 
         public async Task<Response<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            Domain.Models.User user = _mapper.Map<Domain.Models.User>(request.CreateUserDto);
+            Domain.Models.User user = _mapper.Map<Domain.Models.User>(request);
 
             user.Id = Guid.NewGuid();
             user.Login = $"User{user.Id}";

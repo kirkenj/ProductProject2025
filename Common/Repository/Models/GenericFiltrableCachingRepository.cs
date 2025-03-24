@@ -1,8 +1,8 @@
-﻿using Cache.Contracts;
+﻿using System.Text.Json;
+using Cache.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repository.Contracts;
-using System.Text.Json;
 
 namespace Repository.Models
 {

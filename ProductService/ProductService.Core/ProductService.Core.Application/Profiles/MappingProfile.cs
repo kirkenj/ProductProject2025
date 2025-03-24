@@ -1,5 +1,7 @@
 ﻿using Application.DTOs.Product;
 using AutoMapper;
+using ProductService.Core.Application.Features.Products.CreateProduct;
+using ProductService.Core.Application.Features.Products.UpdateProduct;
 using ProductService.Core.Domain.Models;
 
 namespace ProductService.Core.Application.Profiles
@@ -10,10 +12,8 @@ namespace ProductService.Core.Application.Profiles
         {
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Product, ProductListDto>();
-            CreateMap<Product, CreateProductDto>().ReverseMap();
-            CreateMap<Product, UpdateProductDto>().ReverseMap();
-            //CreateMap<UserDto, AuthClientUser>().ReverseMap();
-            //CreateMap<RoleDto, AuthClientRole>().ReverseMap();
+            CreateMap<Product, CreateProductCommand>().ReverseMap();
+            CreateMap<Product, UpdateProductCommand>().ReverseMap();
         }
     }
 }

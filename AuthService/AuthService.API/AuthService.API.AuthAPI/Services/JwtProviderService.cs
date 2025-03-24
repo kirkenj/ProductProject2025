@@ -1,11 +1,11 @@
-﻿using AuthAPI.Contracts;
-using AuthAPI.Models.Jwt;
-using AuthService.Core.Application.Features.User.GetUserDto;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthAPI.Models.Jwt;
+using AuthService.API.AuthAPI.Contracts;
+using AuthService.Core.Application.Features.User.DTOs;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthAPI.Services
 {

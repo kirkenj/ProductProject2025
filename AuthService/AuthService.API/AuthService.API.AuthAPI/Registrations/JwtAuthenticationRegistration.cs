@@ -1,9 +1,9 @@
-﻿using AuthAPI.Models.Jwt;
+﻿using System.Text;
+using System.Text.Json;
+using AuthAPI.Models.Jwt;
 using Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Text.Json;
 
 namespace AuthService.API.AuthAPI.Registrations
 {

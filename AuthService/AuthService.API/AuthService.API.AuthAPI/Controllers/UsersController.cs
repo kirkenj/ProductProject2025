@@ -3,8 +3,8 @@ using Application.Models.User;
 using AuthAPI.ActionFIlters;
 using AuthAPI.Contracts;
 using AuthAPI.Models.Requests;
-using AuthService.Core.Application.DTOs.User;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
+using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;
 using AuthService.Core.Application.Features.User.GetUserList;
 using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
@@ -68,12 +68,9 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new UpdateNotSensitiveUserInfoComand
             {
-                UpdateUserInfoDto = new UpdateUserInfoDto
-                {
-                    Id = id,
-                    Address = updateUserModel.Address,
-                    Name = updateUserModel.Name
-                }
+                Id = id,
+                Address = updateUserModel.Address,
+                Name = updateUserModel.Name
             });
 
             return result.GetActionResult();
@@ -91,7 +88,8 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new SendTokenToUpdateUserEmailRequest
             {
-                UpdateUserEmailDto = new UpdateUserEmailDto { Id = id, Email = newEmail }
+                Id = id,
+                Email = newEmail
             });
 
             return result.GetActionResult();
@@ -109,7 +107,8 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new ConfirmEmailChangeComand
             {
-                ConfirmEmailChangeDto = new ConfirmEmailChangeDto { Id = id, Token = confirmToken }
+                Id = id,
+                Token = confirmToken
             });
 
             if (result.Success)
@@ -132,7 +131,8 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new UpdateUserLoginComand
             {
-                UpdateUserLoginDto = new UpdateUserLoginDto { Id = id, NewLogin = newLogin }
+                Id = id,
+                NewLogin = newLogin
             });
 
             if (result.Success)
@@ -150,7 +150,8 @@ namespace AuthService.API.AuthAPI.Controllers
         {
             Response<string> result = await _mediator.Send(new UpdateUserRoleCommand
             {
-                UpdateUserRoleDTO = new UpdateUserRoleDTO { Id = id, RoleID = roleId }
+                Id = id,
+                RoleID = roleId
             });
 
             if (result.Success)

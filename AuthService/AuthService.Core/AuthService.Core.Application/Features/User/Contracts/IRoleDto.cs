@@ -1,4 +1,4 @@
-﻿namespace AuthService.Core.Application.DTOs.User.Interfaces
+﻿namespace AuthService.Core.Application.Features.User.Interfaces
 {
     public interface IRoleDto
     {

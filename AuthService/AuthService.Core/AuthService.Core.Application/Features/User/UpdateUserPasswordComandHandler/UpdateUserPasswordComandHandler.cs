@@ -20,14 +20,14 @@ namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHan
 
         public async Task<Response<string>> Handle(UpdateUserPasswordComand request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.UpdateUserPasswordDto.Id);
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
 
             if (user == null)
             {
                 return Response<string>.NotFoundResponse(nameof(user.Id), true);
             }
 
-            (this as IPasswordSettingHandler).SetPassword(request.UpdateUserPasswordDto.Password, user);
+            (this as IPasswordSettingHandler).SetPassword(request.Password, user);
 
             await _userRepository.UpdateAsync(user);
 

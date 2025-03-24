@@ -1,5 +1,5 @@
 ﻿using Application.Models.User;
-using AuthService.Core.Application.Features.User.GetUserDto;
+using AuthService.Core.Application.Features.User.DTOs;
 using CustomResponse;
 using MediatR;
 
