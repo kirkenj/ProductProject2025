@@ -77,6 +77,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.Kafka.Consumer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.Kafka.Producer", "Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.csproj", "{C5997949-B000-B17E-6658-35A3D34AB7C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{C7B2A75E-E742-43FB-9128-B5596B365D74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService.Core", "NotificationService.Core", "{10356E12-9D2E-4EFC-B4EA-B62316671887}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService.Api", "NotificationService.Api", "{B40DC9E8-B8E7-4B69-9433-FFA9E4891642}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService.Infrastucture", "NotificationService.Infrastucture", "{1B6184BC-0AA9-4599-9801-B07A3A55DC04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Api.NotificationApi", "NotificationService\NotificationService.Api\NotificationService.Api.NotificationApi\NotificationService.Api.NotificationApi.csproj", "{7D646B4B-0E70-42E8-A2AF-059C19641E37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Core.Application", "NotificationService\NotificationService.Core\NotificationService.Core.Application\NotificationService.Core.Application.csproj", "{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Infrastucture.Infrastucture", "NotificationService\NotificationService.Infrastucture\NotificationService.Infrastucture.Infrastucture\NotificationService.Infrastucture.Infrastucture.csproj", "{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Infrastucture.Persistence", "NotificationService\NotificationService.Infrastucture\NotificationService.Infrastucture.Persistence\NotificationService.Infrastucture.Persistence.csproj", "{514C66CD-779D-4E2A-8C13-816802771BF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Core.Domain", "NotificationService\NotificationService.Core\NotificationService.Core.Domain\NotificationService.Core.Domain.csproj", "{08B760D4-632E-400A-A112-4E90B1B2FEFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +201,26 @@ Global
 		{C5997949-B000-B17E-6658-35A3D34AB7C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5997949-B000-B17E-6658-35A3D34AB7C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5997949-B000-B17E-6658-35A3D34AB7C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D646B4B-0E70-42E8-A2AF-059C19641E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D646B4B-0E70-42E8-A2AF-059C19641E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D646B4B-0E70-42E8-A2AF-059C19641E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D646B4B-0E70-42E8-A2AF-059C19641E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{514C66CD-779D-4E2A-8C13-816802771BF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{514C66CD-779D-4E2A-8C13-816802771BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{514C66CD-779D-4E2A-8C13-816802771BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{514C66CD-779D-4E2A-8C13-816802771BF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,6 +259,14 @@ Global
 		{018C2513-1E2D-B54B-5D92-D5125749DC18} = {1BB3566D-E1C2-416D-AAD5-1F24DB0E46C6}
 		{4B731E2D-A1C7-7177-E2B2-B0C39124D783} = {1BB3566D-E1C2-416D-AAD5-1F24DB0E46C6}
 		{C5997949-B000-B17E-6658-35A3D34AB7C8} = {1BB3566D-E1C2-416D-AAD5-1F24DB0E46C6}
+		{10356E12-9D2E-4EFC-B4EA-B62316671887} = {C7B2A75E-E742-43FB-9128-B5596B365D74}
+		{B40DC9E8-B8E7-4B69-9433-FFA9E4891642} = {C7B2A75E-E742-43FB-9128-B5596B365D74}
+		{1B6184BC-0AA9-4599-9801-B07A3A55DC04} = {C7B2A75E-E742-43FB-9128-B5596B365D74}
+		{7D646B4B-0E70-42E8-A2AF-059C19641E37} = {B40DC9E8-B8E7-4B69-9433-FFA9E4891642}
+		{F3710DCB-1F58-4EF5-8115-42AD7FFCCEDE} = {10356E12-9D2E-4EFC-B4EA-B62316671887}
+		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C} = {1B6184BC-0AA9-4599-9801-B07A3A55DC04}
+		{514C66CD-779D-4E2A-8C13-816802771BF3} = {1B6184BC-0AA9-4599-9801-B07A3A55DC04}
+		{08B760D4-632E-400A-A112-4E90B1B2FEFB} = {10356E12-9D2E-4EFC-B4EA-B62316671887}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2DB40AF-E389-4793-9CD8-CCD99624132A}
