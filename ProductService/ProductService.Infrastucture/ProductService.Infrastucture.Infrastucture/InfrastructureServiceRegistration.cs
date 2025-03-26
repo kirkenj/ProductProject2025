@@ -1,16 +1,19 @@
-﻿using System.Reflection;
+﻿using System.Net.Http;
+using System.Reflection;
 using System.Text.Json;
 using Cache.Contracts;
 using Cache.Models;
+using Clients.AuthApi;
 using EmailSender.Contracts;
 using EmailSender.Models;
 using Exceptions;
+using HttpDelegatingHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Infrastucture.Infrastucture.AuthClient;
 
 
-namespace Infrastructure
+namespace ProductService.Infrastucture.Infrastucture
 {
     public static class InfrastructureServiceRegistration
     {
@@ -22,18 +25,18 @@ namespace Infrastructure
 
         public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, bool isDevelopment)
         {
-            //services.AddScoped<AuthHeaderHandler>();
+            services.AddScoped<AuthHeaderHandler>();
 
-            //services.AddHttpClient(HTTTP_CLIENT_NAME).AddHttpMessageHandler<AuthHeaderHandler>();
+            services.AddHttpClient(HTTTP_CLIENT_NAME).AddHttpMessageHandler<AuthHeaderHandler>();
 
-            //services.AddScoped<IAuthApiClient, AuthApiClient>(sp =>
-            //{
-            //    var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
-            //    var client = clientFactory.CreateClient(HTTTP_CLIENT_NAME);
-            //    var url = Environment.GetEnvironmentVariable(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME)
-            //        ?? throw new CouldNotGetEnvironmentVariableException(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME);
-            //    return new AuthApiClient(url, client);
-            //});
+            services.AddScoped<IAuthApiClient, AuthApiClient>(sp =>
+            {
+                var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var client = clientFactory.CreateClient(HTTTP_CLIENT_NAME);
+                var url = Environment.GetEnvironmentVariable(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME)
+                    ?? throw new CouldNotGetEnvironmentVariableException(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME);
+                return new AuthApiClient(url, client);
+            });
 
             services.AddScoped<IAuthApiClientService, AuthClientService>();
 

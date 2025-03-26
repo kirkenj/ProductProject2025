@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductService.Core.Domain.Models;
 
-namespace Persistence
+namespace ProductService.Infrastucture.Persistence
 {
     public class ProductDbContext : DbContext
     {

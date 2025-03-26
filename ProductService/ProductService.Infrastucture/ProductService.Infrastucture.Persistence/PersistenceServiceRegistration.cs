@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Infrastucture.Persistence.Repositories;
 
-namespace Persistence
+namespace ProductService.Infrastucture.Persistence
 {
     public static class PersistenceServiceRegistration
     {

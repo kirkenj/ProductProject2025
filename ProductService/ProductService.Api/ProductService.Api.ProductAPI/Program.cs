@@ -1,10 +1,10 @@
 using System.Text.Json;
 using CentralizedJwtAuthentication;
 using Exceptions;
-using Infrastructure;
-using Persistence;
 using ProductService.Api.ProductAPI.Middlewares;
 using ProductService.Core.Application;
+using ProductService.Infrastucture.Infrastucture;
+using ProductService.Infrastucture.Persistence;
 
 const string JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME = "JwtSettings";
 

@@ -1,7 +1,6 @@
 ﻿using Cache.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Persistence;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.Models.Product;
 using ProductService.Core.Domain.Models;
