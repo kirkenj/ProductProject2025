@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Application.MediatRBehaviors;
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
 using FluentValidation;
@@ -8,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ValidationException = FluentValidation.ValidationException;
+using MediatRExtensions;
+
 
 namespace AuthService.Core.Application
 {
@@ -24,14 +25,10 @@ namespace AuthService.Core.Application
         /// <exception cref="ArgumentException"></exception>
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
-                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            });
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(currentAssembly);
+            services.AddValidatorsFromAssembly(currentAssembly);
+            services.RegisterMediatRWithLoggingAndValidation(currentAssembly);
 
             services.Configure<CreateUserSettings>(configuration.GetSection("CreateUserSettings"));
             services.Configure<UpdateUserEmailSettings>(configuration.GetSection("UpdateUserEmailSettings"));
@@ -57,7 +54,6 @@ namespace AuthService.Core.Application
                             string.Join("\n", valiadtionResult.Select(r => $"{string.Join(",", r.MemberNames)}: {r.ErrorMessage}")));
                 }
             }
-
 
             var createUserSettings = provider.GetRequiredService<IOptions<CreateUserSettings>>().Value;
             var roleRep = provider.GetRequiredService<IRoleRepository>();

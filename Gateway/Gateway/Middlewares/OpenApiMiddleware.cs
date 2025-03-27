@@ -71,7 +71,11 @@ namespace Gateway.Middlewares
                     continue;
                 }
 
-                resultDocument = CombineOpenApiDocuments(resultDocument, openApiDocument!);
+                resultDocument = CombineOpenApiDocuments(resultDocument, openApiDocument!, out ICollection<string> errors);
+                if (errors.Count > 0)
+                {
+                    _logger.LogError(string.Join("\r\n", errors));
+                }
             }
 
             if (resultDocument == null)
@@ -102,34 +106,54 @@ namespace Gateway.Middlewares
             await WriteResponseAsync(context, openApiString, 200, "application/json");
         }
 
-        private static string CombineOpenApiDocuments(string firstDocument, string secondDocument)
+        private static string CombineOpenApiDocuments(string firstDocument, string secondDocument, out ICollection<string> errors)
         {
-            var firstDocumentJson = JsonObject.Parse(firstDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(firstDocument)}");
-            var secondDocumentJson = JsonObject.Parse(secondDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(secondDocument)}");
-
-            var firstComponentsSection = firstDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject()
-                ?? throw new Exception($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
-            var secondComponentsSection = secondDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject()
-                ?? throw new Exception($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
-
-            foreach (var component in secondComponentsSection.ToArray())
+            try
             {
-                secondComponentsSection.Remove(component.Key);
-                firstComponentsSection.Add(component);
+                List<string> errorsList = new();
+                var firstDocumentJson = JsonObject.Parse(firstDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(firstDocument)}");
+                var secondDocumentJson = JsonObject.Parse(secondDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(secondDocument)}");
+
+                var firstComponentsSection = firstDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject();
+                var secondComponentsSection = secondDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject();
+
+                if (firstComponentsSection == null)
+                {
+                    errorsList.Add($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
+                }
+
+                if (secondComponentsSection == null) 
+                {
+                    errorsList.Add($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
+                }
+
+                if (firstComponentsSection != null && secondComponentsSection != null)
+                {
+                    foreach (var component in secondComponentsSection.ToArray())
+                    {
+                        secondComponentsSection.Remove(component.Key);
+                        firstComponentsSection.Add(component);
+                    }
+                }
+
+                var firstPathsSection = firstDocumentJson[PATH_TAG]?.AsObject()
+                    ?? throw new Exception($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {PATH_TAG}");
+                var secondPathssSection = secondDocumentJson[PATH_TAG]?.AsObject()
+                    ?? throw new Exception($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {PATH_TAG}");
+
+                foreach (var component in secondPathssSection.ToArray())
+                {
+                    secondPathssSection.Remove(component.Key);
+                    firstPathsSection.Add(component);
+                }
+
+                errors = errorsList;
+                return firstDocumentJson.ToJsonString();
             }
-
-            var firstPathsSection = firstDocumentJson[PATH_TAG]?.AsObject()
-                ?? throw new Exception($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {PATH_TAG}");
-            var secondPathssSection = secondDocumentJson[PATH_TAG]?.AsObject()
-                ?? throw new Exception($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {PATH_TAG}");
-
-            foreach (var component in secondPathssSection.ToArray())
+            catch (Exception ex) 
             {
-                secondPathssSection.Remove(component.Key);
-                firstPathsSection.Add(component);
+                throw;
             }
-
-            return firstDocumentJson.ToJsonString();
         }
 
         private async Task<string?> GetDocumentationForService(ServiceConfig serviceConfig)

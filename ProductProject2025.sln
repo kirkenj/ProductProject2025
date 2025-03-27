@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Core.Domain", "NotificationService\NotificationService.Core\NotificationService.Core.Domain\NotificationService.Core.Domain.csproj", "{08B760D4-632E-400A-A112-4E90B1B2FEFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRExtensions", "Common\CQRS\MediatRExtensions\MediatRExtensions.csproj", "{4326266E-3391-4554-9F73-4B98D2CC5672}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -221,6 +223,10 @@ Global
 		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08B760D4-632E-400A-A112-4E90B1B2FEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4326266E-3391-4554-9F73-4B98D2CC5672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4326266E-3391-4554-9F73-4B98D2CC5672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4326266E-3391-4554-9F73-4B98D2CC5672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4326266E-3391-4554-9F73-4B98D2CC5672}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,6 +273,7 @@ Global
 		{2DDA4EB2-7E04-4CBB-A08E-A8F249969B5C} = {1B6184BC-0AA9-4599-9801-B07A3A55DC04}
 		{514C66CD-779D-4E2A-8C13-816802771BF3} = {1B6184BC-0AA9-4599-9801-B07A3A55DC04}
 		{08B760D4-632E-400A-A112-4E90B1B2FEFB} = {10356E12-9D2E-4EFC-B4EA-B62316671887}
+		{4326266E-3391-4554-9F73-4B98D2CC5672} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2DB40AF-E389-4793-9CD8-CCD99624132A}

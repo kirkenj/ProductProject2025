@@ -2,11 +2,11 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.MediatRBehaviors
+namespace MediatRExtensions
 {
     public class RequestResponseLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class
     {
-        ILogger<RequestResponseLoggingBehavior<TRequest, TResponse>> _logger;
+        private readonly ILogger<RequestResponseLoggingBehavior<TRequest, TResponse>> _logger;
 
         public RequestResponseLoggingBehavior(ILogger<RequestResponseLoggingBehavior<TRequest, TResponse>> logger)
         {

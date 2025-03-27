@@ -37,13 +37,11 @@ builder.Services.AddCors(o =>
 });
 
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(ApiConstants.ADMIN_POLICY_NAME, policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(ApiConstants.ADMIN_POLICY_NAME, policy =>
     {
         policy.RequireRole(ApiConstants.ADMIN_ROLE_NAME);
     });
-});
 
 var app = builder.Build();
 

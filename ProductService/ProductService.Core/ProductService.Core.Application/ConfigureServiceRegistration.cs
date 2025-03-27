@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
+using MediatRExtensions;
 using Microsoft.Extensions.DependencyInjection;
-using ProductService.Core.Application.MediatRBehaviors;
 
 namespace ProductService.Core.Application
 {
@@ -9,14 +9,10 @@ namespace ProductService.Core.Application
     {
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
-                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            });
+            var currentAssemnly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(currentAssemnly);
+            services.AddValidatorsFromAssembly(currentAssemnly);
+            services.RegisterMediatRWithLoggingAndValidation(currentAssemnly);
 
             return services;
         }
