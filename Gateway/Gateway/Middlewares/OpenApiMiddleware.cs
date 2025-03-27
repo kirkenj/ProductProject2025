@@ -9,9 +9,11 @@ namespace Gateway.Middlewares
 {
     public class OpenApiMiddleware : IMiddleware
     {
-        private const string COMPONENTS_TAG = "components";
-        private const string SCHEMAS_TAG = "schemas";
-        private const string PATH_TAG = "paths";
+        private readonly List<string[]> SECTION_KEYS_TO_COPY =
+        [
+            ["components", "schemas"],
+            ["paths"]
+        ];
 
         private readonly ServicesSettings _options;
         private readonly ILogger<OpenApiMiddleware> _logger;
@@ -49,35 +51,7 @@ namespace Gateway.Middlewares
         {
             var openApiDocuments = await Task.WhenAll(_options.ServiceConfigs.Select(GetDocumentationForService));
 
-            var nullStreamsCount = openApiDocuments.Count(c => c == null);
-            if (nullStreamsCount > 0)
-            {
-                _logger.LogWarning("Couldn't recieve openApi documents from {invalidRequestsCount} services", nullStreamsCount);
-            }
-            else
-            {
-                _logger.LogInformation("All requests for openApi documents succeded");
-            }
-
-            var documentStreamsToHandle = openApiDocuments.Where(c => c != null);
-
-            string? resultDocument = null;
-
-            foreach (var openApiDocument in documentStreamsToHandle)
-            {
-                if (resultDocument == null)
-                {
-                    resultDocument = openApiDocument;
-                    continue;
-                }
-
-                resultDocument = CombineOpenApiDocuments(resultDocument, openApiDocument!, out ICollection<string> errors);
-                if (errors.Count > 0)
-                {
-                    _logger.LogError(string.Join("\r\n", errors));
-                }
-            }
-
+            var resultDocument = CombineDocuments(openApiDocuments);
             if (resultDocument == null)
             {
                 var message = "Couldn't aggregate openApi docs";
@@ -106,75 +80,125 @@ namespace Gateway.Middlewares
             await WriteResponseAsync(context, openApiString, 200, "application/json");
         }
 
-        private static string CombineOpenApiDocuments(string firstDocument, string secondDocument, out ICollection<string> errors)
+        private string? CombineDocuments(IEnumerable<(string Url, string? openApiDocument)> uriAndJsonsToHandle)
         {
-            try
+            if (uriAndJsonsToHandle == null)
             {
-                List<string> errorsList = new();
-                var firstDocumentJson = JsonObject.Parse(firstDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(firstDocument)}");
-                var secondDocumentJson = JsonObject.Parse(secondDocument) ?? throw new Exception($"Couldn't parse jsonObject from {nameof(secondDocument)}");
+                return null;
+            }
 
-                var firstComponentsSection = firstDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject();
-                var secondComponentsSection = secondDocumentJson[COMPONENTS_TAG]?[SCHEMAS_TAG]?.AsObject();
-
-                if (firstComponentsSection == null)
+            List<(string uri, JsonObject openApiDocumentJson)> filteredDocuments = [];
+            foreach (var documentString in uriAndJsonsToHandle)
+            {
+                if (string.IsNullOrEmpty(documentString.openApiDocument))
                 {
-                    errorsList.Add($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
+                    _logger.LogWarning("Couldn't recieve openApi document from {uri}", documentString.Url);
+                    continue;
                 }
 
-                if (secondComponentsSection == null) 
+                var jsonObj = JsonObject.Parse(documentString.openApiDocument)?.AsObject();
+                if (jsonObj == null)
                 {
-                    errorsList.Add($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {COMPONENTS_TAG}:{SCHEMAS_TAG}");
+                    _logger.LogWarning("Couldn't parse jsonObject from openApi documentation {uri}", documentString.Url);
+                    continue;
                 }
 
-                if (firstComponentsSection != null && secondComponentsSection != null)
+                filteredDocuments.Add((documentString.Url, jsonObj));
+            }
+
+            if (filteredDocuments.Count == 0)
+            {
+                return null;
+            }
+
+            JsonObject resultJson = InitialOpenApiJsonObjectFactory();
+
+            foreach (var uriAndJson in filteredDocuments)
+            {
+                try
                 {
-                    foreach (var component in secondComponentsSection.ToArray())
+                    foreach (var key in SECTION_KEYS_TO_COPY)
                     {
-                        secondComponentsSection.Remove(component.Key);
-                        firstComponentsSection.Add(component);
+                        var targetSection = GetSectionWithKeys(resultJson, key) ?? throw new Exception($"Couldn't get section from result json with key {string.Join(':', key)}");
+                        var sourceSection = GetSectionWithKeys(uriAndJson.openApiDocumentJson, key);
+
+                        if (sourceSection == null)
+                        {
+                            _logger.LogWarning("Couldn't get section from target json with key {key}; Uri:{uri}", string.Join(':', key), uriAndJson.uri);
+                            continue;
+                        }
+
+                        foreach (var component in sourceSection.ToArray())
+                        {
+                            sourceSection.Remove(component.Key);
+                            targetSection.Add(component);
+                        }
                     }
                 }
-
-                var firstPathsSection = firstDocumentJson[PATH_TAG]?.AsObject()
-                    ?? throw new Exception($"Couldn't get jsonObject from {nameof(firstDocumentJson)} with key {PATH_TAG}");
-                var secondPathssSection = secondDocumentJson[PATH_TAG]?.AsObject()
-                    ?? throw new Exception($"Couldn't get jsonObject from {nameof(secondDocumentJson)} with key {PATH_TAG}");
-
-                foreach (var component in secondPathssSection.ToArray())
+                catch (Exception ex)
                 {
-                    secondPathssSection.Remove(component.Key);
-                    firstPathsSection.Add(component);
+                    _logger.LogError(ex, ex.Message);
                 }
+            }
 
-                errors = errorsList;
-                return firstDocumentJson.ToJsonString();
-            }
-            catch (Exception ex) 
-            {
-                throw;
-            }
+            return resultJson.ToJsonString();
         }
 
-        private async Task<string?> GetDocumentationForService(ServiceConfig serviceConfig)
-        {
-            try
-            {
-                var uri = $"{serviceConfig.DownstreamScheme}://{serviceConfig.Host}:{serviceConfig.Port}/{serviceConfig.SwaggerUrl}";
-
-                var result = await _httpClient.GetAsync(uri);
-                if (!result.IsSuccessStatusCode)
+        private static JsonObject InitialOpenApiJsonObjectFactory() =>
+            JsonObject.Parse("""
                 {
-                    _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" with uri \"{serviceSwaggerUrl}\"", serviceConfig, uri);
+                    "openapi": "3.0.4",
+                    "info": {
+                        "title": "SomeTitle",
+                        "version": "1.0"
+                    },
+                    "paths": {},
+                    "components": {
+                        "schemas": {}
+                    }
+                }
+                """)?.AsObject()!;
+
+        private static JsonObject? GetSectionWithKeys(JsonObject source, string[] keys)
+        {
+            if (keys == null || keys.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(keys));
+            }
+
+            JsonNode? result = source[keys[0]];
+
+            for (int i = 1; i < keys.Length; i++)
+            {
+                if (result == null)
+                {
                     return null;
                 }
 
-                return await result.Content.ReadAsStringAsync();
+                result = result[keys[i]];
+            }
+
+            return result?.AsObject();
+        }
+
+        private async Task<(string Url, string? openApiDocument)> GetDocumentationForService(ServiceConfig serviceConfig)
+        {
+            var uri = $"{serviceConfig.DownstreamScheme}://{serviceConfig.Host}:{serviceConfig.Port}/{serviceConfig.SwaggerUrl}";
+            try
+            {
+                var result = await _httpClient.GetAsync(uri);
+                if (!result.IsSuccessStatusCode)
+                {
+                    _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" with uri \"{serviceSwaggerUrl}\" ({code})", serviceConfig, uri, result.StatusCode);
+                    return (uri, null);
+                }
+
+                return (uri, await result.Content.ReadAsStringAsync());
             }
             catch (Exception ex)
             {
-                _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" exception: {ex}", serviceConfig, ex);
-                return null;
+                _logger.LogError("Couldn't get OpenApi documentation for service \"{serviceName}\" exception: {ex}", serviceConfig, ex.Message);
+                return (uri, null);
             }
         }
 
