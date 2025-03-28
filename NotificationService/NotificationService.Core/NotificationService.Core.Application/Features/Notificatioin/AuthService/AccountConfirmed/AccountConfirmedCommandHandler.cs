@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AccountConfirmed
+namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.AccountConfirmed
 {
     public class AccountConfirmedCommandHandler : IRequestHandler<AccountConfirmedCommand>
     {

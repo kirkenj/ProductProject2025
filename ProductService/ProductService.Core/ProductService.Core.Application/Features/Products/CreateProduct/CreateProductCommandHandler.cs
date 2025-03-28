@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CustomResponse;
-using EmailSender.Contracts;
-using EmailSender.Models;
 using MediatR;
+using Messaging.Kafka.Producer.Contracts;
+using Messaging.Messages.ProductService;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Domain.Models;
@@ -15,43 +15,32 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly IAuthApiClientService _authClientService;
-        private readonly IEmailSender _emailSender;
+        private readonly IKafkaProducer<ProductCreated> _notificationProducer;
 
-        public CreateProductCommandHandler(IProductRepository userRepository, IMapper mapper, IAuthApiClientService authClientService, IEmailSender emailSender)
+        public CreateProductCommandHandler(IProductRepository userRepository, IMapper mapper, IAuthApiClientService authClientService, IKafkaProducer<ProductCreated> notificationProducer)
         {
             _productRepository = userRepository;
             _mapper = mapper;
             _authClientService = authClientService;
-            _emailSender = emailSender;
+            _notificationProducer = notificationProducer;
         }
 
         public async Task<Response<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             Product product = _mapper.Map<Product>(request);
 
-            var addTask = _productRepository.AddAsync(product);
+            var producerId = request.ProducerId;
 
-            var msgTask = Task.Run(async () =>
+            var userResponse = await _authClientService.GetUser(producerId);
+            if (userResponse.Result == null)
             {
-                var producerId = request.ProducerId;
+                throw new ApplicationException($"Couldn't get user with id '{producerId}'");
+            }
 
-                var userResponse = await _authClientService.GetUser(producerId);
+            await _productRepository.AddAsync(product);
 
-                var user = userResponse.Result ?? throw new ApplicationException($"Couldn't get user with id '{producerId}'");
-
-                if (user.Email != null)
-                {
-                    await _emailSender.SendEmailAsync(new Email
-                    {
-                        Body = $"You added a product with id '{product.Id}'",
-                        Subject = "Product creation",
-                        To = user.Email
-                    });
-                }
-            }, cancellationToken);
-
-            await Task.WhenAll(msgTask, msgTask);
-
+            await _notificationProducer.ProduceAsync(new ProductCreated { ProductId = product.Id }, cancellationToken);
+            
             return Response<Guid>.OkResponse(product.Id, $"Product created with id {product.Id}");
         }
     }

@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using CustomResponse;
-using EmailSender.Contracts;
+﻿using CustomResponse;
 using MediatR;
+using Messaging.Kafka.Producer.Contracts;
+using Messaging.Messages.ProductService;
 using ProductService.Core.Application.Contracts.Persistence;
 
 namespace ProductService.Core.Application.Features.Products.RemoveProduct
@@ -9,10 +9,12 @@ namespace ProductService.Core.Application.Features.Products.RemoveProduct
     public class RemoveProductComandHandler : IRequestHandler<RemovePrductComand, Response<string>>
     {
         private readonly IProductRepository _productRepository;
+        private readonly IKafkaProducer<ProductDeleted> _productDeletedProducer;
 
-        public RemoveProductComandHandler(IProductRepository productRepository, IEmailSender emailSender, IMapper mapper)
+        public RemoveProductComandHandler(IProductRepository productRepository, IKafkaProducer<ProductDeleted> productDeletedProducer)
         {
             _productRepository = productRepository;
+            _productDeletedProducer = productDeletedProducer;
         }
 
         public async Task<Response<string>> Handle(RemovePrductComand request, CancellationToken cancellationToken)
@@ -26,17 +28,7 @@ namespace ProductService.Core.Application.Features.Products.RemoveProduct
 
             await _productRepository.DeleteAsync(product.Id);
 
-            //UserDto ownerResult = _mapper.Map<UserDto>(await _authClientService.UsersGETAsync(product.ProducerId, cancellationToken));
-
-            //if (ownerResult != null && ownerResult.Email != null)
-            //{
-            //    await _emailSender.SendEmailAsync(new Email
-            //    {
-            //        Subject = "Your product was removed",
-            //        To = ownerResult.Email,
-            //        Body = $"Your product with id '{product.Id}' was removed"
-            //    });
-            //}
+            await _productDeletedProducer.ProduceAsync(new() { Id = request.ProductId }, cancellationToken);
 
             return Response<string>.OkResponse("Ok", "Success");
         }

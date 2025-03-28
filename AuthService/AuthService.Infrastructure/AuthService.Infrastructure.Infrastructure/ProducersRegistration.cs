@@ -4,7 +4,7 @@ using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AuthService.Infrastructure.Infrastructure.Producers
+namespace AuthService.Infrastructure.Infrastructure
 {
     public static class ProducersRegistration
     {

@@ -1,5 +1,4 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
-using AuthService.Core.Application.Contracts.Infrastructure;
 using AuthService.Core.Application.Models.User.Settings;
 using AutoMapper;
 using Cache.Contracts;
@@ -47,7 +46,7 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
 
             _passwordSetter.SetPassword(password, user);
 
-            await _memoryCache.SetAsync(string.Format(_createUserSettings.KeyForRegistrationCachingFormat, user.Email), user, TimeSpan.FromHours(_createUserSettings.EmailConfirmationTimeoutHours));
+            await _memoryCache.SetAsync(string.Format(_createUserSettings.KeyForRegistrationCachingFormat, user.Email), user, TimeSpan.FromHours(_createUserSettings.ConfirmationTimeout));
 
             await _userRegistrationRequestCreatedKafkaProducer.ProduceAsync(new()
             {

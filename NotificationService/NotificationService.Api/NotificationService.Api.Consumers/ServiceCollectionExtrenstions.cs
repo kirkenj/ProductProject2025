@@ -2,12 +2,16 @@
 using Messaging.Kafka;
 using Messaging.Kafka.Consumer;
 using Messaging.Messages.AuthService;
+using Messaging.Messages.ProductService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NotificationService.Core.Application.Features.Notificatioin.AccountConfirmed;
-using NotificationService.Core.Application.Features.Notificatioin.ChangeEmailRequest;
-using NotificationService.Core.Application.Features.Notificatioin.ForgotPassword;
-using NotificationService.Core.Application.Features.Notificatioin.UserRegistrationRequestCreated;
+using NotificationService.Core.Application.Features.Notificatioin.AuthService.AccountConfirmed;
+using NotificationService.Core.Application.Features.Notificatioin.AuthService.ChangeEmailRequest;
+using NotificationService.Core.Application.Features.Notificatioin.AuthService.ForgotPassword;
+using NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated;
+using NotificationService.Core.Application.Features.Notificatioin.ProductService.ProductCreated;
+using NotificationService.Core.Application.Features.Notificatioin.ProductService.ProductDeleted;
+using NotificationService.Core.Application.Features.Notificatioin.ProductService.ProductProducerUpdated;
 
 namespace NotificationService.Api.Consumers
 {
@@ -22,6 +26,10 @@ namespace NotificationService.Api.Consumers
             services.AddConsumer<ForgotPassword, ForgotPasswordCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
             services.AddConsumer<ChangeEmailRequest, ChangeEmailRequestCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
             services.AddConsumer<AccountConfirmed, AccountConfirmedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
+
+            services.AddConsumer<ProductDeleted, ProductDeletedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
+            services.AddConsumer<ProductCreated, ProductCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
+            services.AddConsumer<ProductProducerUpdated, ProductProducerUpdatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;

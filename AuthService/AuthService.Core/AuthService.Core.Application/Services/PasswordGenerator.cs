@@ -1,6 +1,6 @@
-﻿using AuthService.Core.Application.Contracts.Infrastructure;
+﻿using AuthService.Core.Application.Contracts.Application;
 
-namespace AuthService.Infrastructure.Infrastructure.PasswordGenerator
+namespace AuthService.Core.Application.Services
 {
     public class PasswordGenerator : IPasswordGenerator
     {

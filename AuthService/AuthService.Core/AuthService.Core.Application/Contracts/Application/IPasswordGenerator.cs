@@ -1,4 +1,4 @@
-﻿namespace AuthService.Core.Application.Contracts.Infrastructure
+﻿namespace AuthService.Core.Application.Contracts.Application
 {
     public interface IPasswordGenerator
     {

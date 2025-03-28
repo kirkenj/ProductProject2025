@@ -15,6 +15,7 @@
   <ItemGroup>
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.ProductService\Messaging.Messages.ProductService.csproj" />
   </ItemGroup>
 
 </Project>

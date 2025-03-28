@@ -1,6 +1,5 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Application;
-using AuthService.Core.Application.Contracts.Infrastructure;
 using AuthService.Core.Application.Contracts.Persistence;
 using CustomResponse;
 using MediatR;

@@ -13,9 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cache\Cache.csproj" />
     <ProjectReference Include="..\..\..\Common\Clients\AuthClientService\AuthClientService.csproj" />
-    <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\..\..\Common\HttpDelegatingHandlers\HttpDelegatingHandlers.csproj" />
+    <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Models\Messaging.Kafka.Producer.Models.csproj" />
     <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Application\ProductService.Core.Application.csproj" />
   </ItemGroup>
 	

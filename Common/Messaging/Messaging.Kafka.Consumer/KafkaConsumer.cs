@@ -28,7 +28,8 @@ namespace Messaging.Kafka.Consumer
             _consumer = new ConsumerBuilder<string, TMessage>(new ConsumerConfig()
             {
                 BootstrapServers = kafkaSettings.BootStrapServers,
-                GroupId = consumerSettings.GroupId
+                GroupId = consumerSettings.GroupId, 
+                AllowAutoCreateTopics = true
             })
             .SetValueDeserializer(new KafkaJsonDeserializer<TMessage>())
             .Build();

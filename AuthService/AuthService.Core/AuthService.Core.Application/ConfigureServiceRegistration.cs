@@ -20,6 +20,7 @@ namespace AuthService.Core.Application
             services.RegisterMediatRWithLoggingAndValidation(currentAssembly);
 
             services.AddScoped<IPasswordSetter, PasswordSetter>();
+            services.AddTransient<IPasswordGenerator, PasswordGenerator>();
 
             services.Configure<CreateUserSettings>(configuration.GetSection("CreateUserSettings"));
             services.Configure<UpdateUserEmailSettings>(configuration.GetSection("UpdateUserEmailSettings"));
