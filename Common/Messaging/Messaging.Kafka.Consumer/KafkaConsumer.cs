@@ -2,32 +2,36 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MediatR;
+using AutoMapper;
 
 namespace Messaging.Kafka.Consumer
 {
-    public class KafkaConsumer<TMessage> : BackgroundService
+    public class KafkaConsumer<TMessage, TCommand, TOptions> : BackgroundService where TCommand : IRequest where TOptions : KafkaConsumerSettings
     {
         private static string Topic => typeof(TMessage).FullName!;
 
         private readonly IConsumer<string, TMessage> _consumer;
-        private readonly IMessageHandler<Message<string, TMessage>> _messageHandler;
-        private readonly ILogger<KafkaConsumer<TMessage>> _logger;
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+        private readonly ILogger<KafkaConsumer<TMessage, TCommand, TOptions>> _logger;
 
         public KafkaConsumer(IOptions<KafkaConsumerSettings> options,
-            IMessageHandler<Message<string, TMessage>> messageHandler,
-            ILogger<KafkaConsumer<TMessage>> logger)
+            IMediator mediator,
+            IMapper mapper,
+            ILogger<KafkaConsumer<TMessage, TCommand, TOptions>> logger)
         {
-            _messageHandler = messageHandler;
+            _mediator = mediator;
+            _mapper = mapper;
             _logger = logger;
-            var config = new ConsumerConfig
+
+            _consumer = new ConsumerBuilder<string, TMessage>(new ConsumerConfig()
             {
                 BootstrapServers = options.Value.BootStrapServers,
                 GroupId = options.Value.GroupId
-            };
-
-            _consumer = new ConsumerBuilder<string, TMessage>(config)
-                .SetValueDeserializer(new KafkaJsonDeserializer<TMessage>())
-                .Build();
+            })
+            .SetValueDeserializer(new KafkaJsonDeserializer<TMessage>())
+            .Build();
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -40,11 +44,12 @@ namespace Messaging.Kafka.Consumer
             _consumer.Subscribe(Topic);
             try
             {
-                _logger.LogInformation($"Consume started {Topic}");
+                _logger.LogInformation("Consume started {Topic}", Topic);
                 while (!stoppingToken.IsCancellationRequested)
-                {   
+                {
                     var result = _consumer.Consume(stoppingToken);
-                    await _messageHandler.HandleAsync(result.Message, stoppingToken);
+                    var command = _mapper.Map<TCommand>(result.Message.Value);
+                    await _mediator.Send(command, stoppingToken);
                 }
 
                 _consumer.Unsubscribe();

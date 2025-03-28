@@ -1,4 +1,4 @@
-﻿using Confluent.Kafka;
+﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,12 +6,15 @@ namespace Messaging.Kafka.Consumer
 {
     public static class KafkaConsumerRegistrationExtension
     {
-        public static IServiceCollection AddConsumer<TMessage, THandler>(this IServiceCollection services, IConfigurationSection configurationSection) where THandler : class, IMessageHandler<Message<string, TMessage>>
+        public static IServiceCollection AddConsumer<TMessage, TCommand, TOptions>(
+            this IServiceCollection services, 
+            IConfigurationSection configurationSection) 
+            where TCommand : IRequest
+            where TOptions : KafkaConsumerSettings
         {
-            services.Configure<KafkaConsumerSettings>(configurationSection);
-            services.AddHostedService<KafkaConsumer<TMessage>>();
-            services.AddSingleton<IMessageHandler<Message<string,TMessage>>, THandler>();
+            services.Configure<TOptions>(configurationSection);
+            services.AddHostedService<KafkaConsumer<TMessage, TCommand, TOptions>>();
             return services;
-        } 
+        }
     }
 }

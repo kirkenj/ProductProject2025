@@ -25,11 +25,11 @@ namespace Messaging.Kafka.Producer
 
         public void Dispose() => _producer.Dispose();
 
-        public async Task<DeliveryResult<string, TMessage>> ProduceAsync(string key, TMessage message, CancellationToken cancellationToken)
+        public async Task<DeliveryResult<string, TMessage>> ProduceAsync(TMessage message, CancellationToken cancellationToken)
         {
             var messageToPush = new Message<string, TMessage>()
             {
-                Key = key,
+                Key = Guid.NewGuid().ToString(),
                 Value = message
             };
 

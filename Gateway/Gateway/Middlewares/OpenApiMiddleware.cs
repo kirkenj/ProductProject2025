@@ -9,7 +9,7 @@ namespace Gateway.Middlewares
 {
     public class OpenApiMiddleware : IMiddleware
     {
-        private readonly List<string[]> SECTION_KEYS_TO_COPY =
+        private static readonly List<string[]> SECTION_KEYS_TO_COPY =
         [
             ["components", "schemas"],
             ["paths"]
@@ -60,9 +60,7 @@ namespace Gateway.Middlewares
                 return;
             }
 
-            var reader = new OpenApiStringReader();
-
-            var openApiDoc = reader.Read(resultDocument, out var diagnostic);
+            var openApiDoc = new OpenApiStringReader().Read(resultDocument, out var diagnostic);
             if (diagnostic.Errors.Count > 0)
             {
                 var concatedErrors = string.Join("\r\n", diagnostic.Errors.Select(e => e.Message));
@@ -111,41 +109,35 @@ namespace Gateway.Middlewares
                 return null;
             }
 
-            JsonObject resultJson = InitialOpenApiJsonObjectFactory();
+            (var resultJson, var resultJsonSectionsDict) = InitialOpenApiJsonObjectFactory();
 
             foreach (var uriAndJson in filteredDocuments)
             {
-                try
+                foreach (var key in SECTION_KEYS_TO_COPY)
                 {
-                    foreach (var key in SECTION_KEYS_TO_COPY)
+                    var targetSection = resultJsonSectionsDict[key];
+                    var sourceSection = GetSectionWithKeys(uriAndJson.openApiDocumentJson, key);
+
+                    if (sourceSection == null)
                     {
-                        var targetSection = GetSectionWithKeys(resultJson, key) ?? throw new Exception($"Couldn't get section from result json with key {string.Join(':', key)}");
-                        var sourceSection = GetSectionWithKeys(uriAndJson.openApiDocumentJson, key);
-
-                        if (sourceSection == null)
-                        {
-                            _logger.LogWarning("Couldn't get section from target json with key {key}; Uri:{uri}", string.Join(':', key), uriAndJson.uri);
-                            continue;
-                        }
-
-                        foreach (var component in sourceSection.ToArray())
-                        {
-                            sourceSection.Remove(component.Key);
-                            targetSection.Add(component);
-                        }
+                        _logger.LogWarning("Couldn't get section from source json with key \'{key}\'; Uri:{uri}", string.Join(':', key), uriAndJson.uri);
+                        continue;
                     }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, ex.Message);
+
+                    foreach (var component in sourceSection.ToArray())
+                    {
+                        sourceSection.Remove(component.Key);
+                        targetSection.Add(component);
+                    }
                 }
             }
 
             return resultJson.ToJsonString();
         }
 
-        private static JsonObject InitialOpenApiJsonObjectFactory() =>
-            JsonObject.Parse("""
+        private static (JsonObject, Dictionary<string[], JsonObject>) InitialOpenApiJsonObjectFactory()
+        {
+            var resultJson = JsonObject.Parse("""
                 {
                     "openapi": "3.0.4",
                     "info": {
@@ -158,6 +150,15 @@ namespace Gateway.Middlewares
                     }
                 }
                 """)?.AsObject()!;
+
+            var resultJsonSectionsDict = SECTION_KEYS_TO_COPY.Select(s =>
+            {
+                var targetSection = GetSectionWithKeys(resultJson, s) ?? throw new InvalidOperationException();
+                return new KeyValuePair<string[], JsonObject>(s, targetSection);
+            }).ToDictionary();
+
+            return (resultJson, resultJsonSectionsDict);
+        }
 
         private static JsonObject? GetSectionWithKeys(JsonObject source, string[] keys)
         {
