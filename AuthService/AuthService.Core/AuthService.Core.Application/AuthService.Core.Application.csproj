@@ -16,7 +16,8 @@
 	 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
-	  <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Contracts\Messaging.Kafka.Producer.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Response\CustomResponse.csproj" />
 	  <ProjectReference Include="..\..\..\Common\HashProvider\HashProvider.csproj" />
 	  <ProjectReference Include="..\AuthService.Core.Domain\AuthService.Core.Domain.csproj" />

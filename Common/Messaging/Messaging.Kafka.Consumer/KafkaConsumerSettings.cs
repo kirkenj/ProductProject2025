@@ -1,6 +1,6 @@
 ﻿namespace Messaging.Kafka.Consumer
 {
-    public class KafkaConsumerSettings : KafkaSettings
+    public class KafkaConsumerSettings
     {
         public string GroupId { get; set; } = string.Empty;
     }

@@ -2,12 +2,14 @@
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Application.Features.User.DTOs;
+using AuthService.Core.Application.Models.User.Settings;
 using AutoMapper;
 using Cache.Contracts;
 using CustomResponse;
-using EmailSender.Contracts;
 using HashProvider.Contracts;
 using MediatR;
+using Messaging.Kafka.Producer.Contracts;
+using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.Core.Application.Features.User.Login
@@ -17,19 +19,23 @@ namespace AuthService.Core.Application.Features.User.Login
         private readonly IUserRepository _userRepository;
         private readonly IHashProvider _hashProvider;
         private readonly IMapper _mapper;
-        private readonly IEmailSender _emailSender;
         private readonly ICustomMemoryCache _memoryCache;
+        private readonly IKafkaProducer<AccountConfirmed> _accountConfirmedProducer;
         private readonly CreateUserSettings _createUserSettings;
-        private readonly IRoleRepository _roleRepository;
-
-        public LoginHandler(IUserRepository userRepository, IRoleRepository roleRepository, IHashProvider hashProvider, IMapper mapper, ICustomMemoryCache memoryCache, IEmailSender emailSender, IOptions<CreateUserSettings> createUserSettings)
+        
+        public LoginHandler(IUserRepository userRepository, 
+            IRoleRepository roleRepository, 
+            IHashProvider hashProvider, 
+            IMapper mapper, 
+            ICustomMemoryCache memoryCache, 
+            IKafkaProducer<AccountConfirmed> accountConfirmedProducer,
+            IOptions<CreateUserSettings> createUserSettings)
         {
             _userRepository = userRepository;
             _hashProvider = hashProvider;
-            _roleRepository = roleRepository;
             _mapper = mapper;
-            _emailSender = emailSender;
             _memoryCache = memoryCache;
+            _accountConfirmedProducer = accountConfirmedProducer;
             _createUserSettings = createUserSettings.Value;
         }
 
@@ -61,7 +67,7 @@ namespace AuthService.Core.Application.Features.User.Login
 
             if (isRegistration == true)
             {
-                await RegisterUser(userToHandle);
+                await RegisterUser(userToHandle, cancellationToken);
                 await _memoryCache.RemoveAsync(cacheKey);
             }
 
@@ -70,23 +76,11 @@ namespace AuthService.Core.Application.Features.User.Login
             return Response<UserDto>.OkResponse(userDto, "Success");
         }
 
-        private async Task RegisterUser(Domain.Models.User userToHandle)
+        private async Task RegisterUser(Domain.Models.User userToHandle, CancellationToken cancellationToken)
         {
             await _userRepository.AddAsync(userToHandle);
 
-            var isEmailSent = await _emailSender.SendEmailAsync(new()
-            {
-                To = userToHandle.Email ?? throw new ApplicationException($"User email is null, Id = {userToHandle.Id}, userFromCache = {true}"),
-                Subject = "First login",
-                Body = "Account confirmed"
-            });
-
-            if (isEmailSent == false)
-            {
-                throw new ApplicationException("Couldn't send email");
-            }
-
-            userToHandle.Role = await _roleRepository.GetAsync(userToHandle.RoleID) ?? throw new Exception("Role not found while adding user to context");
+            await _accountConfirmedProducer.ProduceAsync(new() { UserId = userToHandle.Id }, cancellationToken);            
         }
     }
 }

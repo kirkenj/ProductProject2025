@@ -1,22 +1,20 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
 using CustomResponse;
-using HashProvider.Contracts;
 using MediatR;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler
 {
-    public class UpdateUserPasswordComandHandler : IRequestHandler<UpdateUserPasswordComand, Response<string>>, IPasswordSettingHandler
+    public class UpdateUserPasswordComandHandler : IRequestHandler<UpdateUserPasswordComand, Response<string>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordSetter _passwordSetter;
 
-        public UpdateUserPasswordComandHandler(IUserRepository userRepository, IHashProvider hashProvider)
+        public UpdateUserPasswordComandHandler(IUserRepository userRepository, IPasswordSetter passwordSetter)
         {
             _userRepository = userRepository;
-            HashPrvider = hashProvider;
+            _passwordSetter = passwordSetter;
         }
-
-        public IHashProvider HashPrvider { get; private set; }
 
         public async Task<Response<string>> Handle(UpdateUserPasswordComand request, CancellationToken cancellationToken)
         {
@@ -27,7 +25,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHan
                 return Response<string>.NotFoundResponse(nameof(user.Id), true);
             }
 
-            (this as IPasswordSettingHandler).SetPassword(request.Password, user);
+            _passwordSetter.SetPassword(request.Password, user);
 
             await _userRepository.UpdateAsync(user);
 

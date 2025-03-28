@@ -3,6 +3,7 @@ using Application.Models.User;
 using AuthAPI.ActionFIlters;
 using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.Contracts;
+using AuthService.API.AuthAPI.Models.Requests;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
 using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;
@@ -98,22 +99,23 @@ namespace AuthService.API.AuthAPI.Controllers
         [HttpPost("{id}/Email/Confirm")]
         [Authorize]
         [Produces("text/plain")]
-        public async Task<ActionResult<string>> ConfirmEmailUpdate(Guid id, [FromBody][EmailAddress] string confirmToken)
+        public async Task<ActionResult<string>> ConfirmEmailUpdate(ConfirmEmailChangeAdmin confirmEmailChangeAdmin)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && id != User.GetUserId())
+            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && confirmEmailChangeAdmin.UserId != User.GetUserId())
             {
                 return Forbid();
             }
 
             Response<string> result = await _mediator.Send(new ConfirmEmailChangeComand
             {
-                Id = id,
-                Token = confirmToken
+                Id = confirmEmailChangeAdmin.UserId,
+                OtpToNewEmail = confirmEmailChangeAdmin.OtpToNewEmail,
+                OtpToOldEmail = confirmEmailChangeAdmin.OtpToOldEmail
             });
 
             if (result.Success)
             {
-                await _tokenTracker.InvalidateUser(id, DateTime.UtcNow);
+                await _tokenTracker.InvalidateUser(confirmEmailChangeAdmin.UserId, DateTime.UtcNow);
             }
 
             return result.GetActionResult();

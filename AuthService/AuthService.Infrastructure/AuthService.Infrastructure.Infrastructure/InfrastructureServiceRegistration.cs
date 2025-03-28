@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using AuthService.Core.Application.Contracts.Infrastructure;
+using AuthService.Infrastructure.Infrastructure.Producers;
 using Cache.Contracts;
 using Cache.Models;
 using EmailSender.Contracts;
@@ -61,6 +62,8 @@ namespace AuthService.Infrastructure.Infrastructure
 
             services.AddTransient<IHashProvider, HashProvider.Models.HashProvider>();
             services.AddTransient<IPasswordGenerator, PasswordGenerator.PasswordGenerator>();
+
+            services.RegisterProdusers(configuration);
 
             return services;
         }

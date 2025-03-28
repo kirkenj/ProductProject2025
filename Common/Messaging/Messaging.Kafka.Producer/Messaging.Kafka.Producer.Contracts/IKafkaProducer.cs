@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace Messaging.Kafka.Producer
+namespace Messaging.Kafka.Producer.Contracts
 {
     public interface IKafkaProducer<TMessage> : IDisposable
     {

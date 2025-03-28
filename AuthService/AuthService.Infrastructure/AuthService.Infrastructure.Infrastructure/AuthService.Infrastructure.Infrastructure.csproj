@@ -10,6 +10,7 @@
 	  <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.csproj" />
 	  <ProjectReference Include="..\..\..\Common\HashProvider\HashProvider.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Models\Messaging.Kafka.Producer.Models.csproj" />
 	  <ProjectReference Include="..\..\AuthService.Core\AuthService.Core.Application\AuthService.Core.Application.csproj" />
 	</ItemGroup>
 </Project>

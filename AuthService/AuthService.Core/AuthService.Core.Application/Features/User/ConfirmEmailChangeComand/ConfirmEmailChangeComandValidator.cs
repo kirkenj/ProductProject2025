@@ -9,7 +9,8 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
         public ConfirmEmailChangeComandValidator(IUserRepository userRepository)
         {
             Include(new IIdDtoValidator<Guid>());
-            RuleFor(u => u.Token).NotEmpty().NotNull();
+            RuleFor(u => u.OtpToNewEmail).NotEmpty().NotNull();
+            RuleFor(u => u.OtpToOldEmail).NotEmpty().NotNull();
         }
     }
 }

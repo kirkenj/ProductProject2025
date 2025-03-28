@@ -1,11 +1,11 @@
-﻿using Application.Models.User;
-using AuthService.Core.Application.Contracts.Infrastructure;
+﻿using AuthService.Core.Application.Contracts.Infrastructure;
 using AuthService.Core.Application.Contracts.Persistence;
+using AuthService.Core.Application.Models.User.Settings;
 using Cache.Contracts;
 using CustomResponse;
-using EmailSender.Contracts;
-using EmailSender.Models;
 using MediatR;
+using Messaging.Kafka.Producer.Contracts;
+using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand
@@ -13,15 +13,15 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
     public class SendTokenToUpdateUserEmailComandHandler : IRequestHandler<SendTokenToUpdateUserEmailRequest, Response<string>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IEmailSender _emailSender;
+        private readonly IKafkaProducer<ChangeEmailRequest> _changeEmailRequestCreatedProducer;
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly ICustomMemoryCache _memoryCache;
         private readonly UpdateUserEmailSettings _updateUserEmailSettings;
 
-        public SendTokenToUpdateUserEmailComandHandler(IUserRepository userRepository, ICustomMemoryCache memoryCache, IEmailSender emailSender, IPasswordGenerator passwordGenerator, IOptions<UpdateUserEmailSettings> options)
+        public SendTokenToUpdateUserEmailComandHandler(IUserRepository userRepository, ICustomMemoryCache memoryCache, IPasswordGenerator passwordGenerator, IOptions<UpdateUserEmailSettings> options, IKafkaProducer<ChangeEmailRequest> changeEmailRequestCreatedProducer)
         {
             _userRepository = userRepository;
-            _emailSender = emailSender;
+            _changeEmailRequestCreatedProducer = changeEmailRequestCreatedProducer;
             _passwordGenerator = passwordGenerator;
             _memoryCache = memoryCache;
             _updateUserEmailSettings = options.Value ?? throw new ArgumentNullException(nameof(options));
@@ -36,31 +36,20 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
                 return Response<string>.NotFoundResponse(nameof(user.Id), true);
             }
 
-            await _emailSender.SendEmailAsync(new Email
+            var changeEmailRequest = new ChangeEmailRequest
             {
-                To = user.Email ?? throw new ApplicationException(),
-                Body = $"Dear {user.Name}. Your email is being updated.",
-                Subject = "Email is being updated",
-            });
-
-            string token = _passwordGenerator.Generate();
-
-            bool isEmailSent = await _emailSender.SendEmailAsync(new Email
-            {
-                To = request.Email,
-                Subject = "Change email confirmation",
-                Body = string.Format(_updateUserEmailSettings.UpdateUserEmailMessageBodyFormat, token)
-            });
-
-            if (isEmailSent == false)
-            {
-                throw new ApplicationException("Email was not sent");
-            }
+                OtpToNewEmail = _passwordGenerator.Generate(),
+                UserId = user.Id,
+                NewEmail = request.Email,
+                OtpToOldEmail = _passwordGenerator.Generate()
+            };
 
             await _memoryCache.SetAsync(
-                string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, token),
-                request,
+                string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, user.Id),
+                changeEmailRequest,
                 TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours));
+            
+            await _changeEmailRequestCreatedProducer.ProduceAsync(changeEmailRequest, cancellationToken);
 
             return Response<string>.OkResponse("Check emails to get further details", string.Empty);
         }

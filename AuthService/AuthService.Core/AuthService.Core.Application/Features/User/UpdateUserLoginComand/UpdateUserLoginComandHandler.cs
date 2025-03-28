@@ -1,23 +1,18 @@
 ﻿using Application.Models.User;
-using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
 using CustomResponse;
-using HashProvider.Contracts;
 using MediatR;
 
 namespace AuthService.Core.Application.Features.User.UpdateUserLoginComand
 {
-    public class UpdateUserLoginComandHandler : IRequestHandler<UpdateUserLoginComand, Response<string>>, IPasswordSettingHandler
+    public class UpdateUserLoginComandHandler : IRequestHandler<UpdateUserLoginComand, Response<string>>
     {
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserLoginComandHandler(IUserRepository userRepository, IHashProvider hashProvider)
+        public UpdateUserLoginComandHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            HashPrvider = hashProvider;
         }
-
-        public IHashProvider HashPrvider { get; private set; }
 
         public async Task<Response<string>> Handle(UpdateUserLoginComand request, CancellationToken cancellationToken)
         {

@@ -1,36 +1,39 @@
-﻿using Application.Models.User;
-using AuthService.Core.Application.Contracts.Application;
+﻿using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Infrastructure;
+using AuthService.Core.Application.Models.User.Settings;
 using AutoMapper;
 using Cache.Contracts;
 using CustomResponse;
-using EmailSender.Contracts;
-using EmailSender.Models;
-using HashProvider.Contracts;
 using MediatR;
+using Messaging.Kafka.Producer.Contracts;
+using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.Core.Application.Features.User.CreateUserComand
 {
-    public class CreateUserComandHandler : IRequestHandler<CreateUserCommand, Response<Guid>>, IPasswordSettingHandler
+    public class CreateUserComandHandler : IRequestHandler<CreateUserCommand, Response<Guid>>
     {
+        private readonly IPasswordSetter _passwordSetter;
         private readonly CreateUserSettings _createUserSettings;
         private readonly ICustomMemoryCache _memoryCache;
         private readonly IPasswordGenerator _passwordGenerator;
-        private readonly IEmailSender _emailSender;
+        private readonly IKafkaProducer<UserRegistrationRequestCreated> _userRegistrationRequestCreatedKafkaProducer;
         private readonly IMapper _mapper;
 
-        public CreateUserComandHandler(IOptions<CreateUserSettings> createUserSettings, IMapper mapper, IHashProvider passwordSetter, IPasswordGenerator passwordGenerator, IEmailSender emailSender, ICustomMemoryCache memoryCache)
+        public CreateUserComandHandler(IOptions<CreateUserSettings> createUserSettings,
+            IMapper mapper,
+            IPasswordGenerator passwordGenerator,
+            ICustomMemoryCache memoryCache,
+            IKafkaProducer<UserRegistrationRequestCreated> kafkaProducer,
+            IPasswordSetter passwordSetter)
         {
             _createUserSettings = createUserSettings.Value;
             _passwordGenerator = passwordGenerator;
-            HashPrvider = passwordSetter;
+            _passwordSetter = passwordSetter;
             _memoryCache = memoryCache;
-            _emailSender = emailSender;
+            _userRegistrationRequestCreatedKafkaProducer = kafkaProducer;
             _mapper = mapper;
         }
-
-        public IHashProvider HashPrvider { get; private set; }
 
         public async Task<Response<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -42,21 +45,15 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
 
             string password = _passwordGenerator.Generate();
 
-            (this as IPasswordSettingHandler).SetPassword(password, user);
+            _passwordSetter.SetPassword(password, user);
 
             await _memoryCache.SetAsync(string.Format(_createUserSettings.KeyForRegistrationCachingFormat, user.Email), user, TimeSpan.FromHours(_createUserSettings.EmailConfirmationTimeoutHours));
 
-            bool isEmailSent = await _emailSender.SendEmailAsync(new Email
+            await _userRegistrationRequestCreatedKafkaProducer.ProduceAsync(new()
             {
-                Subject = "Registration",
-                Body = string.Format(_createUserSettings.BodyMessageFormat, user.Email, password),
-                To = user.Email
-            });
-
-            if (isEmailSent == false)
-            {
-                throw new ApplicationException("User request created, but email was not sent");
-            }
+                Email = user.Email,
+                Password = password,
+            }, cancellationToken);
 
             return Response<Guid>.OkResponse(user.Id, $"Created user registration request. Further details sent on email");
         }

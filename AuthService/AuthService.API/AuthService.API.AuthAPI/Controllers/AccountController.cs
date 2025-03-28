@@ -1,5 +1,6 @@
 ﻿using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.Contracts;
+using AuthService.API.AuthAPI.Models.Requests;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
 using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;
@@ -104,14 +105,14 @@ namespace AuthService.API.AuthAPI.Controllers
 
         [HttpPost("Email/Confirm")]
         [Produces("text/plain")]
-        public async Task<ActionResult<string>> ConfirmEmailUpdate([FromBody] string confirmationToken)
+        public async Task<ActionResult<string>> ConfirmEmailUpdate([FromBody] ConfirmEmailChange confirmEmailChange)
         {
-            var userId = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id");
-
+            Guid userId = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id");
             Response<string> result = await _mediator.Send(new ConfirmEmailChangeComand
             {
                 Id = userId,
-                Token = confirmationToken
+                OtpToNewEmail = confirmEmailChange.OtpToNewEmail,
+                OtpToOldEmail = confirmEmailChange.OtpToOldEmail,   
             });
 
             if (result.Success)

@@ -2,11 +2,11 @@
 
 namespace NotificationService.Core.Application.Features.Notificatioin.UserRegistrationRequestCreated
 {
-    public class UserRegistrationRequestCreatedHandler : IRequestHandler<UserRegistrationRequestCreatedCommand>
+    public class UserRegistrationRequestCreatedCommandHandler : IRequestHandler<UserRegistrationRequestCreatedCommand>
     {
         public Task Handle(UserRegistrationRequestCreatedCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,29 +1,30 @@
 ﻿using Confluent.Kafka;
-using Microsoft.Extensions.Options;
+using Messaging.Kafka.Producer.Contracts;
 
-namespace Messaging.Kafka.Producer
+namespace Messaging.Kafka.Producer.Models
 {
     public class KafkaProducer<TMessage> : IKafkaProducer<TMessage>
     {
         private readonly IProducer<string, TMessage> _producer;
-        private readonly string? _topic;
+        private static string Topic => typeof(TMessage).FullName!;
 
-        public KafkaProducer(IOptions<KafkaSettings> options)
+        public KafkaProducer(KafkaSettings options)
         {
             var config = new ProducerConfig
             {
-                BootstrapServers = options.Value.BootStrapServers,
+                BootstrapServers = options.BootStrapServers,
                 Acks = Acks.All
             };
 
             _producer = new ProducerBuilder<string, TMessage>(config)
                 .SetValueSerializer(new KafkaJsonSerializer<TMessage>())
                 .Build();
-        
-            _topic = typeof(TMessage).FullName;
         }
 
-        public void Dispose() => _producer.Dispose();
+        public void Dispose()
+        {
+            _producer.Dispose();
+        }
 
         public async Task<DeliveryResult<string, TMessage>> ProduceAsync(TMessage message, CancellationToken cancellationToken)
         {
@@ -33,7 +34,7 @@ namespace Messaging.Kafka.Producer
                 Value = message
             };
 
-            return await _producer.ProduceAsync(_topic, messageToPush, cancellationToken);
+            return await _producer.ProduceAsync(Topic, messageToPush, cancellationToken);
         }
     }
 }

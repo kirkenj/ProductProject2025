@@ -1,15 +1,18 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Domain.Models;
+using Cache.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Repository.Models;
 
 namespace AuthService.Infrastructure.Persistence.Repositories
 {
-    public class UserRepository : GenericFiltrableRepository<User, Guid, UserFilter>, IUserRepository
+    public class UserRepository : GenericFiltrableCachingRepository<User, Guid, UserFilter>, IUserRepository
     {
-        public UserRepository(AuthDbContext dbContext) : base(dbContext, GetFilteredSet)
+        public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<GenericCachingRepository<User, Guid>> logger) : base(dbContext, memoryCache, logger, GetFilteredSet)
         {
+            this.СacheTimeoutMiliseconds = 5000;
         }
 
         private static IQueryable<User> GetFilteredSet(IQueryable<User> set, UserFilter filter)
