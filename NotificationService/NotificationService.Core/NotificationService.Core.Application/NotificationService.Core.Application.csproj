@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\Clients\Clients.AuthServiceClient\Clients.AuthServiceClient.csproj" />
+	  <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.Contracts\EmailSender.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.ProductService\Messaging.Messages.ProductService.csproj" />

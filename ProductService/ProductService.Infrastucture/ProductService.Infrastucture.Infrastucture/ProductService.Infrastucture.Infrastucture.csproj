@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cache\Cache.csproj" />
-    <ProjectReference Include="..\..\..\Common\Clients\AuthClientService\AuthClientService.csproj" />
+    <ProjectReference Include="..\..\..\Common\Clients\Clients.AuthServiceClient\Clients.AuthServiceClient.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\..\..\Common\HttpDelegatingHandlers\HttpDelegatingHandlers.csproj" />
     <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Models\Messaging.Kafka.Producer.Models.csproj" />

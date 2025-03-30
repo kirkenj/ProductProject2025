@@ -1,17 +1,21 @@
 using NotificationService.Api.Consumers;
 using NotificationService.Core.Application;
+using NotificationService.Infrastucture.Infrastucture;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddHttpClient();
 builder.Services.RegisterConsumers(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
+builder.Services.RegisterInfrastructureService(builder.Configuration);
 
 var app = builder.Build();
 
@@ -21,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 

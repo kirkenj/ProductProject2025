@@ -1,6 +1,6 @@
 ﻿namespace EmailSender.Services
 {
-    public class EmailSenderSettings
+    public class SmtpEmailSenderSettings
     {
         public string FromName { get; set; } = null!;
         public string ApiAdress { get; set; } = null!;

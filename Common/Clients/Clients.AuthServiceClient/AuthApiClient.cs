@@ -25,192 +25,183 @@ namespace Clients.AuthApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IAuthApiClient
     {
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> AccountGETAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> AccountGETAsync(System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> AccountPUTAsync(UpdateUserModel body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> AccountPUTAsync(UpdateUserModel body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> PasswordAsync(string body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> PasswordAsync(string body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> LoginPUTAsync(string newLogin);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> LoginPUTAsync(string newLogin, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> EmailAsync(string body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> EmailAsync(string body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> ConfirmAsync(string body);
+        System.Threading.Tasks.Task<string> ConfirmAsync(ConfirmEmailChange body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> ConfirmAsync(string body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> ConfirmAsync(ConfirmEmailChange body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> RegisterAsync(CreateUserDto body);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> RegisterAsync(CreateUserDto body, System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginDto body);
+        System.Threading.Tasks.Task<string> RegisterAsync(CreateUserCommand body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginDto body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> RegisterAsync(CreateUserCommand body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
+        /// <exception cref="AuthApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginRequest body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="AuthApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginRequest body, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> ForgotPasswordAsync(string body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> ForgotPasswordAsync(string body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RoleDto>> RolesAllAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RoleDto>> RolesAllAsync(System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RoleDto> RolesAsync(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RoleDto> RolesAsync(int id, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsValidAsync(string tokenHash);
+        System.Threading.Tasks.Task<bool> IsValidAsync(string body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsValidAsync(string tokenHash, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<bool> IsValidAsync(string body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task TerminateSessionsAsync(System.Guid? userId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task TerminateSessionsAsync(System.Guid? userId, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<HashProviderSettings> HashProviderSettingsAsync();
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<HashProviderSettings> HashProviderSettingsAsync(System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> ListAsync(System.Collections.Generic.IEnumerable<System.Guid> ids, string accurateLogin, string loginPart, string accurateEmail, string emailPart, string address, string name, System.Collections.Generic.IEnumerable<int> roleIds, int? page, int? pageSize);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> ListAsync(System.Collections.Generic.IEnumerable<System.Guid> ids, string accurateLogin, string loginPart, string accurateEmail, string emailPart, string address, string name, System.Collections.Generic.IEnumerable<int> roleIds, int? page, int? pageSize, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> UsersGETAsync(System.Guid id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> UsersGETAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> UsersPUTAsync(System.Guid id, UpdateUserModel body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> UsersPUTAsync(System.Guid id, UpdateUserModel body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> Email2Async(System.Guid id, string body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> Email2Async(System.Guid id, string body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> Confirm2Async(System.Guid id, string body);
+        System.Threading.Tasks.Task<string> Confirm2Async(string id, ConfirmEmailChangeAdmin body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> Confirm2Async(System.Guid id, string body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> Confirm2Async(string id, ConfirmEmailChangeAdmin body, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> LoginPUT2Async(System.Guid id, string newLogin);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> LoginPUT2Async(System.Guid id, string newLogin, System.Threading.CancellationToken cancellationToken);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> RoleAsync(System.Guid id, int? roleId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> RoleAsync(System.Guid id, int? roleId, System.Threading.CancellationToken cancellationToken);
 
@@ -264,7 +255,7 @@ namespace Clients.AuthApi
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<UserDto> AccountGETAsync()
         {
@@ -272,7 +263,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> AccountGETAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -287,8 +278,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account"
-                    urlBuilder_.Append("api/Account");
+                    // Operation Path: "AuthApi/Account"
+                    urlBuilder_.Append("AuthApi/Account");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -342,7 +333,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> AccountPUTAsync(UpdateUserModel body)
         {
@@ -350,7 +341,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> AccountPUTAsync(UpdateUserModel body, System.Threading.CancellationToken cancellationToken)
         {
@@ -369,8 +360,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account"
-                    urlBuilder_.Append("api/Account");
+                    // Operation Path: "AuthApi/Account"
+                    urlBuilder_.Append("AuthApi/Account");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -421,7 +412,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> PasswordAsync(string body)
         {
@@ -429,7 +420,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> PasswordAsync(string body, System.Threading.CancellationToken cancellationToken)
         {
@@ -448,8 +439,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account/Password"
-                    urlBuilder_.Append("api/Account/Password");
+                    // Operation Path: "AuthApi/Account/Password"
+                    urlBuilder_.Append("AuthApi/Account/Password");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -500,7 +491,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> LoginPUTAsync(string newLogin)
         {
@@ -508,7 +499,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> LoginPUTAsync(string newLogin, System.Threading.CancellationToken cancellationToken)
         {
@@ -524,8 +515,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account/Login"
-                    urlBuilder_.Append("api/Account/Login");
+                    // Operation Path: "AuthApi/Account/Login"
+                    urlBuilder_.Append("AuthApi/Account/Login");
                     urlBuilder_.Append('?');
                     if (newLogin != null)
                     {
@@ -582,7 +573,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> EmailAsync(string body)
         {
@@ -590,7 +581,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> EmailAsync(string body, System.Threading.CancellationToken cancellationToken)
         {
@@ -609,8 +600,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account/Email"
-                    urlBuilder_.Append("api/Account/Email");
+                    // Operation Path: "AuthApi/Account/Email"
+                    urlBuilder_.Append("AuthApi/Account/Email");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -661,17 +652,17 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<string> ConfirmAsync(string body)
+        public virtual System.Threading.Tasks.Task<string> ConfirmAsync(ConfirmEmailChange body)
         {
             return ConfirmAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<string> ConfirmAsync(string body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<string> ConfirmAsync(ConfirmEmailChange body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -688,8 +679,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Account/Email/Confirm"
-                    urlBuilder_.Append("api/Account/Email/Confirm");
+                    // Operation Path: "AuthApi/Account/Email/Confirm"
+                    urlBuilder_.Append("AuthApi/Account/Email/Confirm");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -740,17 +731,17 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<string> RegisterAsync(CreateUserDto body)
+        public virtual System.Threading.Tasks.Task<string> RegisterAsync(CreateUserCommand body)
         {
             return RegisterAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<string> RegisterAsync(CreateUserDto body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<string> RegisterAsync(CreateUserCommand body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -767,8 +758,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Auth/Register"
-                    urlBuilder_.Append("api/Auth/Register");
+                    // Operation Path: "AuthApi/Auth/Register"
+                    urlBuilder_.Append("AuthApi/Auth/Register");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -819,17 +810,17 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginDto body)
+        public virtual System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginRequest body)
         {
             return LoginPOSTAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginDto body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoginResultModel> LoginPOSTAsync(LoginRequest body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -846,8 +837,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Auth/Login"
-                    urlBuilder_.Append("api/Auth/Login");
+                    // Operation Path: "AuthApi/Auth/Login"
+                    urlBuilder_.Append("AuthApi/Auth/Login");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -901,7 +892,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> ForgotPasswordAsync(string body)
         {
@@ -909,7 +900,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> ForgotPasswordAsync(string body, System.Threading.CancellationToken cancellationToken)
         {
@@ -928,8 +919,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Auth/ForgotPassword"
-                    urlBuilder_.Append("api/Auth/ForgotPassword");
+                    // Operation Path: "AuthApi/Auth/ForgotPassword"
+                    urlBuilder_.Append("AuthApi/Auth/ForgotPassword");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -980,7 +971,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RoleDto>> RolesAllAsync()
         {
@@ -988,7 +979,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RoleDto>> RolesAllAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -1003,8 +994,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Roles"
-                    urlBuilder_.Append("api/Roles");
+                    // Operation Path: "AuthApi/Roles"
+                    urlBuilder_.Append("AuthApi/Roles");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1058,7 +1049,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<RoleDto> RolesAsync(int id)
         {
@@ -1066,7 +1057,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RoleDto> RolesAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
@@ -1084,8 +1075,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Roles/{id}"
-                    urlBuilder_.Append("api/Roles/");
+                    // Operation Path: "AuthApi/Roles/{id}"
+                    urlBuilder_.Append("AuthApi/Roles/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -1140,17 +1131,17 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<bool> IsValidAsync(string tokenHash)
+        public virtual System.Threading.Tasks.Task<bool> IsValidAsync(string body)
         {
-            return IsValidAsync(tokenHash, System.Threading.CancellationToken.None);
+            return IsValidAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<bool> IsValidAsync(string tokenHash, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<bool> IsValidAsync(string body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1158,19 +1149,17 @@ namespace Clients.AuthApi
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Tokens/IsValid"
-                    urlBuilder_.Append("api/Tokens/IsValid");
-                    urlBuilder_.Append('?');
-                    if (tokenHash != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("tokenHash")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(tokenHash, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
+                    // Operation Path: "AuthApi/Tokens/IsValid"
+                    urlBuilder_.Append("AuthApi/Tokens/IsValid");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1224,7 +1213,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task TerminateSessionsAsync(System.Guid? userId)
         {
@@ -1232,7 +1221,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task TerminateSessionsAsync(System.Guid? userId, System.Threading.CancellationToken cancellationToken)
         {
@@ -1247,8 +1236,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Tokens/TerminateSessions"
-                    urlBuilder_.Append("api/Tokens/TerminateSessions");
+                    // Operation Path: "AuthApi/Tokens/TerminateSessions"
+                    urlBuilder_.Append("AuthApi/Tokens/TerminateSessions");
                     urlBuilder_.Append('?');
                     if (userId != null)
                     {
@@ -1303,85 +1292,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<HashProviderSettings> HashProviderSettingsAsync()
-        {
-            return HashProviderSettingsAsync(System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<HashProviderSettings> HashProviderSettingsAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Tokens/HashProviderSettings"
-                    urlBuilder_.Append("api/Tokens/HashProviderSettings");
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<HashProviderSettings>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new AuthApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new AuthApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> ListAsync(System.Collections.Generic.IEnumerable<System.Guid> ids, string accurateLogin, string loginPart, string accurateEmail, string emailPart, string address, string name, System.Collections.Generic.IEnumerable<int> roleIds, int? page, int? pageSize)
         {
@@ -1389,7 +1300,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> ListAsync(System.Collections.Generic.IEnumerable<System.Guid> ids, string accurateLogin, string loginPart, string accurateEmail, string emailPart, string address, string name, System.Collections.Generic.IEnumerable<int> roleIds, int? page, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
@@ -1404,8 +1315,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/list"
-                    urlBuilder_.Append("api/Users/list");
+                    // Operation Path: "AuthApi/Users/list"
+                    urlBuilder_.Append("AuthApi/Users/list");
                     urlBuilder_.Append('?');
                     if (ids != null)
                     {
@@ -1501,7 +1412,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<UserDto> UsersGETAsync(System.Guid id)
         {
@@ -1509,7 +1420,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> UsersGETAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
         {
@@ -1527,8 +1438,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -1583,7 +1494,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> UsersPUTAsync(System.Guid id, UpdateUserModel body)
         {
@@ -1591,7 +1502,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> UsersPUTAsync(System.Guid id, UpdateUserModel body, System.Threading.CancellationToken cancellationToken)
         {
@@ -1613,8 +1524,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -1666,7 +1577,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> Email2Async(System.Guid id, string body)
         {
@@ -1674,7 +1585,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> Email2Async(System.Guid id, string body, System.Threading.CancellationToken cancellationToken)
         {
@@ -1696,8 +1607,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}/Email"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}/Email"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/Email");
 
@@ -1750,17 +1661,17 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<string> Confirm2Async(System.Guid id, string body)
+        public virtual System.Threading.Tasks.Task<string> Confirm2Async(string id, ConfirmEmailChangeAdmin body)
         {
             return Confirm2Async(id, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<string> Confirm2Async(System.Guid id, string body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<string> Confirm2Async(string id, ConfirmEmailChangeAdmin body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1780,8 +1691,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}/Email/Confirm"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}/Email/Confirm"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/Email/Confirm");
 
@@ -1834,7 +1745,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> LoginPUT2Async(System.Guid id, string newLogin)
         {
@@ -1842,7 +1753,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> LoginPUT2Async(System.Guid id, string newLogin, System.Threading.CancellationToken cancellationToken)
         {
@@ -1861,8 +1772,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}/Login"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}/Login"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/Login");
                     urlBuilder_.Append('?');
@@ -1921,7 +1832,7 @@ namespace Clients.AuthApi
             }
         }
 
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<string> RoleAsync(System.Guid id, int? roleId)
         {
@@ -1929,7 +1840,7 @@ namespace Clients.AuthApi
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
+        /// <returns>OK</returns>
         /// <exception cref="AuthApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<string> RoleAsync(System.Guid id, int? roleId, System.Threading.CancellationToken cancellationToken)
         {
@@ -1948,8 +1859,8 @@ namespace Clients.AuthApi
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Users/{id}/Role"
-                    urlBuilder_.Append("api/Users/");
+                    // Operation Path: "AuthApi/Users/{id}/Role"
+                    urlBuilder_.Append("AuthApi/Users/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/Role");
                     urlBuilder_.Append('?');
@@ -2118,7 +2029,34 @@ namespace Clients.AuthApi
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateUserDto
+    public partial class ConfirmEmailChange
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("otpToNewEmail")]
+        public string OtpToNewEmail { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("otpToOldEmail")]
+        public string OtpToOldEmail { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ConfirmEmailChangeAdmin
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("otpToNewEmail")]
+        public string OtpToNewEmail { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("otpToOldEmail")]
+        public string OtpToOldEmail { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("userId")]
+        public System.Guid UserId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateUserCommand
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
@@ -2133,19 +2071,7 @@ namespace Clients.AuthApi
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class HashProviderSettings
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("hashAlgorithmName")]
-        public string HashAlgorithmName { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("encodingName")]
-        public string EncodingName { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LoginDto
+    public partial class LoginRequest
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]

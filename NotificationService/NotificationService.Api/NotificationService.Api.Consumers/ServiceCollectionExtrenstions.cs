@@ -5,7 +5,6 @@ using Messaging.Messages.AuthService;
 using Messaging.Messages.ProductService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NotificationService.Core.Application.Features.Notificatioin.AuthService.AccountConfirmed;
 using NotificationService.Core.Application.Features.Notificatioin.AuthService.ChangeEmailRequest;
 using NotificationService.Core.Application.Features.Notificatioin.AuthService.ForgotPassword;
 using NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated;
@@ -25,7 +24,6 @@ namespace NotificationService.Api.Consumers
             services.AddConsumer<UserRegistrationRequestCreated, UserRegistrationRequestCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
             services.AddConsumer<ForgotPassword, ForgotPasswordCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
             services.AddConsumer<ChangeEmailRequest, ChangeEmailRequestCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
-            services.AddConsumer<AccountConfirmed, AccountConfirmedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
 
             services.AddConsumer<ProductDeleted, ProductDeletedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
             services.AddConsumer<ProductCreated, ProductCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);

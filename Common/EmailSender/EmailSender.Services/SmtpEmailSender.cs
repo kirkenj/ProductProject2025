@@ -7,16 +7,16 @@ using MimeKit;
 
 namespace EmailSender.Services
 {
-    public class EmailSender : IEmailSender
+    public class SmtpEmailSender : IEmailSender
     {
-        private EmailSenderSettings Settings { get; }
-        private ILogger<EmailSender> Logger { get; }
+        private SmtpEmailSenderSettings Settings { get; }
+        private ILogger<SmtpEmailSender> Logger { get; }
 
-        public EmailSender(IOptions<EmailSenderSettings> emailSettings, ILogger<EmailSender> logger) : this(emailSettings.Value, logger)
+        public SmtpEmailSender(IOptions<SmtpEmailSenderSettings> emailSettings, ILogger<SmtpEmailSender> logger) : this(emailSettings.Value, logger)
         {
         }
 
-        public EmailSender(EmailSenderSettings emailSettings, ILogger<EmailSender> logger)
+        public SmtpEmailSender(SmtpEmailSenderSettings emailSettings, ILogger<SmtpEmailSender> logger)
         {
             Settings = emailSettings;
             Logger = logger;
