@@ -15,7 +15,7 @@ namespace AuthService.API.AuthAPI.Services
 
         public JwtProviderService(IOptions<JwtSettings> options)
         {
-            ArgumentNullException.ThrowIfNull(options!.Value);   
+            ArgumentNullException.ThrowIfNull(options!.Value);
             _jwtSettings = options.Value;
         }
 

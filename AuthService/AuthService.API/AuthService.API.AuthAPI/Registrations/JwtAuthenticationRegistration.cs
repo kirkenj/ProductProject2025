@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using AuthService.API.AuthAPI.Models.Jwt;
 using Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

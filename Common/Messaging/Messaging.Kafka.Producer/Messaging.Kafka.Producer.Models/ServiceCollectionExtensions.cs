@@ -11,7 +11,7 @@ namespace Messaging.Kafka.Producer.Models
         {
             var options = configuration.Get<KafkaSettings>()
                 ?? throw new ApplicationException($"Couldn't get configuration from {nameof(configuration)} for {typeof(TMessage).Name} producer");
-            services.AddSingleton<IKafkaProducer<TMessage>, KafkaProducer<TMessage>>(sp => 
+            services.AddSingleton<IKafkaProducer<TMessage>, KafkaProducer<TMessage>>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<KafkaProducer<TMessage>>>();
                 return new KafkaProducer<TMessage>(options, logger);
