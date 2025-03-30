@@ -1,20 +1,22 @@
 ﻿using EmailSender.Contracts;
+using EmailSender.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace EmailSender.Models
+namespace EmailSender.Services
 {
     public class EmailSender : IEmailSender
     {
-        private EmailSettings Settings { get; }
+        private EmailSenderSettings Settings { get; }
         private ILogger<EmailSender> Logger { get; }
 
-        public EmailSender(IOptions<EmailSettings> emailSettings, ILogger<EmailSender> logger) : this(emailSettings.Value, logger)
+        public EmailSender(IOptions<EmailSenderSettings> emailSettings, ILogger<EmailSender> logger) : this(emailSettings.Value, logger)
         {
         }
-        public EmailSender(EmailSettings emailSettings, ILogger<EmailSender> logger)
+
+        public EmailSender(EmailSenderSettings emailSettings, ILogger<EmailSender> logger)
         {
             Settings = emailSettings;
             Logger = logger;

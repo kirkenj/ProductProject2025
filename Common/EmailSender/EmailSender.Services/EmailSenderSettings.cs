@@ -1,6 +1,6 @@
-﻿namespace EmailSender.Models
+﻿namespace EmailSender.Services
 {
-    public class EmailSettings
+    public class EmailSenderSettings
     {
         public string FromName { get; set; } = null!;
         public string ApiAdress { get; set; } = null!;
