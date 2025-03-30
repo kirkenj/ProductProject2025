@@ -9,9 +9,9 @@ namespace Messaging.Kafka.Consumer
     public static class KafkaConsumerRegistrationExtension
     {
         public static IServiceCollection AddConsumer<TMessage, TCommand>(
-            this IServiceCollection services, 
-            IConfigurationSection kafkaConfigurationSection, 
-            IConfigurationSection consumerConfigurationSection) 
+            this IServiceCollection services,
+            IConfigurationSection kafkaConfigurationSection,
+            IConfigurationSection consumerConfigurationSection)
             where TCommand : IRequest
         {
             var kafkaSettings = kafkaConfigurationSection.Get<KafkaSettings>()

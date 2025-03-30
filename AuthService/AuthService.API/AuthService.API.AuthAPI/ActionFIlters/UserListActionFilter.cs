@@ -5,13 +5,13 @@ using Extensions.ClaimsPrincipalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace AuthAPI.ActionFIlters
+namespace AuthService.API.AuthAPI.ActionFIlters
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class GetUserActionFilterAttribute : Attribute, IAsyncResultFilter
     {
         public const string ADDRESS_PLACEHOLDER = "Contact administration to get this information";
-        public static RoleDto DefaultRole => new() { Id = 2, Name = ApiConstants.REGULAR_ROLE_NAME };
+        public static RoleDto DefaultRole => new() { Id = 2, Name = ApiConstants.REGULAR_AUTH_ROLE_NAME };
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
@@ -21,7 +21,7 @@ namespace AuthAPI.ActionFIlters
                 return;
             }
 
-            if (context.HttpContext.User.IsInRole(ApiConstants.ADMIN_ROLE_NAME))
+            if (context.HttpContext.User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
                 await next();
                 return;

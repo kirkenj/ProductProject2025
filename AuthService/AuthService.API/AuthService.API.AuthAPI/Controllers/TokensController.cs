@@ -28,7 +28,7 @@ namespace AuthService.API.AuthAPI.Controllers
         [HttpPost("TerminateSessions")]
         public async Task<ActionResult> InvalidateToken(Guid userId)
         {
-            if (!User.IsInRole(Constants.ApiConstants.ADMIN_ROLE_NAME) && User.GetUserId() != userId)
+            if (!User.IsInRole(Constants.ApiConstants.ADMIN_AUTH_ROLE_NAME) && User.GetUserId() != userId)
             {
                 return Forbid();
             }

@@ -40,7 +40,7 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
             await _productRepository.AddAsync(product);
 
             await _notificationProducer.ProduceAsync(new ProductCreated { ProductId = product.Id }, cancellationToken);
-            
+
             return Response<Guid>.OkResponse(product.Id, $"Product created with id {product.Id}");
         }
     }

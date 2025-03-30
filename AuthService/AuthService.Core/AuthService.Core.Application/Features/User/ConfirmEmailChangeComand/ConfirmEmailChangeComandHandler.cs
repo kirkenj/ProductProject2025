@@ -48,7 +48,7 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
             }
 
             Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.Id);
-            
+
             if (userToUpdate == null)
             {
                 return Response<string>.NotFoundResponse("User not found");
@@ -65,7 +65,7 @@ namespace AuthService.Core.Application.Features.User.ConfirmEmailChangeComand
 
             await _memoryCache.RemoveAsync(cacheKey);
 
-            await _emailChangedProducer.ProduceAsync(new UserEmailChanged { UserId = userToUpdate.Id}, cancellationToken);
+            await _emailChangedProducer.ProduceAsync(new UserEmailChanged { UserId = userToUpdate.Id }, cancellationToken);
 
             return Response<string>.OkResponse("Email updated.", string.Empty);
         }

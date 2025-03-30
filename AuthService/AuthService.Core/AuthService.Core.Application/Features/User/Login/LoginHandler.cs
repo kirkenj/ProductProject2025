@@ -16,21 +16,23 @@ namespace AuthService.Core.Application.Features.User.Login
 {
     public class LoginHandler : IRequestHandler<LoginRequest, Response<UserDto>>
     {
+        private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
         private readonly IHashProvider _hashProvider;
         private readonly IMapper _mapper;
         private readonly ICustomMemoryCache _memoryCache;
         private readonly IKafkaProducer<AccountConfirmed> _accountConfirmedProducer;
         private readonly CreateUserSettings _createUserSettings;
-        
-        public LoginHandler(IUserRepository userRepository, 
-            IRoleRepository roleRepository, 
-            IHashProvider hashProvider, 
-            IMapper mapper, 
-            ICustomMemoryCache memoryCache, 
+
+        public LoginHandler(IUserRepository userRepository,
+            IRoleRepository roleRepository,
+            IHashProvider hashProvider,
+            IMapper mapper,
+            ICustomMemoryCache memoryCache,
             IKafkaProducer<AccountConfirmed> accountConfirmedProducer,
             IOptions<CreateUserSettings> createUserSettings)
         {
+            _roleRepository = roleRepository;
             _userRepository = userRepository;
             _hashProvider = hashProvider;
             _mapper = mapper;
@@ -69,6 +71,8 @@ namespace AuthService.Core.Application.Features.User.Login
             {
                 await RegisterUser(userToHandle, cancellationToken);
                 await _memoryCache.RemoveAsync(cacheKey);
+                userToHandle.Role = await _roleRepository.GetAsync(userToHandle.RoleID) ??
+                    throw new ApplicationException($"Couldn't get role with id \'{userToHandle.RoleID}\'");
             }
 
             UserDto userDto = _mapper.Map<UserDto>(userToHandle);
@@ -80,7 +84,7 @@ namespace AuthService.Core.Application.Features.User.Login
         {
             await _userRepository.AddAsync(userToHandle);
 
-            await _accountConfirmedProducer.ProduceAsync(new() { UserId = userToHandle.Id }, cancellationToken);            
+            await _accountConfirmedProducer.ProduceAsync(new() { UserId = userToHandle.Id }, cancellationToken);
         }
     }
 }

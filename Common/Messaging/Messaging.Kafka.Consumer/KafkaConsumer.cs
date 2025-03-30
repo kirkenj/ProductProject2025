@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -25,14 +26,36 @@ namespace Messaging.Kafka.Consumer
             _mapper = mapper;
             _logger = logger;
 
+            SeedTopic(kafkaSettings).Wait();
+
             _consumer = new ConsumerBuilder<string, TMessage>(new ConsumerConfig()
             {
                 BootstrapServers = kafkaSettings.BootStrapServers,
-                GroupId = consumerSettings.GroupId, 
-                AllowAutoCreateTopics = true
+                GroupId = consumerSettings.GroupId,
             })
             .SetValueDeserializer(new KafkaJsonDeserializer<TMessage>())
             .Build();
+        }
+
+        private async Task SeedTopic(KafkaSettings kafkaSettings)
+        {
+            using var adminClient = new AdminClientBuilder(new AdminClientConfig
+            {
+                BootstrapServers = kafkaSettings.BootStrapServers,
+            }).Build();
+
+            try
+            {
+                await adminClient.CreateTopicsAsync([new TopicSpecification
+                {
+                    Name = Topic
+                }]);
+                _logger.LogInformation("Topic \'{topic}\' seeded", Topic);
+            }
+            catch (CreateTopicsException ex) when (ex.Results.All(r => !r.Error.IsError || r.Error.Reason == $"Topic '{r.Topic}' already exists."))
+            {
+                _logger.LogInformation("Topic \'{topic}\' already exists", Topic);
+            }
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -42,9 +65,9 @@ namespace Messaging.Kafka.Consumer
 
         private async Task ConsumeAsync(CancellationToken stoppingToken)
         {
-            _consumer.Subscribe(Topic);
             try
             {
+                _consumer.Subscribe(Topic);
                 _logger.LogInformation("Consume started {Topic}", Topic);
                 while (!stoppingToken.IsCancellationRequested)
                 {

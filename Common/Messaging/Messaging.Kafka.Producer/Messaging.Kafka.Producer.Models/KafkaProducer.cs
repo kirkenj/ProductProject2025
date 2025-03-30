@@ -1,14 +1,17 @@
 ﻿using Confluent.Kafka;
 using Messaging.Kafka.Producer.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Messaging.Kafka.Producer.Models
 {
     public class KafkaProducer<TMessage> : IKafkaProducer<TMessage>
     {
         private readonly IProducer<string, TMessage> _producer;
+        private readonly ILogger<KafkaProducer<TMessage>> _logger;
+
         private static string Topic => typeof(TMessage).FullName!;
 
-        public KafkaProducer(KafkaSettings options)
+        public KafkaProducer(KafkaSettings options, ILogger<KafkaProducer<TMessage>> logger)
         {
             var config = new ProducerConfig
             {
@@ -19,6 +22,7 @@ namespace Messaging.Kafka.Producer.Models
             _producer = new ProducerBuilder<string, TMessage>(config)
                 .SetValueSerializer(new KafkaJsonSerializer<TMessage>())
                 .Build();
+            _logger = logger;
         }
 
         public void Dispose()
@@ -34,6 +38,7 @@ namespace Messaging.Kafka.Producer.Models
                 Value = message
             };
 
+            _logger.LogInformation("Sending message {msg}", messageToPush);
             return await _producer.ProduceAsync(Topic, messageToPush, cancellationToken);
         }
     }

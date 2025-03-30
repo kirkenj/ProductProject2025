@@ -9,9 +9,7 @@ Console.WriteLine("Application started");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.ConfigureApiServices(builder.Configuration);
 builder.Services.ConfigurePersistenceServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment.IsDevelopment());
@@ -22,14 +20,13 @@ builder.Services.ConfigureJwtAuthentication();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(o =>
 {
-
-    o.AddPolicy("CorsPolicy",
+    o.AddPolicy(ApiConstants.CORS_POLICY_NAME,
         builder => builder.AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader()
@@ -38,26 +35,25 @@ builder.Services.AddCors(o =>
 
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy(ApiConstants.ADMIN_POLICY_NAME, policy =>
+    .AddPolicy(ApiConstants.ADMIN_AUTH_POLICY_NAME, policy =>
     {
-        policy.RequireRole(ApiConstants.ADMIN_ROLE_NAME);
+        policy.RequireRole(ApiConstants.ADMIN_AUTH_ROLE_NAME);
     });
 
 var app = builder.Build();
+
 
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure the HTTP request pipeline.
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthorization();
 
-app.UseCors("CorsPolicy");
+app.UseCors(ApiConstants.CORS_POLICY_NAME);
 
 app.MapControllers();
 

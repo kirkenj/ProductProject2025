@@ -1,9 +1,8 @@
 ﻿using System.Text;
 using System.Text.Json;
-using AuthAPI.Models.Jwt;
+using AuthService.API.AuthAPI.Models.Jwt;
 using Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.API.AuthAPI.Registrations
 {
@@ -14,16 +13,15 @@ namespace AuthService.API.AuthAPI.Registrations
         public static IServiceCollection ConfigureJwtAuthentication(this IServiceCollection services)
         {
             var settingsJson = Environment.GetEnvironmentVariable(JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME) ?? throw new CouldNotGetEnvironmentVariableException(JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME);
-            var settings = JsonSerializer.Deserialize<JwtSettings>(settingsJson) ?? throw new InvalidOperationException("Couldn't deserialize JwtSettings from environment");
+            JwtSettings settings = JsonSerializer.Deserialize<JwtSettings>(settingsJson) ?? throw new InvalidOperationException("Couldn't deserialize JwtSettings from environment");
 
-            services.Configure<JwtSettings>((configuration) =>
+            services.Configure<JwtSettings>(configuration =>
             {
-                configuration.Issuer = settings.Issuer ?? throw new ArgumentException($"JwtSettings: {nameof(settings.Issuer)}  is null");
-                configuration.Audience = settings.Audience ?? throw new ArgumentException($"JwtSettings: {nameof(settings.Audience)} is null");
-                if (settings.DurationInMinutes == default) throw new ArgumentException($"JwtSettings: {nameof(settings.DurationInMinutes)} is default");
+                configuration.Issuer = settings.Issuer;
+                configuration.Audience = settings.Audience;
                 configuration.DurationInMinutes = settings.DurationInMinutes;
-                configuration.SecurityAlgorithm = settings.SecurityAlgorithm ?? throw new ArgumentException($"JwtSettings: {nameof(settings.SecurityAlgorithm)} is null");
-                configuration.Key = settings.Key ?? throw new ArgumentException($"JwtSettings: {nameof(settings.Key)} is null");
+                configuration.SecurityAlgorithm = settings.SecurityAlgorithm;
+                configuration.Key = settings.Key;
             });
 
             services.AddAuthentication(options =>
@@ -34,17 +32,7 @@ namespace AuthService.API.AuthAPI.Registrations
             })
             .AddJwtBearer(o =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidIssuer = settings.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = settings.Audience,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Key))
-                };
+                o.TokenValidationParameters = settings.ToTokenValidationParameters();
             });
 
             return services;

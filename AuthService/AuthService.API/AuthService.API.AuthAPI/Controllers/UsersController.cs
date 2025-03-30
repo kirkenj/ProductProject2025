@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.Models.User;
-using AuthAPI.ActionFIlters;
 using AuthAPI.Models.Requests;
+using AuthService.API.AuthAPI.ActionFIlters;
 using AuthService.API.AuthAPI.Contracts;
 using AuthService.API.AuthAPI.Models.Requests;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
@@ -39,7 +39,7 @@ namespace AuthService.API.AuthAPI.Controllers
         [GetUserActionFilter]
         public async Task<ActionResult<IEnumerable<UserDto>>> Get([FromQuery] UserFilter filter, int? page, int? pageSize)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME))
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
                 filter.RoleIds = null;
                 filter.Address = null;
@@ -62,7 +62,7 @@ namespace AuthService.API.AuthAPI.Controllers
         [Produces("text/plain")]
         public async Task<ActionResult<string>> Put(Guid id, UpdateUserModel updateUserModel)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && id != User.GetUserId())
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
             }
@@ -78,11 +78,11 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpPut("{id}/Email")]
-        [Authorize(ApiConstants.ADMIN_POLICY_NAME)]
+        [Authorize(ApiConstants.ADMIN_AUTH_POLICY_NAME)]
         [Produces("text/plain")]
         public async Task<ActionResult<string>> UpdateEmail(Guid id, [FromBody][EmailAddress] string newEmail)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && id != User.GetUserId())
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
             }
@@ -101,7 +101,7 @@ namespace AuthService.API.AuthAPI.Controllers
         [Produces("text/plain")]
         public async Task<ActionResult<string>> ConfirmEmailUpdate(ConfirmEmailChangeAdmin confirmEmailChangeAdmin)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && confirmEmailChangeAdmin.UserId != User.GetUserId())
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && confirmEmailChangeAdmin.UserId != User.GetUserId())
             {
                 return Forbid();
             }
@@ -126,7 +126,7 @@ namespace AuthService.API.AuthAPI.Controllers
         [Authorize]
         public async Task<ActionResult<string>> UpdateLogin(Guid id, string newLogin)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) && id != User.GetUserId())
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
             }
@@ -146,7 +146,7 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpPut("{id}/Role")]
-        [Authorize(ApiConstants.ADMIN_POLICY_NAME)]
+        [Authorize(ApiConstants.ADMIN_AUTH_POLICY_NAME)]
         [Produces("text/plain")]
         public async Task<ActionResult<string>> UpdateRole(Guid id, int roleId)
         {

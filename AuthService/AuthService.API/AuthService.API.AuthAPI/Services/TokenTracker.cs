@@ -1,7 +1,6 @@
 ﻿using AuthAPI.Models.TokenTracker;
 using AuthService.API.AuthAPI.Contracts;
 using Cache.Contracts;
-using HashProvider.Contracts;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.API.AuthAPI.Services
@@ -10,12 +9,14 @@ namespace AuthService.API.AuthAPI.Services
     {
         private readonly TokenTrackingSettings _settings = null!;
         private readonly ICustomMemoryCache _memoryCache;
+        private readonly IJwtProviderService _jwtProviderService;
         private readonly Func<string, string> _keyGeneratingDelegate;
 
-        public TokenTracker(IOptions<TokenTrackingSettings> options, ICustomMemoryCache memoryCache, IHashProvider hashProvider)
+        public TokenTracker(IOptions<TokenTrackingSettings> options, ICustomMemoryCache memoryCache, IJwtProviderService jwtProviderService)
         {
             _settings = options.Value;
             _memoryCache = memoryCache;
+            _jwtProviderService = jwtProviderService;
             _keyGeneratingDelegate = (value) => _settings.CacheSeed + value;
         }
 
@@ -38,7 +39,7 @@ namespace AuthService.API.AuthAPI.Services
 
         public async Task<bool> IsValid(string token)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token) || !_jwtProviderService.IsTokenValid(token))
             {
                 return false;
             }

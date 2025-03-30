@@ -45,7 +45,7 @@ namespace ProductService.Api.ProductAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Guid>> Post([FromBody] CreateProductCommand createProductComand)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_ROLE_NAME))
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
                 createProductComand.ProducerId = User.GetUserId() ?? throw new ApplicationException("Couldn't get user's id");
             }
@@ -71,7 +71,7 @@ namespace ProductService.Api.ProductAPI.Controllers
                 throw new ApplicationException();
             }
 
-            if (User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) == false)
+            if (User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) == false)
             {
                 if (productRequestResult.Result.ProducerId != User.GetUserId())
                 {
@@ -113,7 +113,7 @@ namespace ProductService.Api.ProductAPI.Controllers
                 throw new ApplicationException();
             }
 
-            if (User.IsInRole(ApiConstants.ADMIN_ROLE_NAME) || productRequestResult.Result.ProducerId == User.GetUserId())
+            if (User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) || productRequestResult.Result.ProducerId == User.GetUserId())
             {
                 return (await _mediator.Send(new RemovePrductComand() { ProductId = id })).GetActionResult();
             }

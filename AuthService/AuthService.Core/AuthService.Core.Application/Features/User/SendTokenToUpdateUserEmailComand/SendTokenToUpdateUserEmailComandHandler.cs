@@ -48,7 +48,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
                 string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, user.Id),
                 changeEmailRequest,
                 TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours));
-            
+
             await _changeEmailRequestCreatedProducer.ProduceAsync(changeEmailRequest, cancellationToken);
 
             return Response<string>.OkResponse("Check emails to get further details", string.Empty);

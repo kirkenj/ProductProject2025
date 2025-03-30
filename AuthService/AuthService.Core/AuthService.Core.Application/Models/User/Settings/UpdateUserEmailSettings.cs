@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AuthService.Core.Application.Models.User.Settings
+﻿namespace AuthService.Core.Application.Models.User.Settings
 {
     public class UpdateUserEmailSettings
     {

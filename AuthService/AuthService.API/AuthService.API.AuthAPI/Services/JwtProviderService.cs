@@ -1,13 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AuthAPI.Models.Jwt;
 using AuthService.API.AuthAPI.Contracts;
+using AuthService.API.AuthAPI.Models.Jwt;
 using AuthService.Core.Application.Features.User.DTOs;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthAPI.Services
+namespace AuthService.API.AuthAPI.Services
 {
     public class JwtProviderService : IJwtProviderService
     {
@@ -15,25 +15,14 @@ namespace AuthAPI.Services
 
         public JwtProviderService(IOptions<JwtSettings> options)
         {
-            if (options == null || options.Value == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
+            ArgumentNullException.ThrowIfNull(options!.Value);   
             _jwtSettings = options.Value;
         }
 
         public string GetToken(UserDto user)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            if (user.Role == null)
-            {
-                throw new ArgumentNullException(nameof(user), "User's role object is null");
-            }
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(user.Role);
 
             var claims = new Claim[]
             {
@@ -57,6 +46,19 @@ namespace AuthAPI.Services
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+        }
+
+        public bool IsTokenValid(string token)
+        {
+            try
+            {
+                new JwtSecurityTokenHandler().ValidateToken(token, _jwtSettings.ToTokenValidationParameters(), out _);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

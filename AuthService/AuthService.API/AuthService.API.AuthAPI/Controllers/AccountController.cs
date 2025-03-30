@@ -112,7 +112,7 @@ namespace AuthService.API.AuthAPI.Controllers
             {
                 Id = userId,
                 OtpToNewEmail = confirmEmailChange.OtpToNewEmail,
-                OtpToOldEmail = confirmEmailChange.OtpToOldEmail,   
+                OtpToOldEmail = confirmEmailChange.OtpToOldEmail,
             });
 
             if (result.Success)
