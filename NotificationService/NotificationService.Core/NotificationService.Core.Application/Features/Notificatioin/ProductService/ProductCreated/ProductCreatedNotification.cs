@@ -2,7 +2,7 @@
 
 namespace NotificationService.Core.Application.Features.Notificatioin.ProductService.ProductCreated
 {
-    public class ProductCreatedCommand : Messaging.Messages.ProductService.ProductCreated, IRequest
+    public class ProductCreatedNotification : Messaging.Messages.ProductService.ProductCreated, INotification
     {
     }
 }

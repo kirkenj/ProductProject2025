@@ -4,6 +4,6 @@ namespace NotificationService.Api.NotificationApi.Contracts
 {
     public interface ISignalRNotificationService
     {
-        public Task Send(Message message, string senderName);
+        public Task Send(SignalRNotification message, Guid targetUserId);
     }
 }

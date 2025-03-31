@@ -8,11 +8,11 @@ namespace Messaging.Kafka.Consumer
 {
     public static class KafkaConsumerRegistrationExtension
     {
-        public static IServiceCollection AddConsumer<TMessage, TCommand>(
+        public static IServiceCollection AddConsumer<TMessage, TCommandOrNotification>(
             this IServiceCollection services,
             IConfigurationSection kafkaConfigurationSection,
-            IConfigurationSection consumerConfigurationSection)
-            where TCommand : IRequest
+            IConfigurationSection consumerConfigurationSection,
+            Func<IMediator, TCommandOrNotification, CancellationToken, Task> mediatorAction)
         {
             var kafkaSettings = kafkaConfigurationSection.Get<KafkaSettings>()
                 ?? throw new ApplicationException($"Couldn't get configuration from {nameof(kafkaConfigurationSection)} for {typeof(TMessage).Name} consumer");
@@ -24,8 +24,8 @@ namespace Messaging.Kafka.Consumer
             {
                 var mapper = sp.GetRequiredService<IMapper>();
                 var mediator = sp.GetRequiredService<IMediator>();
-                var logger = sp.GetRequiredService<ILogger<KafkaConsumer<TMessage, TCommand>>>();
-                return new KafkaConsumer<TMessage, TCommand>(kafkaSettings, consumerSettings, mediator, mapper, logger);
+                var logger = sp.GetRequiredService<ILogger<KafkaConsumer<TMessage, TCommandOrNotification>>>();
+                return new KafkaConsumer<TMessage, TCommandOrNotification>(kafkaSettings, consumerSettings, mediator, mapper, logger, mediatorAction);
             });
             return services;
         }

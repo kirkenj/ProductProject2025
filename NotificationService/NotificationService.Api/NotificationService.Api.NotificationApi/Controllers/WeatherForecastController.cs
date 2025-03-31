@@ -27,12 +27,11 @@ namespace NotificationService.Api.NotificationApi.Controllers
         [HttpPost]
         public async Task Callback()
         {
-            var message = new Message()
+            var message = new SignalRNotification()
             {
                 Body = "Hello world",
-                UserId = User.GetUserId() ?? throw new Exception()
             };
-            await _signalRNotificationService.Send(message, message.UserId.ToString());
+            await _signalRNotificationService.Send(message, User.GetUserId() ?? throw new Exception());
         }
     }
 }

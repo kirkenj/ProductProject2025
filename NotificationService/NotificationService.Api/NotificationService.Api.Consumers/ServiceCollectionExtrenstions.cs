@@ -21,13 +21,13 @@ namespace NotificationService.Api.Consumers
             var kafkaSettingsSection = configuration.GetSection(nameof(KafkaSettings));
             var defaultConsumerSettingsSection = configuration.GetSection(nameof(KafkaConsumerSettings));
 
-            services.AddConsumer<UserRegistrationRequestCreated, UserRegistrationRequestCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
-            services.AddConsumer<ForgotPassword, ForgotPasswordCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
-            services.AddConsumer<ChangeEmailRequest, ChangeEmailRequestCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
+            services.AddConsumer<UserRegistrationRequestCreated, UserRegistrationRequestCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsRequest);
+            services.AddConsumer<ForgotPassword, ForgotPasswordCommand>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsRequest);
+            services.AddConsumer<ChangeEmailRequest, ChangeEmailRequestCommand>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsRequest);
 
-            services.AddConsumer<ProductDeleted, ProductDeletedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
-            services.AddConsumer<ProductCreated, ProductCreatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
-            services.AddConsumer<ProductProducerUpdated, ProductProducerUpdatedCommand>(kafkaSettingsSection, defaultConsumerSettingsSection);
+            services.AddConsumer<ProductDeleted, ProductDeletedNotification>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsNotification);
+            services.AddConsumer<ProductCreated, ProductCreatedNotification>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsNotification);
+            services.AddConsumer<ProductProducerUpdated, ProductProducerUpdatedNotification>(kafkaSettingsSection, defaultConsumerSettingsSection, MediatorPublicationStrategies.AsNotification);
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;

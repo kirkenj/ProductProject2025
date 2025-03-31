@@ -7,24 +7,27 @@ using Microsoft.Extensions.Logging;
 
 namespace Messaging.Kafka.Consumer
 {
-    public class KafkaConsumer<TMessage, TCommand> : BackgroundService where TCommand : IRequest
+    public class KafkaConsumer<TMessage, TCommandOrNotification> : BackgroundService
     {
         private static string Topic => typeof(TMessage).FullName!;
 
         private readonly IConsumer<string, TMessage> _consumer;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly ILogger<KafkaConsumer<TMessage, TCommand>> _logger;
+        private readonly ILogger<KafkaConsumer<TMessage, TCommandOrNotification>> _logger;
+        private readonly Func<IMediator, TCommandOrNotification, CancellationToken, Task> _mediatorAction;
 
         public KafkaConsumer(KafkaSettings kafkaSettings,
             KafkaConsumerSettings consumerSettings,
             IMediator mediator,
             IMapper mapper,
-            ILogger<KafkaConsumer<TMessage, TCommand>> logger)
+            ILogger<KafkaConsumer<TMessage, TCommandOrNotification>> logger,
+            Func<IMediator, TCommandOrNotification, CancellationToken, Task> mediatorAction)
         {
             _mediator = mediator;
             _mapper = mapper;
             _logger = logger;
+            _mediatorAction = mediatorAction;
 
             SeedTopic(kafkaSettings).Wait();
 
@@ -73,10 +76,10 @@ namespace Messaging.Kafka.Consumer
                 {
                     var result = _consumer.Consume(stoppingToken);
                     _logger.LogInformation("Got message: {message}", result);
-                    var command = _mapper.Map<TCommand>(result.Message.Value);
+                    var command = _mapper.Map<TCommandOrNotification>(result.Message.Value);
                     try
                     {
-                        await _mediator.Send(command, stoppingToken);
+                        await _mediatorAction(_mediator, command, stoppingToken);
                     }
                     catch (Exception ex)
                     {

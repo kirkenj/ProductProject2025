@@ -1,8 +1,8 @@
 ﻿namespace NotificationService.Api.NotificationApi.Models
 {
-    public class Message
+    public class SignalRNotification
     {
-        public Guid UserId { get; set; }
+        public string Subject { get; set; } = null!;
         public string Body { get; set; } = null!;
     }
 }
