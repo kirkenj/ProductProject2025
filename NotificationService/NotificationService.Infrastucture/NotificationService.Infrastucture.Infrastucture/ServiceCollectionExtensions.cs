@@ -20,7 +20,7 @@ namespace NotificationService.Infrastucture.Infrastucture
             {
                 services.AddTransient<IEmailSender, ConsoleEmailSender>();
             }
-            
+
             return services;
         }
     }

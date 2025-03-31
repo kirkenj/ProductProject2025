@@ -12,7 +12,7 @@ namespace NotificationService.Core.Application.Features.Notificatioin.AuthServic
         {
             _emailSender = emailSender;
         }
-    
+
         public async Task Handle(UserRegistrationRequestCreatedCommand request, CancellationToken cancellationToken)
         {
             var email = new Email

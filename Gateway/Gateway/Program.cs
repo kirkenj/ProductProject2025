@@ -34,6 +34,8 @@ app.UseMiddleware<OpenApiMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseWebSockets();
+
 await app.UseOcelot();
 
 app.Run();

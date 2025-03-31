@@ -45,7 +45,7 @@ namespace NotificationService.Core.Application.Features.Notificatioin.AuthServic
                 };
 
                 await Task.WhenAll(
-                    _emailSender.SendEmailAsync(emailToOldEmail), 
+                    _emailSender.SendEmailAsync(emailToOldEmail),
                     _emailSender.SendEmailAsync(emailToNewEmail));
             }
             catch (Exception ex)

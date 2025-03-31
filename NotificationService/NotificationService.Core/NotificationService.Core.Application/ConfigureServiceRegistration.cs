@@ -10,7 +10,7 @@ namespace NotificationService.Core.Application
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
         {
             var authApiAddress = Environment.GetEnvironmentVariable("AuthApiAddress") ?? throw new Exception();
-            services.AddTransient<IAuthApiClient, AuthApiClient>(sp => 
+            services.AddTransient<IAuthApiClient, AuthApiClient>(sp =>
             {
                 var httpClient = sp.GetRequiredService<HttpClient>();
                 return new AuthApiClient(authApiAddress, httpClient);

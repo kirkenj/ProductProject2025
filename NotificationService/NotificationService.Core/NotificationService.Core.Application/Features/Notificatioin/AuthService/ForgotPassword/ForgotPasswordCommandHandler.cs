@@ -37,7 +37,7 @@ namespace NotificationService.Core.Application.Features.Notificatioin.AuthServic
                     Subject = "Password recovery"
                 };
 
-                await _emailSender.SendEmailAsync(email);   
+                await _emailSender.SendEmailAsync(email);
             }
             catch (Exception ex)
             {

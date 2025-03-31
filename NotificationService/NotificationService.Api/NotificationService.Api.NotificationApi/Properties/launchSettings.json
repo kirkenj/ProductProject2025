@@ -7,7 +7,8 @@
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "UseConsoleEmailSender": "true",
-                "AuthApiAddress": "https://localhost:7067"
+                "AuthApiAddress": "https://localhost:7067",
+                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "http://localhost:5022"
@@ -19,7 +20,8 @@
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "UseConsoleEmailSender": "true",
-                "AuthApiAddress": "https://localhost:7067"
+                "AuthApiAddress": "https://localhost:7067",
+                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "https://localhost:7183;http://localhost:5022"

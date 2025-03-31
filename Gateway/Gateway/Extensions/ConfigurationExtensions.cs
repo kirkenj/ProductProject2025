@@ -13,7 +13,7 @@ namespace Gateway.Extensions
             var serviceConfigs = openApiServiceSettings.ServiceConfigs.Select(config =>
                 "{" +
                     "\"UpstreamPathTemplate\": \"/" + config.Name + "/{everything}\"," +
-                    "\"UpstreamHttpMethod\": [ \"Get\", \"Put\", \"Post\", \"Patch\", \"Delete\" ]," +
+                    "\"UpstreamHttpMethod\": [ \"Get\", \"Put\", \"Post\", \"Patch\", \"Delete\", \"HEAD\", \"CONNECT\", \"OPTIONS\", \"TRACE\" ]," +
                     "\"DownstreamPathTemplate\": \"/" + config.Name + "/{everything}\"," +
                     $"\"DownstreamScheme\": \"{config.DownstreamScheme}\"," +
                     "\"DownstreamHostAndPorts\":" +
