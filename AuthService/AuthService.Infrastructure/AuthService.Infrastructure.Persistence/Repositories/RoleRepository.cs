@@ -2,7 +2,7 @@
 using AuthService.Core.Domain.Models;
 using Cache.Contracts;
 using Microsoft.Extensions.Logging;
-using Repository.Models;
+using Repository.Models.Relational;
 
 namespace AuthService.Infrastructure.Persistence.Repositories
 {

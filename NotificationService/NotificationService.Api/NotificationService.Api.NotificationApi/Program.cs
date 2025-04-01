@@ -8,11 +8,11 @@ using NotificationService.Api.NotificationApi.Hubs;
 using NotificationService.Api.NotificationApi.Services;
 using NotificationService.Core.Application;
 using NotificationService.Infrastucture.Infrastucture;
+using NotificationService.Infrastucture.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -27,11 +27,10 @@ builder.Services.AddHttpClient();
 builder.Services.RegisterConsumers(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 builder.Services.RegisterInfrastructureService(builder.Configuration);
-
+builder.Services.RegisterPersistenceServices(builder.Configuration);
 
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ISignalRNotificationService, SignalRNotificationService<NotificationHub>>();
-
 
 var app = builder.Build();
 

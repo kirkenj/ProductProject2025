@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\..\Common\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\..\NotificationService.Core\NotificationService.Core.Application\NotificationService.Core.Application.csproj" />
     <ProjectReference Include="..\..\NotificationService.Infrastucture\NotificationService.Infrastucture.Infrastucture\NotificationService.Infrastucture.Infrastucture.csproj" />
+    <ProjectReference Include="..\..\NotificationService.Infrastucture\NotificationService.Infrastucture.Persistence\NotificationService.Infrastucture.Persistence.csproj" />
     <ProjectReference Include="..\NotificationService.Api.Consumers\NotificationService.Api.Consumers.csproj" />
   </ItemGroup>
 

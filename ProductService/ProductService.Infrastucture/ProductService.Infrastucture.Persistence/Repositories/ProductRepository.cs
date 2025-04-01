@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.Models.Product;
 using ProductService.Core.Domain.Models;
-using Repository.Models;
+using Repository.Models.Relational;
 
 
 namespace ProductService.Infrastucture.Persistence.Repositories

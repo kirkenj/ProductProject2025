@@ -13,10 +13,10 @@ namespace EmailSender.Services
             Logger = logger;
         }
 
-        public virtual async Task<bool> SendEmailAsync(Email email)
+        public virtual async Task<bool> SendEmailAsync(Email email, CancellationToken cancellationToken)
         {
             Logger.LogInformation("Message to {To}\nSubject: {Subject}.\nBody: {Body}", email.To, email.Subject, email.Body);
-            await Task.Delay(30);
+            await Task.Delay(30, cancellationToken);
             return true;
         }
     }

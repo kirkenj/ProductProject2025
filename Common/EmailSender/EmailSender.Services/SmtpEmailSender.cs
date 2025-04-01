@@ -22,7 +22,7 @@ namespace EmailSender.Services
             Logger = logger;
         }
 
-        public async Task<bool> SendEmailAsync(Email email)
+        public async Task<bool> SendEmailAsync(Email email, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Sending email to {email.To}");
             using var emailMessage = new MimeMessage();
@@ -39,11 +39,11 @@ namespace EmailSender.Services
 
             try
             {
-                await client.ConnectAsync(Settings.ApiAdress, Settings.ApiPort, true);
-                await client.AuthenticateAsync(Settings.ApiLogin, Settings.ApiPassword);
-                await client.SendAsync(emailMessage);
+                await client.ConnectAsync(Settings.ApiAdress, Settings.ApiPort, true, cancellationToken);
+                await client.AuthenticateAsync(Settings.ApiLogin, Settings.ApiPassword, cancellationToken);
+                await client.SendAsync(emailMessage, cancellationToken);
 
-                _ = Task.Run(() => client.DisconnectAsync(true));
+                _ = Task.Run(() => client.DisconnectAsync(true), cancellationToken);
 
                 Logger.LogInformation($"Message to {email.To}. Success");
                 return true;

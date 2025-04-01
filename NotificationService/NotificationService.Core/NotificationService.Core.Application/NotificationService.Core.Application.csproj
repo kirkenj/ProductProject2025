@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Application\" />
-    <Folder Include="Contracts\Infrastructure\" />
-    <Folder Include="Contracts\Persistence\" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +16,14 @@
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.ProductService\Messaging.Messages.ProductService.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Repository\Repository.Contracts\Repository.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Response\CustomResponse.csproj" />
+	  <ProjectReference Include="..\NotificationService.Core.Domain\NotificationService.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Infrastructure\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

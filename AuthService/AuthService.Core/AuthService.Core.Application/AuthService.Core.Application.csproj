@@ -15,6 +15,7 @@
 	</ItemGroup>
 	 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\Cache\Cache.Contracts\Cache.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Contracts\Messaging.Kafka.Producer.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />

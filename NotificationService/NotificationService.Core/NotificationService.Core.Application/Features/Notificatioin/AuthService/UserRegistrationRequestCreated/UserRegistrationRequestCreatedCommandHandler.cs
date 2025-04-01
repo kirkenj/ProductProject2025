@@ -22,7 +22,7 @@ namespace NotificationService.Core.Application.Features.Notificatioin.AuthServic
                 Body = $"Confirm your email by logging in with credentials: \r\nEmail: {request.Email}\r\nPassword: {request.Password}"
             };
 
-            await _emailSender.SendEmailAsync(email);
+            await _emailSender.SendEmailAsync(email, cancellationToken);
         }
     }
 }

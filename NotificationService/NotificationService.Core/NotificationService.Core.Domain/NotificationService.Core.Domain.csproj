@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Repository\Repository.Contracts\Repository.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

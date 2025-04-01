@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
+  </ItemGroup>
+
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\Cache\Cache.Models\Cache.Models.csproj" />
 	  <ProjectReference Include="..\..\..\Common\HashProvider\HashProvider.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Models\Messaging.Kafka.Producer.Models.csproj" />
