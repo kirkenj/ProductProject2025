@@ -2,12 +2,12 @@
 {
     public interface ICustomMemoryCache
     {
-        public Task SetAsync<T>(string key, T value, TimeSpan offset);
+        public Task SetAsync<T>(string key, T value, TimeSpan offset, CancellationToken cancellationToken = default);
 
-        public Task RemoveAsync(string key);
+        public Task RemoveAsync(string key, CancellationToken cancellationToken = default);
 
-        public Task<T?> GetAsync<T>(string key);
+        public Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default);
 
-        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire);
+        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default);
     }
 }

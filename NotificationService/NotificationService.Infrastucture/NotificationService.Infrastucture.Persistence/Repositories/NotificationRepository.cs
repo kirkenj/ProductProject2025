@@ -41,6 +41,11 @@ namespace NotificationService.Infrastucture.Persistence.Repositories
                 set = set.Where(obj => obj.Date <= filter.DateEnd);
             }
 
+            if (filter.UnRead.HasValue)
+            {
+                set = set.Where(obj => obj.IsRead != filter.UnRead.Value);
+            }
+
             return set;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.ChangeEmailRequest
+namespace NotificationService.Core.Application.Features.AuthService.ChangeEmailRequest
 {
     public class ChangeEmailRequestCommandValidator : AbstractValidator<ChangeEmailRequestCommand>
     {

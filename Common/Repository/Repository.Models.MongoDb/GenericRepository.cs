@@ -13,29 +13,29 @@ namespace Repository.Models.MongoDb
             _collection = mongoDatabase.GetCollection<T>(typeof(T).FullName);
         }
 
-        public async Task AddAsync(T obj)
+        public async Task AddAsync(T obj, CancellationToken cancellationToken = default)
         {
-            await _collection.InsertOneAsync(obj);
+            await _collection.InsertOneAsync(obj, new(), cancellationToken);
         }
 
-        public async Task DeleteAsync(TIdType id)
+        public async Task DeleteAsync(TIdType id, CancellationToken cancellationToken = default)
         {
-            await _collection.DeleteOneAsync(filter => filter.Id!.Equals(id));
+            await _collection.DeleteOneAsync(filter => filter.Id!.Equals(id), cancellationToken);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        public async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var selectResult = await _collection.FindAsync(_ => true);
-            return await selectResult.ToListAsync();
+            var selectResult = await _collection.FindAsync(_ => true, cancellationToken: cancellationToken);
+            return await selectResult.ToListAsync(cancellationToken);
         }
 
-        public async Task<T?> GetAsync(TIdType id)
+        public async Task<T?> GetAsync(TIdType id, CancellationToken cancellationToken = default)
         {
-            var selectResult = await _collection.FindAsync(filter => filter.Id!.Equals(id));
-            return await selectResult.FirstOrDefaultAsync();
+            var selectResult = await _collection.FindAsync(filter => filter.Id!.Equals(id), cancellationToken: cancellationToken); 
+            return await selectResult.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetPageContent(int? page = null, int? pageSize = null)
+        public async Task<IReadOnlyCollection<T>> GetPageContent(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default)
         {
             FindOptions<T>? findOptions = null;
 
@@ -48,13 +48,13 @@ namespace Repository.Models.MongoDb
                 findOptions.Limit = pageSizeVal;
             }
 
-            var selectionResult = await _collection.FindAsync(_ => true, findOptions);
-            return await selectionResult.ToListAsync();
+            var selectionResult = await _collection.FindAsync(_ => true, findOptions, cancellationToken);
+            return await selectionResult.ToListAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(T obj)
+        public async Task UpdateAsync(T obj, CancellationToken cancellationToken = default)
         {
-            await _collection.ReplaceOneAsync(filter => filter.Id!.Equals(obj.Id), obj);
+            await _collection.ReplaceOneAsync(filter => filter.Id!.Equals(obj.Id), obj, cancellationToken: cancellationToken);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Repository.Models.MongoDb
 
         private readonly Func<IQueryable<T>, TFilter, IQueryable<T>> GetFilteredSetDelegate;
 
-        public virtual async Task<T?> GetAsync(TFilter filter) => await GetFilteredSetDelegate(_collection.AsQueryable(), filter).FirstOrDefaultAsync();
+        public virtual async Task<T?> GetAsync(TFilter filter, CancellationToken cancellationToken = default) => await GetFilteredSetDelegate(_collection.AsQueryable(), filter).FirstOrDefaultAsync(cancellationToken);
 
-        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(TFilter filter, int? page = default, int? pageSize = default)
+        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
             var set = GetFilteredSetDelegate(_collection.AsQueryable(), filter);
 
@@ -30,7 +30,7 @@ namespace Repository.Models.MongoDb
                 set = set.Skip((pageVal - 1) * pageSizeVal).Take(pageSizeVal);
             }
 
-            return await set.ToListAsync();
+            return await set.ToListAsync(cancellationToken);
         }
     }
 }

@@ -2,7 +2,7 @@
 using EmailSender.Models;
 using MediatR;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated
+namespace NotificationService.Core.Application.Features.AuthService.UserRegistrationRequestCreated
 {
     public class UserRegistrationRequestCreatedCommandHandler : IRequestHandler<UserRegistrationRequestCreatedCommand>
     {

@@ -23,7 +23,7 @@ namespace Cache.Models
             _implementation.KeyDelete(keyToCheckConnection);
         }
 
-        public virtual async Task<T?> GetAsync<T>(string key)
+        public virtual async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -40,9 +40,9 @@ namespace Cache.Models
             return JsonSerializer.Deserialize<T>(result.ToString());
         }
 
-        public virtual Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire) => _implementation.KeyExpireAsync(key, TimeSpan.FromMilliseconds(millisecondsToExpire));
+        public virtual Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default) => _implementation.KeyExpireAsync(key, TimeSpan.FromMilliseconds(millisecondsToExpire));
 
-        public virtual Task RemoveAsync(string key)
+        public virtual Task RemoveAsync(string key, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -52,7 +52,7 @@ namespace Cache.Models
             return _implementation.KeyDeleteAsync(key.Trim());
         }
 
-        public virtual async Task SetAsync<T>(string key, T value, TimeSpan expirity)
+        public virtual async Task SetAsync<T>(string key, T value, TimeSpan expirity, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {

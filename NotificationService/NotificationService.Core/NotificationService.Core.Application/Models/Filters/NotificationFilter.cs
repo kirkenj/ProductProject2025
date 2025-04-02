@@ -15,5 +15,7 @@ namespace NotificationService.Core.Application.Models.Filters
         public DateTime? DateStart { get; set; }
         [AllowNull]
         public DateTime? DateEnd { get; set; }
+        [AllowNull]
+        public bool? UnRead { get; set; }
     }
 }

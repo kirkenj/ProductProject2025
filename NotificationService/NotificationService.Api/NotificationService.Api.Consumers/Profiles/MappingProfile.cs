@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Messaging.Messages.AuthService;
-using NotificationService.Core.Application.Features.Notificatioin.AuthService.ChangeEmailRequest;
-using NotificationService.Core.Application.Features.Notificatioin.AuthService.ForgotPassword;
-using NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated;
+using NotificationService.Core.Application.Features.AuthService.ChangeEmailRequest;
+using NotificationService.Core.Application.Features.AuthService.ForgotPassword;
+using NotificationService.Core.Application.Features.AuthService.UserRegistrationRequestCreated;
 
 namespace NotificationService.Api.Consumers.Profiles
 {

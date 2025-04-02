@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\CentralizedJwtAuthentication\CentralizedJwtAuthentication.csproj" />
+    <ProjectReference Include="..\..\..\Common\Constants\Constants.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\..\..\Common\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\..\NotificationService.Core\NotificationService.Core.Application\NotificationService.Core.Application.csproj" />

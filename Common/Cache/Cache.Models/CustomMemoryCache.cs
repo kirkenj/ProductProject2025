@@ -13,7 +13,7 @@ namespace Cache.Models
             _implementation = memoryCache;
         }
 
-        public Task<T?> GetAsync<T>(string key)
+        public Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -24,7 +24,7 @@ namespace Cache.Models
             return Task.FromResult(objRes == null ? default : (T)objRes);
         }
 
-        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire)
+        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default)
         {
             if (key == null)
             {
@@ -48,7 +48,7 @@ namespace Cache.Models
             }
         }
 
-        public Task RemoveAsync(string key)
+        public Task RemoveAsync(string key, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -59,7 +59,7 @@ namespace Cache.Models
             return Task.CompletedTask;
         }
 
-        public Task SetAsync<T>(string key, T value, TimeSpan offset)
+        public Task SetAsync<T>(string key, T value, TimeSpan offset, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {

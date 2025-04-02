@@ -4,7 +4,7 @@ using EmailSender.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.ChangeEmailRequest
+namespace NotificationService.Core.Application.Features.AuthService.ChangeEmailRequest
 {
     public class ChangeEmailRequestCommandHandler : IRequestHandler<ChangeEmailRequestCommand>
     {

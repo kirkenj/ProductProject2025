@@ -4,7 +4,7 @@ using EmailSender.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.ForgotPassword
+namespace NotificationService.Core.Application.Features.AuthService.ForgotPassword
 {
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand>
     {

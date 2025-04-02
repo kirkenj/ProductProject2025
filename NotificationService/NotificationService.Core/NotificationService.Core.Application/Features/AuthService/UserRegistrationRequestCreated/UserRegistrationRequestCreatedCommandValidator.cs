@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated
+namespace NotificationService.Core.Application.Features.AuthService.UserRegistrationRequestCreated
 {
     public class UserRegistrationRequestCreatedCommandValidator : AbstractValidator<UserRegistrationRequestCreatedCommand>
     {

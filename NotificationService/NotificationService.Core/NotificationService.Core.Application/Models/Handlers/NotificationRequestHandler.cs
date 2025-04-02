@@ -4,7 +4,7 @@ using NotificationService.Core.Application.Contracts.Application;
 using NotificationService.Core.Application.Contracts.Persistence;
 using NotificationService.Core.Domain.Models;
 
-namespace NotificationService.Core.Application.Models
+namespace NotificationService.Core.Application.Models.Handlers
 {
     public abstract class NotificationRequestHandler<TRequest> : IRequestHandler<TRequest, IEnumerable<INotification>> where TRequest : IRequest<IEnumerable<IMediatRSendableNotification>>
     {

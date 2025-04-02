@@ -59,52 +59,52 @@ namespace Repository.Models.Relational
         protected string CacheKeyFormatToAccessSingleViaId => CacheKeyPrefix + "{0}";
 
 
-        public async Task AddAsync(T obj)
+        public async Task AddAsync(T obj, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(obj);
 
-            await Repository.AddAsync(obj);
+            await Repository.AddAsync(obj, cancellationToken);
 
             await SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, obj.Id), obj);
         }
 
-        public async Task DeleteAsync(TIdType id)
+        public async Task DeleteAsync(TIdType id, CancellationToken cancellationToken = default)
         {
-            await Repository.DeleteAsync(id);
+            await Repository.DeleteAsync(id, cancellationToken);
 
             var cacheKey = string.Format(CacheKeyFormatToAccessSingleViaId, id);
 
-            await CustomMemoryCache.RemoveAsync(cacheKey);
+            await CustomMemoryCache.RemoveAsync(cacheKey, cancellationToken);
 
             Logger.Log(LogLevel.Information, $"Removed the key {cacheKey}");
         }
 
-        public async Task<IReadOnlyCollection<T>> GetPageContent(int? page = default, int? pageSize = default)
+        public async Task<IReadOnlyCollection<T>> GetPageContent(int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
             var key = CacheKeyPrefix + $"(page:{page}, pagesize:{pageSize}";
 
-            var cacheResult = await CustomMemoryCache.GetAsync<IReadOnlyCollection<T>>(key);
+            var cacheResult = await CustomMemoryCache.GetAsync<IReadOnlyCollection<T>>(key, cancellationToken);
 
             if (cacheResult != null)
             {
                 return cacheResult;
             }
 
-            var result = await Repository.GetPageContent(page, pageSize);
+            var result = await Repository.GetPageContent(page, pageSize, cancellationToken);
 
-            var tasks = result.Select(r => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, r.Id), r))
-                .Append(CustomMemoryCache.SetAsync(key, result, TimeSpan.FromMilliseconds(СacheTimeoutMiliseconds)));
+            var tasks = result.Select(r => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, r.Id), r, cancellationToken))
+                .Append(CustomMemoryCache.SetAsync(key, result, TimeSpan.FromMilliseconds(СacheTimeoutMiliseconds), cancellationToken));
 
             await Task.WhenAll(tasks);
 
             return result;
         }
 
-        public async Task<T?> GetAsync(TIdType id)
+        public async Task<T?> GetAsync(TIdType id, CancellationToken cancellationToken = default)
         {
             Logger.Log(LogLevel.Information, $"Got request for {typeof(T).Name} with id = '{id}'. ");
             var cacheKey = string.Format(CacheKeyFormatToAccessSingleViaId, id);
-            var result = await CustomMemoryCache.GetAsync<T>(cacheKey);
+            var result = await CustomMemoryCache.GetAsync<T>(cacheKey, cancellationToken);
 
             if (result != null)
             {
@@ -114,28 +114,28 @@ namespace Repository.Models.Relational
 
             Logger.Log(LogLevel.Information, "Sending request to database.");
 
-            result = await Repository.GetAsync(id);
+            result = await Repository.GetAsync(id, cancellationToken);
 
             if (result != null)
             {
-                await SetCacheAsync(cacheKey, result);
+                await SetCacheAsync(cacheKey, result, cancellationToken);
             }
 
             return result;
         }
 
-        public async Task UpdateAsync(T obj)
+        public async Task UpdateAsync(T obj, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(obj);
 
             await Task.WhenAll
                 (
-                    Repository.UpdateAsync(obj),
-                    SetCacheAsync(CacheKeyPrefix + obj.Id, obj)
+                    Repository.UpdateAsync(obj, cancellationToken),
+                    SetCacheAsync(CacheKeyPrefix + obj.Id, obj, cancellationToken)
                 );
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        public async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var key = CacheKeyPrefix + "All";
 
@@ -147,23 +147,23 @@ namespace Repository.Models.Relational
                 return cacheResult;
             }
 
-            var result = await Repository.GetAllAsync();
+            var result = await Repository.GetAllAsync(cancellationToken);
 
-            var tasks = result.Select(r => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, r.Id), r))
-                .Append(SetCacheAsync(key, result));
+            var tasks = result.Select(r => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, r.Id), r, cancellationToken))
+                .Append(SetCacheAsync(key, result, cancellationToken));
 
             await Task.WhenAll(tasks);
 
             return result;
         }
 
-        protected virtual async Task SetCacheAsync(string key, object value)
+        protected virtual async Task SetCacheAsync(string key, object value, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(key);
 
             ArgumentNullException.ThrowIfNull(value);
 
-            await CustomMemoryCache.SetAsync(key, value, TimeSpan.FromMilliseconds(СacheTimeoutMiliseconds));
+            await CustomMemoryCache.SetAsync(key, value, TimeSpan.FromMilliseconds(СacheTimeoutMiliseconds), cancellationToken);
 
             Logger.Log(LogLevel.Information, $"Set cache with key '{key}'");
         }

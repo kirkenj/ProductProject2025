@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.UserRegistrationRequestCreated
+namespace NotificationService.Core.Application.Features.AuthService.UserRegistrationRequestCreated
 {
     public class UserRegistrationRequestCreatedCommand : Messaging.Messages.AuthService.UserRegistrationRequestCreated, IRequest
     {

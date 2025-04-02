@@ -23,7 +23,7 @@ namespace Repository.Models.Relational
 
         protected override GenericRepository<T, TIdType> Repository => FiltrableRepository;
 
-        public virtual async Task<T?> GetAsync(TFilter filter)
+        public virtual async Task<T?> GetAsync(TFilter filter, CancellationToken cancellationToken = default)
         {
             var key = JsonSerializer.Serialize(filter) + "First";
 
@@ -39,7 +39,7 @@ namespace Repository.Models.Relational
 
             Logger.LogInformation($"Request {key}. Requesting the database");
 
-            var repResult = await FiltrableRepository.GetAsync(filter);
+            var repResult = await FiltrableRepository.GetAsync(filter, cancellationToken);
 
             if (repResult != null)
             {
@@ -50,13 +50,13 @@ namespace Repository.Models.Relational
         }
 
 
-        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(TFilter filter, int? page = default, int? pageSize = default)
+        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
             var key = JsonSerializer.Serialize(filter) + $"page: {page}, pageSize: {pageSize}";
 
             Logger.LogInformation($"Got request: {key}");
 
-            var result = await CustomMemoryCache.GetAsync<IReadOnlyCollection<T>>(key);
+            var result = await CustomMemoryCache.GetAsync<IReadOnlyCollection<T>>(key, cancellationToken);
 
             if (result != null)
             {
@@ -67,8 +67,11 @@ namespace Repository.Models.Relational
             Logger.LogInformation($"Request {key}. Requesting the database");
             result = await FiltrableRepository.GetPageContent(filter, page, pageSize);
 
-            var tasks = result.Select(item => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, item.Id), item))
-                .Append(SetCacheAsync(key, result));
+            var tasks = result.Select(item => SetCacheAsync(
+                string.Format(CacheKeyFormatToAccessSingleViaId, item.Id, cancellationToken), 
+                item
+                )
+            ).Append(SetCacheAsync(key, result, cancellationToken));
 
             await Task.WhenAll(tasks);
 

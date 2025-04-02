@@ -17,28 +17,28 @@ namespace Repository.Models.Relational
 
         protected DbSet<T> DbSet => _dbContext.Set<T>();
 
-        public virtual async Task AddAsync(T obj)
+        public virtual async Task AddAsync(T obj, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(obj);
 
-            await _dbContext.AddAsync(obj);
+            await _dbContext.AddAsync(obj, cancellationToken);
 
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task DeleteAsync(TIdType id)
+        public virtual async Task DeleteAsync(TIdType id, CancellationToken cancellationToken = default)
         {
-            var val = await DbSet.FirstOrDefaultAsync(e => e.Id.Equals(id));
+            var val = await DbSet.FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
 
             if (val == null) return;
 
             DbSet.Remove(val);
 
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
 
-        public virtual async Task<IReadOnlyCollection<T>> GetAllAsync() => await DbSet.AsNoTracking().ToArrayAsync();
+        public virtual async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default) => await DbSet.AsNoTracking().ToArrayAsync(cancellationToken);
 
         protected IQueryable<T> GetPageContent(IQueryable<T> query, int? page = default, int? pageSize = default)
         {
@@ -52,20 +52,20 @@ namespace Repository.Models.Relational
             return query;
         }
 
-        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(int? page = default, int? pageSize = default) =>
-            await GetPageContent(DbSet.AsNoTracking(), page, pageSize).ToArrayAsync();
+        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(int? page = default, int? pageSize = default, CancellationToken cancellationToken = default) =>
+            await GetPageContent(DbSet.AsNoTracking(), page, pageSize).ToArrayAsync(cancellationToken);
 
 
-        public virtual async Task<T?> GetAsync(TIdType id) =>
-            await DbSet.AsNoTracking().FirstOrDefaultAsync(o => o.Id.Equals(id));
+        public virtual async Task<T?> GetAsync(TIdType id, CancellationToken cancellationToken = default) =>
+            await DbSet.AsNoTracking().FirstOrDefaultAsync(o => o.Id.Equals(id), cancellationToken);
 
-        public virtual async Task UpdateAsync(T obj)
+        public virtual async Task UpdateAsync(T obj, CancellationToken cancellationToken = default)
         {
             var currentDbVal = DbSet.First(o => o.Id.Equals(obj.Id));
             var ent = DbSet.Entry(currentDbVal);
             ent.CurrentValues.SetValues(obj);
             ent.State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace AuthService.Core.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<User, CreateUserCommand>().ReverseMap();
-            CreateMap<User, UpdateNotSensitiveUserInfoComand>().ReverseMap();
+            CreateMap<User, UserDto>();
+            CreateMap<User, CreateUserCommand>();
+            CreateMap<User, UpdateNotSensitiveUserInfoComand>();
             CreateMap<Role, RoleDto>().ReverseMap();
         }
     }

@@ -1,8 +1,8 @@
 ﻿using NotificationService.Core.Application.Contracts.Application;
 using NotificationService.Core.Application.Contracts.Persistence;
-using NotificationService.Core.Application.Models;
+using NotificationService.Core.Application.Models.Handlers;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.ProductService.ProductCreated
+namespace NotificationService.Core.Application.Features.ProductService.ProductCreated
 {
     public class ProductDeletedNotificationRequestHandler : NotificationRequestHandler<ProductCreatedNotificationRequest>
     {

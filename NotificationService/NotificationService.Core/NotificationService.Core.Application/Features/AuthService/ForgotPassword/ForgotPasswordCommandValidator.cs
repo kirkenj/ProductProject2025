@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace NotificationService.Core.Application.Features.Notificatioin.AuthService.ForgotPassword
+namespace NotificationService.Core.Application.Features.AuthService.ForgotPassword
 {
     public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>
     {
