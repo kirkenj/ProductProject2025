@@ -75,7 +75,7 @@
         }
 
         [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-        public partial class AuthApiClient : IProductApiClient
+        public partial class ProductApiClient : IProductApiClient
         {
 #pragma warning disable 8618
             private string _baseUrl;
@@ -86,7 +86,7 @@
             private System.Text.Json.JsonSerializerOptions _instanceSettings;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-            public AuthApiClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+            public ProductApiClient(string baseUrl, System.Net.Http.HttpClient httpClient)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             {
                 BaseUrl = baseUrl;

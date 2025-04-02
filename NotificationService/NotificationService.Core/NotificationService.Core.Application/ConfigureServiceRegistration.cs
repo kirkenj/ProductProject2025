@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Clients.AuthApi;
+using Clients.ProductService.Clients.ProductServiceClient;
 using MediatRExtensions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,13 @@ namespace NotificationService.Core.Application
             {
                 var httpClient = sp.GetRequiredService<HttpClient>();
                 return new AuthApiClient(authApiAddress, httpClient);
+            });
+
+            var productApiAddress = Environment.GetEnvironmentVariable("ProductApiAddress") ?? throw new Exception();
+            services.AddTransient<IProductApiClient, ProductApiClient>(sp =>
+            {
+                var httpClient = sp.GetRequiredService<HttpClient>();
+                return new ProductApiClient(authApiAddress, httpClient);
             });
 
             var currentAssembly = Assembly.GetExecutingAssembly();
