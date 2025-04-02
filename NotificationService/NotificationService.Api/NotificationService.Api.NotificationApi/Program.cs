@@ -3,10 +3,10 @@ using CentralizedJwtAuthentication;
 using Exceptions;
 using Microsoft.AspNetCore.SignalR;
 using NotificationService.Api.Consumers;
-using NotificationService.Api.NotificationApi.Contracts;
 using NotificationService.Api.NotificationApi.Hubs;
 using NotificationService.Api.NotificationApi.Services;
 using NotificationService.Core.Application;
+using NotificationService.Core.Application.Contracts.Infrastructure;
 using NotificationService.Infrastucture.Infrastucture;
 using NotificationService.Infrastucture.Persistence;
 

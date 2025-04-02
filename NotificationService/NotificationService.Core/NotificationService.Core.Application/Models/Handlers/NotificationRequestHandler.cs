@@ -17,7 +17,7 @@ namespace NotificationService.Core.Application.Models.Handlers
 
         public async Task<IEnumerable<INotification>> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            var notifications = GetNotifications(request);
+            var notifications = await GetNotificationsAsync(request);
 
             var addTasks = notifications.Select(notification =>
             {
@@ -36,6 +36,6 @@ namespace NotificationService.Core.Application.Models.Handlers
             return notifications;
         }
 
-        protected abstract IEnumerable<IMediatRSendableNotification> GetNotifications(TRequest request);
+        protected abstract Task<IEnumerable<IMediatRSendableNotification>> GetNotificationsAsync(TRequest request);
     }
 }

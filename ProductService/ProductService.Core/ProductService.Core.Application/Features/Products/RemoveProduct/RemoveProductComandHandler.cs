@@ -28,7 +28,12 @@ namespace ProductService.Core.Application.Features.Products.RemoveProduct
 
             await _productRepository.DeleteAsync(product.Id);
 
-            await _productDeletedProducer.ProduceAsync(new() { Id = request.ProductId }, cancellationToken);
+            await _productDeletedProducer.ProduceAsync(new()
+            {
+                Id = request.ProductId,
+                Name = product.Name,
+                OwnerId = product.ProducerId
+            }, cancellationToken);
 
             return Response<string>.OkResponse("Ok", "Success");
         }

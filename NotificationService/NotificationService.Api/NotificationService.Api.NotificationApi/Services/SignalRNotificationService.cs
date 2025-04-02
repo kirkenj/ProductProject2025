@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using NotificationService.Api.NotificationApi.Contracts;
-using NotificationService.Api.NotificationApi.Models;
+using NotificationService.Core.Application.Contracts.Infrastructure;
+using NotificationService.Core.Application.Models.TargetServicesModels;
 
 namespace NotificationService.Api.NotificationApi.Services
 {
@@ -13,13 +13,13 @@ namespace NotificationService.Api.NotificationApi.Services
             _hubContext = hubContext;
         }
 
-        public async Task Send(SignalRNotification message, Guid targetUserId)
+        public async Task Send(SignalRNotification message, CancellationToken cancellationToken = default)
         {
-            IClientProxy targetConnections = targetUserId == default ?
+            IClientProxy targetConnections = string.IsNullOrWhiteSpace(message.UserId) ?
                 _hubContext.Clients.All :
-                _hubContext.Clients.Group(targetUserId.ToString());
+                _hubContext.Clients.Group(message.UserId);
 
-            await targetConnections.SendAsync("Receive", message, CancellationToken.None);
+            await targetConnections.SendAsync("Receive", message, cancellationToken);
         }
     }
 }

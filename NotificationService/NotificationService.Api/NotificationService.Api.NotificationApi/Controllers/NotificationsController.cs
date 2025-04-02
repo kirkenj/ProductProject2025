@@ -35,8 +35,9 @@ namespace NotificationService.Api.NotificationApi.Controllers
 
         [Authorize]
         [HttpPost("MarkRead")]
-        public async Task<IActionResult> MarkRead([FromQuery]NotificationFilter filter)
+        public async Task<IActionResult> MarkRead([FromBody]IEnumerable<string> NotificationIds)
         {
+            var filter = new NotificationFilter { Ids = NotificationIds };
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
                 filter.UserIds = [ User.GetUserId()!.ToString()! ];
