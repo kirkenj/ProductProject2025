@@ -1,8 +1,5 @@
-using Extensions.ClaimsPrincipalExtensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NotificationService.Api.NotificationApi.Contracts;
-using NotificationService.Api.NotificationApi.Models;
+using NotificationService.Core.Application.Contracts.Persistence;
 
 namespace NotificationService.Api.NotificationApi.Controllers
 {
@@ -10,28 +7,19 @@ namespace NotificationService.Api.NotificationApi.Controllers
     [Route("NotificationApi/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly ISignalRNotificationService _signalRNotificationService;
+        private readonly INotificationRepository _notificationRepository;
 
-        public WeatherForecastController(ISignalRNotificationService signalRNotificationService)
+        public WeatherForecastController(INotificationRepository notificationRepository)
         {
-            _signalRNotificationService = signalRNotificationService;
+            _notificationRepository = notificationRepository;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        //[Authorize]
+        [HttpGet("list")]
+        public async Task<IActionResult> Get2()
         {
-            return Ok("Hello world");
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task Callback()
-        {
-            var message = new SignalRNotification()
-            {
-                Body = "Hello world",
-            };
-            await _signalRNotificationService.Send(message, User.GetUserId() ?? throw new Exception());
+            var result = await _notificationRepository.GetPageContent(new());
+            return Ok(result);
         }
     }
 }

@@ -3,5 +3,6 @@
     public interface INotification
     {
         public string UserId { get; }
+        public string DefaultBody { get; }
     }
 }

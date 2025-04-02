@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using MediatR;
 using Messaging.Kafka;
 using Messaging.Kafka.Consumer;
 using Messaging.Messages.AuthService;
