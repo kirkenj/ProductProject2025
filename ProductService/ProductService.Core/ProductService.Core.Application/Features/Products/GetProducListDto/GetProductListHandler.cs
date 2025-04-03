@@ -1,8 +1,8 @@
-﻿using Application.DTOs.Product;
-using AutoMapper;
+﻿using AutoMapper;
 using CustomResponse;
 using MediatR;
 using ProductService.Core.Application.Contracts.Persistence;
+using ProductService.Core.Application.DTOs.Product;
 
 namespace ProductService.Core.Application.Features.Products.GetProducListDto
 {

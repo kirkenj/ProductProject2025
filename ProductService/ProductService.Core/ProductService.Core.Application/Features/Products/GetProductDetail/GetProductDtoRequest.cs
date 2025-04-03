@@ -1,6 +1,6 @@
-﻿using Application.DTOs.Product;
-using CustomResponse;
+﻿using CustomResponse;
 using MediatR;
+using ProductService.Core.Application.DTOs.Product;
 
 namespace ProductService.Core.Application.Features.Products.GetProductDetail
 {

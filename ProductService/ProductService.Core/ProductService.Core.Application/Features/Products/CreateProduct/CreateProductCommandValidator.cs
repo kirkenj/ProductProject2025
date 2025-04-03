@@ -13,7 +13,7 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
             {
                 var result = await authApiClient.GetUser(id);
                 return result.Success;
-            });
+            }).WithMessage(x => $"Couldn't find the user with id {x.ProducerId}");
         }
     }
 }

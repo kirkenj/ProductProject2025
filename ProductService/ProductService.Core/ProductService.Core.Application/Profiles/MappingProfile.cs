@@ -1,5 +1,5 @@
-﻿using Application.DTOs.Product;
-using AutoMapper;
+﻿using AutoMapper;
+using ProductService.Core.Application.DTOs.Product;
 using ProductService.Core.Application.Features.Products.CreateProduct;
 using ProductService.Core.Application.Features.Products.UpdateProduct;
 using ProductService.Core.Domain.Models;

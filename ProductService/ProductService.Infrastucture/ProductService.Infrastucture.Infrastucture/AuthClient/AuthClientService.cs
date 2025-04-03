@@ -70,23 +70,34 @@ namespace ProductService.Infrastucture.Infrastucture.AuthClient
             {
                 var cacheKey = CACHE_KEY_PREFIX + "userId_" + userId;
 
-                Console.WriteLine($"Trying to get a {nameof(AuthClientUser)} from {nameof(AuthClientService)} with {nameof(userId)} = {userId}");
+                _logger.LogInformation("Request for a {typeName} from {serviceName} with {propertyName} = {propertyVaue}",
+                    nameof(AuthClientUser), nameof(AuthClientService), nameof(userId), userId);
 
                 AuthClientUser result;
 
+                _logger.LogInformation("Checking cache for a {typeName} from {serviceName} with {propertyName} = {propertyVaue}",
+                                    nameof(AuthClientUser), nameof(AuthClientService), nameof(userId), userId);
                 var cacheResult = await _customMemoryCache.GetAsync<AuthClientUser>(cacheKey);
 
                 if (cacheResult != null)
                 {
-                    Console.WriteLine("Found it into cache");
+                    _logger.LogInformation("Found the {typeName} from {serviceName} with {propertyName} = {propertyVaue}",
+                                        nameof(AuthClientUser), nameof(AuthClientService), nameof(userId), userId);
                     return new ClientResponse<AuthClientUser?> { Result = cacheResult, Success = true };
                 }
 
-                Console.WriteLine($"Sending request to {nameof(AuthClientService)}");
+                _logger.LogInformation("Sending a request for a {typeName} to {serviceName} with {propertyName} = {propertyVaue}",
+                                        nameof(UserDto), nameof(AuthClientService), nameof(userId), userId);
 
                 var response = await _authClient.UsersGETAsync(userId);
 
+                _logger.LogInformation("Succcess response for a {typeName} to {serviceName} with {propertyName} = {propertyVaue}. Starting mapping into {targetTypeName}",
+                                        nameof(UserDto), nameof(AuthClientService), nameof(userId), userId, nameof(AuthClientUser));
+                
                 result = _mapper.Map<AuthClientUser>(response);
+
+                _logger.LogInformation("Setting cache value {typeName} with {propertyName} = {propertyVaue} using a key {cacheKey}",
+                                    nameof(AuthClientUser), nameof(userId), userId, cacheKey);
 
                 await _customMemoryCache.SetAsync(cacheKey, result, TimeSpan.FromMilliseconds(10_000));
 

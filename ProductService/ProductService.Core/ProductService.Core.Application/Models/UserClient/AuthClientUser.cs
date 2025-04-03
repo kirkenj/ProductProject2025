@@ -10,8 +10,5 @@
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("role")]
-        public AuthClientRole Role { get; set; } = default!;
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Infrastucture.Infrastucture.AuthClient;
+using ProductService.Infrastucture.Infrastucture.AuthClient.Profiles;
 
 
 namespace ProductService.Infrastucture.Infrastucture
@@ -38,7 +39,8 @@ namespace ProductService.Infrastucture.Infrastucture
 
             services.AddScoped<IAuthApiClientService, AuthClientService>();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            var assembly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(assembly);
 
             var useDefaultCacheStr = Environment.GetEnvironmentVariable(USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME);
 

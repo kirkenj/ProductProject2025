@@ -1,11 +1,11 @@
-﻿using Application.DTOs.Product;
-using Constants;
+﻿using Constants;
 using CustomResponse;
 using Extensions.ClaimsPrincipalExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Api.ProductAPI.Models;
+using ProductService.Core.Application.DTOs.Product;
 using ProductService.Core.Application.Features.Products.CreateProduct;
 using ProductService.Core.Application.Features.Products.GetProducListDto;
 using ProductService.Core.Application.Features.Products.GetProductDetail;
