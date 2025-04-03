@@ -24,30 +24,6 @@ namespace Cache.Models.InMemory
             return Task.FromResult(objRes == null ? default : (T)objRes);
         }
 
-        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default)
-        {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException($"{nameof(key)} is null", nameof(key));
-            }
-
-            var objRes = _implementation.Get(key.Trim());
-            if (objRes == null)
-            {
-                return Task.FromResult(false);
-            }
-
-            try
-            {
-                _implementation.Set(key, objRes, DateTimeOffset.UtcNow.AddMilliseconds(millisecondsToExpire));
-                return Task.FromResult(true);
-            }
-            catch
-            {
-                return Task.FromResult(false);
-            }
-        }
-
         public Task RemoveAsync(string key, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(key))

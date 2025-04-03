@@ -7,7 +7,5 @@
         public Task RemoveAsync(string key, CancellationToken cancellationToken = default);
 
         public Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default);
-
-        public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default);
     }
 }

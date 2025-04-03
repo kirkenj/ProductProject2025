@@ -26,22 +26,6 @@ namespace Cache.Models.Reddis
             return string.IsNullOrWhiteSpace(result) ? default : JsonSerializer.Deserialize<T>(result.ToString());
         }
 
-        public virtual async Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default)
-        {
-            var value = await _implementation.GetAsync(key, cancellationToken);
-
-            if (value == null) 
-            {
-                return false;
-            }
-
-            var options = new DistributedCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMilliseconds(millisecondsToExpire));
-
-            await _implementation.SetAsync(key, value, options, cancellationToken);
-
-            return true;
-        } 
-
         public virtual Task RemoveAsync(string key, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(key))
