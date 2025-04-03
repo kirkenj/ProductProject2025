@@ -7,8 +7,6 @@ namespace Repository.Models.Relational
 {
     public class GenericCachingRepository<T, TIdType> : IGenericRepository<T, TIdType> where T : class, IIdObject<TIdType> where TIdType : struct
     {
-        protected readonly Guid _repId = Guid.NewGuid();
-
         private ILogger<GenericCachingRepository<T, TIdType>>? _logger;
         private GenericRepository<T, TIdType>? _repository;
         private ICustomMemoryCache? _customMemoryCache;
@@ -55,7 +53,7 @@ namespace Repository.Models.Relational
         }
 
         public int СacheTimeoutMiliseconds { get; set; } = 2_000;
-        protected string CacheKeyPrefix => _repId + " ";
+        protected string CacheKeyPrefix => nameof(GenericCachingRepository<T, TIdType>);
         protected string CacheKeyFormatToAccessSingleViaId => CacheKeyPrefix + "{0}";
 
 

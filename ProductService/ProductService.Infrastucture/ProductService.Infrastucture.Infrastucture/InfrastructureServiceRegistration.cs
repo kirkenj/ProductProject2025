@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Cache.Contracts;
-using Cache.Models;
+using Cache.Models.InMemory;
+using Cache.Models.Reddis;
 using Clients.AuthApi;
 using Exceptions;
 using HttpDelegatingHandlers;
@@ -19,7 +20,7 @@ namespace ProductService.Infrastucture.Infrastucture
         private const string USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME = "UseDefaultCache";
         private const string REDIS_URL_ENVIRONMENT_VARIBALE_NAME = "RedisUri";
 
-        public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+        public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureConsumers(configuration);
 
@@ -45,14 +46,13 @@ namespace ProductService.Infrastucture.Infrastucture
 
             if (useDefaultCacheStr != null && bool.TryParse(useDefaultCacheStr, out bool result) && result)
             {
-                services.AddMemoryCache();
-                services.AddScoped<ICustomMemoryCache, CustomMemoryCache>();
+                services.AddInMemoruCustomMemoryCache();
             }
             else
             {
                 var redisConString = Environment.GetEnvironmentVariable(REDIS_URL_ENVIRONMENT_VARIBALE_NAME)
                     ?? throw new CouldNotGetEnvironmentVariableException(REDIS_URL_ENVIRONMENT_VARIBALE_NAME);
-                services.AddScoped<ICustomMemoryCache, RedisCustomMemoryCache>(sp => new RedisCustomMemoryCache(redisConString));
+                services.AddReddisCustomMemoryCache(redisConString);
             }
 
             return services;

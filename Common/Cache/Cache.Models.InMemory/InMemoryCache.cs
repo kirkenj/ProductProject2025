@@ -2,20 +2,20 @@
 using Microsoft.Extensions.Caching.Memory;
 
 
-namespace Cache.Models
+namespace Cache.Models.InMemory
 {
-    public class CustomMemoryCache : ICustomMemoryCache
+    public class InMemoryCache : ICustomMemoryCache
     {
         private readonly IMemoryCache _implementation;
 
-        public CustomMemoryCache(IMemoryCache memoryCache)
+        public InMemoryCache(IMemoryCache memoryCache)
         {
             _implementation = memoryCache;
         }
 
         public Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
@@ -26,7 +26,7 @@ namespace Cache.Models
 
         public Task<bool> RefreshKeyAsync(string key, double millisecondsToExpire, CancellationToken cancellationToken = default)
         {
-            if (key == null)
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentException($"{nameof(key)} is null", nameof(key));
             }
@@ -50,7 +50,7 @@ namespace Cache.Models
 
         public Task RemoveAsync(string key, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
@@ -61,19 +61,12 @@ namespace Cache.Models
 
         public Task SetAsync<T>(string key, T value, TimeSpan offset, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            ArgumentNullException.ThrowIfNull(value, nameof(value));
-
-            var offsetDiff = offset.TotalMilliseconds;
-
-            if (offsetDiff < 100)
-            {
-                throw new ArgumentOutOfRangeException(nameof(offset), $"Offset has to be at least 100 ms (given offset is {offsetDiff})");
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             _implementation.Set(key.Trim(), value, offset);
             return Task.CompletedTask;
