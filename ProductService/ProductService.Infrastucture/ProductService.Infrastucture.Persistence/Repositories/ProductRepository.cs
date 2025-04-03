@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.Models.Product;
 using ProductService.Core.Domain.Models;
+using Repository.Caching;
 using Repository.Models.Relational;
 
 
@@ -11,7 +12,7 @@ namespace ProductService.Infrastucture.Persistence.Repositories
 {
     public class ProductRepository : GenericFiltrableCachingRepository<Product, Guid, ProductFilter>, IProductRepository
     {
-        public ProductRepository(ProductDbContext dbContext, ICustomMemoryCache customMemoryCache, ILogger<ProductRepository> logger) : base(dbContext, customMemoryCache, logger, GetFilteredSet)
+        public ProductRepository(ProductDbContext dbContext, ICustomMemoryCache customMemoryCache, ILogger<ProductRepository> logger) : base(new GenericFiltrableRepository<Product, Guid, ProductFilter>(dbContext, GetFilteredSet), customMemoryCache, logger)
         {
         }
 

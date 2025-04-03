@@ -19,7 +19,7 @@ namespace ProductService.Core.Application.Features.Products.GetProducListDto
 
         public async Task<Response<IEnumerable<ProductListDto>>> Handle(GetProductListDtoRequest request, CancellationToken cancellationToken)
         {
-            var result = await _producrRepository.GetPageContent(request.ProductFilter, request.Page, request.PageSize);
+            var result = await _producrRepository.GetPageContentAsync(request.ProductFilter, request.Page, request.PageSize);
 
             return Response<IEnumerable<ProductListDto>>.OkResponse(_mapper.Map<List<ProductListDto>>(result), "Success");
         }

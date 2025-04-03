@@ -19,7 +19,7 @@ namespace Repository.Models.MongoDb
 
         public virtual async Task<T?> GetAsync(TFilter filter, CancellationToken cancellationToken = default) => await GetFilteredSetDelegate(_collection.AsQueryable(), filter).FirstOrDefaultAsync(cancellationToken);
 
-        public virtual async Task<IReadOnlyCollection<T>> GetPageContent(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
+        public virtual async Task<IReadOnlyCollection<T>> GetPageContentAsync(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
             var set = GetFilteredSetDelegate(_collection.AsQueryable(), filter);
 

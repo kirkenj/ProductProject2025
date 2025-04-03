@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\Common\Repository\Repository.Caching\Repository.Caching.csproj" />
 		<ProjectReference Include="..\..\..\Common\Repository\Repository.Models.Relational\Repository.Models.Relational.csproj" />
 		<ProjectReference Include="..\..\AuthService.Core\AuthService.Core.Application\AuthService.Core.Application.csproj" />
 		<ProjectReference Include="..\..\AuthService.Core\AuthService.Core.Domain\AuthService.Core.Domain.csproj" />

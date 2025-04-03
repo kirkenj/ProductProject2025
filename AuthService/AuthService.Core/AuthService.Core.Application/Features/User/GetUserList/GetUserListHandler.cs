@@ -19,7 +19,7 @@ namespace AuthService.Core.Application.Features.User.GetUserList
 
         public async Task<Response<List<UserDto>>> Handle(GetUserListRequest request, CancellationToken cancellationToken)
         {
-            IReadOnlyCollection<Domain.Models.User> users = await _userRepository.GetPageContent(request.UserFilter, request.Page, request.PageSize);
+            IReadOnlyCollection<Domain.Models.User> users = await _userRepository.GetPageContentAsync(request.UserFilter, request.Page, request.PageSize);
             return Response<List<UserDto>>.OkResponse(_mapper.Map<List<UserDto>>(users), "Success");
         }
     }

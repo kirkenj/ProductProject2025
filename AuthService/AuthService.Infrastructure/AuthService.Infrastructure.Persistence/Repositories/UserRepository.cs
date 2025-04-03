@@ -4,13 +4,15 @@ using AuthService.Core.Domain.Models;
 using Cache.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Repository.Caching;
 using Repository.Models.Relational;
 
 namespace AuthService.Infrastructure.Persistence.Repositories
 {
     public class UserRepository : GenericFiltrableCachingRepository<User, Guid, UserFilter>, IUserRepository
     {
-        public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<GenericCachingRepository<User, Guid>> logger) : base(dbContext, memoryCache, logger, GetFilteredSet)
+        public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<UserRepository> logger) 
+            : base(new GenericFiltrableRepository<User, Guid, UserFilter>(dbContext, GetFilteredSet), memoryCache, logger)
         {
             this.СacheTimeoutMiliseconds = 5000;
         }

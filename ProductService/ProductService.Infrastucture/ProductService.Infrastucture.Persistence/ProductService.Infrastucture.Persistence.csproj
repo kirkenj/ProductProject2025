@@ -19,6 +19,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Common\Cache\Cache.Contracts\Cache.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Repository\Repository.Caching\Repository.Caching.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Repository\Repository.Models.Relational\Repository.Models.Relational.csproj" />
 	  <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Application\ProductService.Core.Application.csproj" />
 	  <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Domain\ProductService.Core.Domain.csproj" />
