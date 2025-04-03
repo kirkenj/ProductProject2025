@@ -7,7 +7,7 @@ namespace NotificationService.Core.Application.Features.AuthService.UserRegistra
         public UserRegistrationRequestCreatedCommandValidator()
         {
             RuleFor(c => c.Email).NotEmpty().EmailAddress();
-            RuleFor(c => c.Password).NotEmpty();
+            RuleFor(c => c.Token).NotEmpty();
         }
     }
 }

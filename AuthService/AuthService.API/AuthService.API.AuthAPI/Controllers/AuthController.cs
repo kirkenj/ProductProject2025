@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.Contracts;
-using AuthService.Core.Application.Features.User.CreateUserComand;
 using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.ForgotPasswordComand;
 using AuthService.Core.Application.Features.User.Login;
@@ -27,18 +26,7 @@ namespace AuthService.API.AuthAPI.Controllers
             _jwtProviderService = jwtProviderService;
         }
 
-        [Produces("text/plain")]
-        [HttpPost("Register")]
-        public async Task<ActionResult<string>> Register([FromBody] CreateUserCommand createUserDto)
-        {
-            Response<Guid> result = await _mediator.Send(createUserDto);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
 
-            return result.GetActionResult();
-        }
 
         [HttpPost("Login")]
         public async Task<ActionResult<LoginResultModel>> Login(LoginRequest loginDto)

@@ -8,9 +8,9 @@ using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
-namespace AuthService.Core.Application.Features.User.CreateUserComand
+namespace AuthService.Core.Application.Features.User.RegisterUserComand
 {
-    public class CreateUserComandHandler : IRequestHandler<CreateUserCommand, Response<Guid>>
+    public class RegisterUserComandHandler : IRequestHandler<RegisterUserCommand, Response<string>>
     {
         private readonly IPasswordSetter _passwordSetter;
         private readonly CreateUserSettings _createUserSettings;
@@ -19,7 +19,7 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
         private readonly IKafkaProducer<UserRegistrationRequestCreated> _userRegistrationRequestCreatedKafkaProducer;
         private readonly IMapper _mapper;
 
-        public CreateUserComandHandler(IOptions<CreateUserSettings> createUserSettings,
+        public RegisterUserComandHandler(IOptions<CreateUserSettings> createUserSettings,
             IMapper mapper,
             IPasswordGenerator passwordGenerator,
             ICustomMemoryCache memoryCache,
@@ -34,7 +34,7 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
             _mapper = mapper;
         }
 
-        public async Task<Response<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             Domain.Models.User user = _mapper.Map<Domain.Models.User>(request);
 
@@ -42,19 +42,21 @@ namespace AuthService.Core.Application.Features.User.CreateUserComand
             user.Login = $"User{user.Id}";
             user.RoleID = _createUserSettings.DefaultRoleID;
 
-            string password = _passwordGenerator.Generate();
+            _passwordSetter.SetPassword(request.Password, user);
 
-            _passwordSetter.SetPassword(password, user);
+            var token = _passwordGenerator.Generate();
 
-            await _memoryCache.SetAsync(string.Format(_createUserSettings.KeyForRegistrationCachingFormat, user.Email), user, TimeSpan.FromHours(_createUserSettings.ConfirmationTimeout));
+            var cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, user.Email, token);
+
+            await _memoryCache.SetAsync(cacheKey, user, TimeSpan.FromMinutes(_createUserSettings.ConfirmationTimeout), cancellationToken);
 
             await _userRegistrationRequestCreatedKafkaProducer.ProduceAsync(new()
             {
                 Email = user.Email,
-                Password = password,
+                Token = token,
             }, cancellationToken);
 
-            return Response<Guid>.OkResponse(user.Id, $"Created user registration request. Further details sent on email");
+            return Response<string>.OkResponse($"Created user registration request. Further details sent on email", string.Empty);
         }
     }
 }

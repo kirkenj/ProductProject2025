@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Application.Models.User;
 using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.ActionFIlters;
@@ -11,6 +12,7 @@ using AuthService.Core.Application.Features.User.GetUserList;
 using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
 using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand;
 using AuthService.Core.Application.Features.User.UpdateUserLoginComand;
+using AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler;
 using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
 using Constants;
 using CustomResponse;
@@ -50,18 +52,32 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [HttpGet("Me")]
         [GetUserActionFilter]
-        public async Task<ActionResult<UserDto>> Get(Guid id)
+        public async Task<ActionResult<UserDto>> Get([AllowNull] Guid? id)
         {
-            Response<UserDto> result = await _mediator.Send(new GetUserDtoRequest() { Id = id });
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
+            Response<UserDto> result = await _mediator.Send(new GetUserDtoRequest() { Id = id.Value });
             return result.GetActionResult();
         }
 
         [HttpPut("{id}")]
+        [HttpPut("Me")]
         [Authorize]
         [Produces("text/plain")]
-        public async Task<ActionResult<string>> Put(Guid id, UpdateUserModel updateUserModel)
+        public async Task<ActionResult<string>> Put([AllowNull] Guid? id, UpdateUserModel updateUserModel)
         {
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
@@ -69,7 +85,7 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new UpdateNotSensitiveUserInfoComand
             {
-                Id = id,
+                Id = id.Value,
                 Address = updateUserModel.Address,
                 Name = updateUserModel.Name
             });
@@ -78,10 +94,16 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpPut("{id}/Email")]
-        [Authorize(ApiConstants.ADMIN_AUTH_POLICY_NAME)]
+        [HttpPut("Me/Email")]
         [Produces("text/plain")]
-        public async Task<ActionResult<string>> UpdateEmail(Guid id, [FromBody][EmailAddress] string newEmail)
+        public async Task<ActionResult<string>> UpdateEmail(Guid? id, [FromBody][EmailAddress] string newEmail)
         {
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
@@ -89,7 +111,7 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new SendTokenToUpdateUserEmailRequest
             {
-                Id = id,
+                Id = id.Value,
                 Email = newEmail
             });
 
@@ -97,35 +119,49 @@ namespace AuthService.API.AuthAPI.Controllers
         }
 
         [HttpPost("{id}/Email/Confirm")]
+        [HttpPost("Me/Email/Confirm")]
         [Authorize]
         [Produces("text/plain")]
-        public async Task<ActionResult<string>> ConfirmEmailUpdate(ConfirmEmailChangeAdmin confirmEmailChangeAdmin)
+        public async Task<ActionResult<string>> ConfirmEmailUpdate(Guid? id, ConfirmEmailChange confirmEmailChangeAdmin)
         {
-            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && confirmEmailChangeAdmin.UserId != User.GetUserId())
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
             }
 
             Response<string> result = await _mediator.Send(new ConfirmEmailChangeComand
             {
-                Id = confirmEmailChangeAdmin.UserId,
+                Id = id.Value,
                 OtpToNewEmail = confirmEmailChangeAdmin.OtpToNewEmail,
                 OtpToOldEmail = confirmEmailChangeAdmin.OtpToOldEmail
             });
 
             if (result.Success)
             {
-                await _tokenTracker.InvalidateUser(confirmEmailChangeAdmin.UserId, DateTime.UtcNow);
+                await _tokenTracker.InvalidateUser(id.Value, DateTime.UtcNow);
             }
 
             return result.GetActionResult();
         }
 
         [HttpPut("{id}/Login")]
+        [HttpPut("Me/Login")]
         [Produces("text/plain")]
         [Authorize]
-        public async Task<ActionResult<string>> UpdateLogin(Guid id, string newLogin)
+        public async Task<ActionResult<string>> UpdateLogin(Guid? id, string newLogin)
         {
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
             {
                 return Forbid();
@@ -133,19 +169,20 @@ namespace AuthService.API.AuthAPI.Controllers
 
             Response<string> result = await _mediator.Send(new UpdateUserLoginComand
             {
-                Id = id,
+                Id = id.Value,
                 NewLogin = newLogin
             });
 
             if (result.Success)
             {
-                await _tokenTracker.InvalidateUser(id, DateTime.UtcNow);
+                await _tokenTracker.InvalidateUser(id.Value, DateTime.UtcNow);
             }
 
             return result.GetActionResult();
         }
 
         [HttpPut("{id}/Role")]
+        [HttpPut("Me/Role")]
         [Authorize(ApiConstants.ADMIN_AUTH_POLICY_NAME)]
         [Produces("text/plain")]
         public async Task<ActionResult<string>> UpdateRole(Guid id, int roleId)
@@ -160,6 +197,30 @@ namespace AuthService.API.AuthAPI.Controllers
             {
                 await _tokenTracker.InvalidateUser(id, DateTime.UtcNow);
             }
+
+            return result.GetActionResult();
+        }
+
+        [HttpPut("Password")]
+        [Produces("text/plain")]
+        public async Task<ActionResult<string>> UpdatePassword(Guid? id, [FromBody] string newPassword)
+        {
+            id ??= User.GetUserId();
+            if (id == null || !id.HasValue)
+            {
+                return NotFound();
+            }
+
+            if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) && id != User.GetUserId())
+            {
+                return Forbid();
+            }
+
+            Response<string> result = await _mediator.Send(new UpdateUserPasswordComand
+            {
+                Id = id.Value,
+                Password = newPassword
+            });
 
             return result.GetActionResult();
         }

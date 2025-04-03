@@ -19,7 +19,7 @@ namespace NotificationService.Core.Application.Features.AuthService.UserRegistra
             {
                 To = request.Email,
                 Subject = "Registration",
-                Body = $"Confirm your email by logging in with credentials: \r\nEmail: {request.Email}\r\nPassword: {request.Password}"
+                Body = $"Confirm your email with credentials: \r\nEmail: {request.Email}\r\nToken: {request.Token}"
             };
 
             await _emailSender.SendEmailAsync(email, cancellationToken);

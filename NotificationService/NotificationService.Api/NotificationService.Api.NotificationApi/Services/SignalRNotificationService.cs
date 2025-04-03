@@ -18,7 +18,7 @@ namespace NotificationService.Api.NotificationApi.Services
         public async Task Send(SignalRNotification message, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Notification to {targetGroup}: {message}", message.UserId ?? "All", message.Body);
-            
+
             IClientProxy targetConnections = string.IsNullOrWhiteSpace(message.UserId) ?
                 _hubContext.Clients.All :
                 _hubContext.Clients.Group(message.UserId);

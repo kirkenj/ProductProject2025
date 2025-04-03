@@ -22,20 +22,20 @@ namespace NotificationService.Api.NotificationApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]NotificationFilter filter, int? page, int? pageSize)
+        public async Task<IActionResult> Get([FromQuery] NotificationFilter filter, int? page, int? pageSize)
         {
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
-                filter.UserIds = [ User.GetUserId()!.ToString()! ];
+                filter.UserIds = [User.GetUserId()!.ToString()!];
             }
 
-            var result = await _mediator.Send(new GetNotificationsCommand() { Filter = filter, Page = page, PageSize = pageSize});
+            var result = await _mediator.Send(new GetNotificationsCommand() { Filter = filter, Page = page, PageSize = pageSize });
             return result.GetActionResult();
         }
 
         [Authorize]
         [HttpPost("MarkRead")]
-        public async Task<IActionResult> MarkRead([FromBody]IEnumerable<string> notificationIds)
+        public async Task<IActionResult> MarkRead([FromBody] IEnumerable<string> notificationIds)
         {
             if (!notificationIds.Any())
             {
@@ -45,7 +45,7 @@ namespace NotificationService.Api.NotificationApi.Controllers
             var filter = new NotificationFilter { Ids = notificationIds };
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
-                filter.UserIds = [ User.GetUserId()!.ToString()! ];
+                filter.UserIds = [User.GetUserId()!.ToString()!];
             }
 
             var result = await _mediator.Send(new MarkNotificationsReadCommand() { Filter = filter });

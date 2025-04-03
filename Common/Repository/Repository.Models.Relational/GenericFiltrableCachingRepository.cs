@@ -68,7 +68,7 @@ namespace Repository.Models.Relational
             result = await FiltrableRepository.GetPageContent(filter, page, pageSize);
 
             var tasks = result.Select(item => SetCacheAsync(
-                string.Format(CacheKeyFormatToAccessSingleViaId, item.Id, cancellationToken), 
+                string.Format(CacheKeyFormatToAccessSingleViaId, item.Id, cancellationToken),
                 item
                 )
             ).Append(SetCacheAsync(key, result, cancellationToken));

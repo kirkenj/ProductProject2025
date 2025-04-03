@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Infrastucture.Infrastucture.AuthClient;
-using ProductService.Infrastucture.Infrastucture.AuthClient.Profiles;
 
 
 namespace ProductService.Infrastucture.Infrastucture

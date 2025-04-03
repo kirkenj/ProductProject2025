@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace AuthAPI.Middlewares
 {
@@ -25,15 +24,14 @@ namespace AuthAPI.Middlewares
             catch (ValidationException valEx)
             {
                 context.Response.StatusCode = 400;
-                string message = $"{nameof(ValidationException)}: " + JsonSerializer.Serialize(valEx.Errors);
-                await context.Response.WriteAsync(message);
+                await context.Response.WriteAsJsonAsync(valEx.Errors);
                 return;
             }
             catch (Exception ex)
             {
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsJsonAsync(_environment.IsDevelopment() ? ex.Message : "Ooopsie", typeof(string));
-                _logger.Log(LogLevel.Critical, ex, message: ex.Message);
+                _logger.LogError(ex, string.Empty);
             }
         }
     }

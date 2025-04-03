@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using EmailSender.Models;
 using NotificationService.Core.Application.Contracts.Infrastructure;
 using NotificationService.Core.Application.Models.Handlers;
 using NotificationService.Core.Application.Models.TargetServicesModels;

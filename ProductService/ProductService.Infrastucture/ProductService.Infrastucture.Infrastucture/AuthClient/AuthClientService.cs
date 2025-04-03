@@ -93,7 +93,7 @@ namespace ProductService.Infrastucture.Infrastucture.AuthClient
 
                 _logger.LogInformation("Succcess response for a {typeName} to {serviceName} with {propertyName} = {propertyVaue}. Starting mapping into {targetTypeName}",
                                         nameof(UserDto), nameof(AuthClientService), nameof(userId), userId, nameof(AuthClientUser));
-                
+
                 result = _mapper.Map<AuthClientUser>(response);
 
                 _logger.LogInformation("Setting cache value {typeName} with {propertyName} = {propertyVaue} using a key {cacheKey}",

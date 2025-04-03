@@ -8,7 +8,7 @@ namespace NotificationService.Core.Application.Features.NotificatioinService.Get
     public class GetNotificationsCommand : IRequest<Response<IEnumerable<NotificationDto>>>
     {
         public NotificationFilter? Filter { get; set; }
-        public int? Page {  get; set; }
-        public int? PageSize {  get; set; }
+        public int? Page { get; set; }
+        public int? PageSize { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Repository.Models.MongoDb
 
         public async Task<T?> GetAsync(TIdType id, CancellationToken cancellationToken = default)
         {
-            var selectResult = await _collection.FindAsync(filter => filter.Id!.Equals(id), cancellationToken: cancellationToken); 
+            var selectResult = await _collection.FindAsync(filter => filter.Id!.Equals(id), cancellationToken: cancellationToken);
             return await selectResult.FirstOrDefaultAsync(cancellationToken);
         }
 

@@ -24,9 +24,9 @@ namespace NotificationService.Core.Application.Features.NotificatioinService.Get
             ArgumentNullException.ThrowIfNull(request.Filter);
 
             var selectResult = await _notificationRepository.GetPageContent(request.Filter, request.Page, request.PageSize);
-        
+
             var result = _mapper.Map<IEnumerable<NotificationDto>>(selectResult);
-        
+
             return Response<IEnumerable<NotificationDto>>.OkResponse(result, string.Empty);
         }
     }
