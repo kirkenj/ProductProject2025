@@ -13,8 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Consumer\Messaging.Kafka.Consumer.csproj" />
 	<ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
-	<ProjectReference Include="..\..\..\ProductService\ProductService.Infrastucture\ProductService.Infrastucture.Infrastucture\ProductService.Infrastucture.Infrastucture.csproj" />
-	<ProjectReference Include="..\..\..\ProductService\ProductService.Infrastucture\ProductService.Infrastucture.Persistence\ProductService.Infrastucture.Persistence.csproj" />
 	<ProjectReference Include="..\..\NotificationService.Core\NotificationService.Core.Application\NotificationService.Core.Application.csproj" />
   </ItemGroup>
 

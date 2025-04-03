@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Text.Json.Serialization;
 using Clients.AuthApi;
 using NotificationService.Core.Application.Contracts.Application;
 
@@ -8,7 +8,7 @@ namespace NotificationService.Core.Application.Features.ProductService.ProductDe
     {
         public string UserId { get; set; } = string.Empty;
         public string ProductId { get; set; } = string.Empty;
-        [IgnoreDataMember]
+        [JsonIgnore]
         public UserDto UserDto { get; set; } = null!;
     }
 }

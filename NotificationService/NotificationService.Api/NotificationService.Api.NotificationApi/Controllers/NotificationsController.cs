@@ -35,9 +35,14 @@ namespace NotificationService.Api.NotificationApi.Controllers
 
         [Authorize]
         [HttpPost("MarkRead")]
-        public async Task<IActionResult> MarkRead([FromBody]IEnumerable<string> NotificationIds)
+        public async Task<IActionResult> MarkRead([FromBody]IEnumerable<string> notificationIds)
         {
-            var filter = new NotificationFilter { Ids = NotificationIds };
+            if (!notificationIds.Any())
+            {
+                return BadRequest("No ids specified");
+            }
+
+            var filter = new NotificationFilter { Ids = notificationIds };
             if (!User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME))
             {
                 filter.UserIds = [ User.GetUserId()!.ToString()! ];

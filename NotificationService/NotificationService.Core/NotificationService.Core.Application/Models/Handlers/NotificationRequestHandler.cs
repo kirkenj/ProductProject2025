@@ -23,9 +23,10 @@ namespace NotificationService.Core.Application.Models.Handlers
             {
                 var notificationToAdd = new Notification
                 {
-                    NotificationJson = JsonSerializer.Serialize(notification),
+                    NotificationJson = JsonSerializer.Serialize(notification, notification.GetType()),
                     NotificationType = notification.GetType().FullName!,
                     UserId = notification.UserId,
+                    Date = DateTime.Now, 
                 };
 
                 return _repository.AddAsync(notificationToAdd);

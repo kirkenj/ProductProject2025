@@ -30,7 +30,7 @@ builder.Services.RegisterInfrastructureService(builder.Configuration);
 builder.Services.RegisterPersistenceServices(builder.Configuration);
 
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-builder.Services.AddScoped<ISignalRNotificationService, SignalRNotificationService<NotificationHub>>();
+builder.Services.AddTransient<ISignalRNotificationService, SignalRNotificationService<NotificationHub>>();
 
 var app = builder.Build();
 

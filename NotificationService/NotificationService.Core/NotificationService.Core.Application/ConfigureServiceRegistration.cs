@@ -21,10 +21,11 @@ namespace NotificationService.Core.Application
             services.AddTransient<IProductApiClient, ProductApiClient>(sp =>
             {
                 var httpClient = sp.GetRequiredService<HttpClient>();
-                return new ProductApiClient(authApiAddress, httpClient);
+                return new ProductApiClient(productApiAddress, httpClient);
             });
 
             var currentAssembly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(currentAssembly);
             services.RegisterMediatRWithLoggingAndValidation(currentAssembly);
             return services;
         }

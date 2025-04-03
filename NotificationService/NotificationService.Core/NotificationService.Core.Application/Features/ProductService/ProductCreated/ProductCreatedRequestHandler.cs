@@ -19,15 +19,17 @@ namespace NotificationService.Core.Application.Features.ProductService.ProductCr
 
         protected override async Task<IEnumerable<IMediatRSendableNotification>> GetNotificationsAsync(ProductCreatedNotificationRequest request)
         {
-            var productDto = await _productApiClient.ProductGETAsync(request.ProductId);
-            var userDto = await _authApiClient.UsersGETAsync(productDto.ProducerId);
+            var productDtoTask = _productApiClient.ProductGETAsync(request.ProductId);
+            var userDtoTask = _authApiClient.UsersGETAsync(request.ProducerId);
+
+            await Task.WhenAll(productDtoTask, userDtoTask);
 
             return [new ProductCreatedNotification
                 {
-                     ProductDto = productDto,
-                     UserDto = userDto,
-                     ProductId = productDto.Id.ToString(),
-                     UserId = userDto.Id.ToString(),
+                     ProductDto = productDtoTask.Result,
+                     UserDto = userDtoTask.Result,
+                     ProductId = request.ProductId.ToString(),
+                     UserId = request.ProducerId.ToString(),
                 }];
         }
     }

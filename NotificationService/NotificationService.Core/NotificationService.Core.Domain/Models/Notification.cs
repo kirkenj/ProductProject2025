@@ -13,7 +13,6 @@ namespace NotificationService.Core.Domain.Models
         public string UserId { get; set; } = string.Empty;
         public string NotificationType { get; set; } = string.Empty;
         public string NotificationJson { get; set; } = string.Empty;
-        public string DefaultBody { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public bool IsRead { get; set; } = false;
     }

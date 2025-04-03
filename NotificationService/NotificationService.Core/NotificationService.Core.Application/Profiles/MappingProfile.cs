@@ -9,7 +9,7 @@ namespace NotificationService.Core.Application.Profiles
         public MappingProfile()
         {
             CreateMap<Notification, NotificationDto>()
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.DefaultBody))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.NotificationJson))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.NotificationType));
         }
     }
