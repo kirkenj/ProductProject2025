@@ -16,10 +16,9 @@ namespace HashProvider.Models
 
         public HashProvider(HashProviderSettings options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(options.EncodingName);
+            ArgumentNullException.ThrowIfNull(options.HashAlgorithmName);
 
             _hashFunction = GetHashAlgorithm(options.HashAlgorithmName) ?? throw new ArgumentException(nameof(options.HashAlgorithmName));
             _hashAlgorithmName = options.HashAlgorithmName;
