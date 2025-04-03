@@ -27,10 +27,10 @@ namespace NotificationService.Core.Application.Features.NotificatioinService.Mar
                     return Response<string>.OkResponse("Specified filter is empty", string.Empty);
                 }
 
-                _logger.LogInformation("Sending request to repository with filter: {0}", JsonSerializer.Serialize(request!.Filter));
+                _logger.LogInformation("Sending request to repository with filter: {filter}", JsonSerializer.Serialize(request!.Filter));
                 var notificationsToMark = await _notificationRepository.GetPageContent(request!.Filter!, cancellationToken: cancellationToken);
 
-                _logger.LogInformation("Got notifications with ids: {0}; Starting update process", JsonSerializer.Serialize(notificationsToMark.Select(n => n.Id)));
+                _logger.LogInformation("Got notifications with ids: {ids}; Starting update process", JsonSerializer.Serialize(notificationsToMark.Select(n => n.Id)));
                 var updateTasks = notificationsToMark.Select(notification =>
                 {
                     notification.IsRead = true;
