@@ -4,13 +4,13 @@ using Repository.Contracts;
 
 namespace Repository.Caching
 {
-    public class GenericCachingRepository<T, TIdType> : IGenericRepository<T, TIdType> where T : class, IIdObject<TIdType> where TIdType : struct
+    public class CachingGenericRepository<T, TIdType> : IGenericRepository<T, TIdType> where T : class, IIdObject<TIdType> where TIdType : struct
     {
         private readonly IGenericRepository<T, TIdType> _repository;
-        private readonly ILogger<GenericCachingRepository<T, TIdType>> _logger;
+        private readonly ILogger<CachingGenericRepository<T, TIdType>> _logger;
         protected readonly ICustomMemoryCache _customMemoryCache;
 
-        public GenericCachingRepository(IGenericRepository<T, TIdType> genericRepository, ICustomMemoryCache customMemoryCache, ILogger<GenericCachingRepository<T, TIdType>> logger)
+        public CachingGenericRepository(IGenericRepository<T, TIdType> genericRepository, ICustomMemoryCache customMemoryCache, ILogger<CachingGenericRepository<T, TIdType>> logger)
         {
             _customMemoryCache = customMemoryCache;
             _repository = genericRepository;
@@ -18,7 +18,7 @@ namespace Repository.Caching
         }
 
         public int СacheTimeoutMiliseconds { get; set; } = 2_000;
-        protected string CacheKeyPrefix => nameof(GenericCachingRepository<T, TIdType>);
+        protected string CacheKeyPrefix => nameof(CachingGenericRepository<T, TIdType>);
         protected string CacheKeyFormatToAccessSingleViaId => CacheKeyPrefix + "{0}";
 
 

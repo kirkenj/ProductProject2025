@@ -5,18 +5,18 @@ using Repository.Contracts;
 
 namespace Repository.Caching
 {
-    public class GenericFiltrableCachingRepository<T, TIdType, TFilter> :
-        GenericCachingRepository<T, TIdType>,
+    public class CachingGenericFiltrableRepository<T, TIdType, TFilter> :
+        CachingGenericRepository<T, TIdType>,
         IGenericFiltrableRepository<T, TIdType, TFilter>
         where T : class, IIdObject<TIdType> where TIdType : struct
     {
         private readonly IGenericFiltrableRepository<T, TIdType, TFilter> _filtrableRepository;
-        private readonly ILogger<GenericFiltrableCachingRepository<T, TIdType, TFilter>> _logger;
+        private readonly ILogger<CachingGenericFiltrableRepository<T, TIdType, TFilter>> _logger;
 
-        public GenericFiltrableCachingRepository(
+        public CachingGenericFiltrableRepository(
             IGenericFiltrableRepository<T, TIdType, TFilter> genericRepository, 
             ICustomMemoryCache customMemoryCache, 
-            ILogger<GenericFiltrableCachingRepository<T, TIdType, TFilter>> logger
+            ILogger<CachingGenericFiltrableRepository<T, TIdType, TFilter>> logger
             ) : base(genericRepository, customMemoryCache, logger)
         {
             _filtrableRepository = genericRepository;

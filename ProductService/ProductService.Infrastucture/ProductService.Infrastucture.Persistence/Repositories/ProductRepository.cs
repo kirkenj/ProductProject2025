@@ -10,7 +10,7 @@ using Repository.Models.Relational;
 
 namespace ProductService.Infrastucture.Persistence.Repositories
 {
-    public class ProductRepository : GenericFiltrableCachingRepository<Product, Guid, ProductFilter>, IProductRepository
+    public class ProductRepository : CachingGenericFiltrableRepository<Product, Guid, ProductFilter>, IProductRepository
     {
         public ProductRepository(ProductDbContext dbContext, ICustomMemoryCache customMemoryCache, ILogger<ProductRepository> logger) : base(new GenericFiltrableRepository<Product, Guid, ProductFilter>(dbContext, GetFilteredSet), customMemoryCache, logger)
         {

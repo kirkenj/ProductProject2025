@@ -9,7 +9,7 @@ using Repository.Models.Relational;
 
 namespace AuthService.Infrastructure.Persistence.Repositories
 {
-    public class UserRepository : GenericFiltrableCachingRepository<User, Guid, UserFilter>, IUserRepository
+    public class UserRepository : CachingGenericFiltrableRepository<User, Guid, UserFilter>, IUserRepository
     {
         public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<UserRepository> logger) 
             : base(new GenericFiltrableRepository<User, Guid, UserFilter>(dbContext, GetFilteredSet), memoryCache, logger)

@@ -7,7 +7,7 @@ using Repository.Models.Relational;
 
 namespace AuthService.Infrastructure.Persistence.Repositories
 {
-    public class RoleRepository : GenericCachingRepository<Role, int>, IRoleRepository
+    public class RoleRepository : CachingGenericRepository<Role, int>, IRoleRepository
     {
         public RoleRepository(AuthDbContext dbContext, ICustomMemoryCache customMemoryCache, ILogger<RoleRepository> logger) 
             : base(new GenericRepository<Role, int>(dbContext), customMemoryCache, logger)
