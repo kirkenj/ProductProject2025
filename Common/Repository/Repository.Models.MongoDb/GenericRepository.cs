@@ -15,6 +15,7 @@ namespace Repository.Models.MongoDb
 
         public async Task AddAsync(T obj, CancellationToken cancellationToken = default)
         {
+            ArgumentNullException.ThrowIfNull(obj);
             await _collection.InsertOneAsync(obj, new(), cancellationToken);
         }
 
