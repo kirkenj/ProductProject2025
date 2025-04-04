@@ -11,7 +11,7 @@ namespace AuthService.Infrastructure.Persistence.Repositories
 {
     public class UserRepository : CachingGenericFiltrableRepository<User, Guid, UserFilter>, IUserRepository
     {
-        public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<UserRepository> logger) 
+        public UserRepository(AuthDbContext dbContext, ICustomMemoryCache memoryCache, ILogger<UserRepository> logger)
             : base(new GenericFiltrableRepository<User, Guid, UserFilter>(dbContext, GetFilteredSet), memoryCache, logger)
         {
             this.СacheTimeoutMiliseconds = 5000;

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Cache.Contracts;
 using Cache.Models.InMemory;
 using Cache.Models.Reddis;
 using Clients.AuthApi;

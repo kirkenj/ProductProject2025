@@ -20,7 +20,8 @@ namespace Repository.Models.Relational
 
         public virtual async Task<IReadOnlyCollection<T>> GetPageContentAsync(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
-            var result = await GetPageContent(GetFilteredSetDelegate(DbSet.AsNoTracking(), filter), page, pageSize).ToArrayAsync(cancellationToken);
+            var result = await GetPageContent(GetFilteredSetDelegate(DbSet.AsNoTracking(), filter), page, pageSize)
+                .ToArrayAsync(cancellationToken);
 
             return result;
         }

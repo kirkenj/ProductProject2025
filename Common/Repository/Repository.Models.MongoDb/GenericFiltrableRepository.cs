@@ -21,14 +21,15 @@ namespace Repository.Models.MongoDb
 
         public virtual async Task<IReadOnlyCollection<T>> GetPageContentAsync(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {
-            var set = GetFilteredSetDelegate(_collection.AsQueryable(), filter);
-
+            FindOptions<T, T>? findOptions = null;
             if (page.HasValue && pageSize.HasValue)
             {
                 var pageVal = page.Value <= 0 ? 1 : page.Value;
                 var pageSizeVal = pageSize.Value <= 0 ? 1 : pageSize.Value;
-                set = set.Skip((pageVal - 1) * pageSizeVal).Take(pageSizeVal);
+                findOptions = new FindOptions<T, T>() { Skip = (pageVal - 1) * pageSizeVal, Limit = pageSizeVal };
             }
+
+            var set = await _collection.FindAsync(a => true, findOptions, cancellationToken);
 
             return await set.ToListAsync(cancellationToken);
         }

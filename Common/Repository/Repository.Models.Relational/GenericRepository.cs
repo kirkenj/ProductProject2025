@@ -11,9 +11,8 @@ namespace Repository.Models.Relational
 
         public GenericRepository(DbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
-
 
         protected DbSet<T> DbSet => _dbContext.Set<T>();
 
@@ -37,8 +36,8 @@ namespace Repository.Models.Relational
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-
-        public virtual async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default) => await DbSet.AsNoTracking().ToArrayAsync(cancellationToken);
+        public virtual async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default) =>
+            await DbSet.AsNoTracking().ToArrayAsync(cancellationToken);
 
         protected IQueryable<T> GetPageContent(IQueryable<T> query, int? page = default, int? pageSize = default)
         {
@@ -54,7 +53,6 @@ namespace Repository.Models.Relational
 
         public virtual async Task<IReadOnlyCollection<T>> GetPageContent(int? page = default, int? pageSize = default, CancellationToken cancellationToken = default) =>
             await GetPageContent(DbSet.AsNoTracking(), page, pageSize).ToArrayAsync(cancellationToken);
-
 
         public virtual async Task<T?> GetAsync(TIdType id, CancellationToken cancellationToken = default) =>
             await DbSet.AsNoTracking().FirstOrDefaultAsync(o => o.Id.Equals(id), cancellationToken);

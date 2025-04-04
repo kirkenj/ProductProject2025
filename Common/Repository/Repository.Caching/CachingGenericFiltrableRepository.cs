@@ -14,8 +14,8 @@ namespace Repository.Caching
         private readonly ILogger<CachingGenericFiltrableRepository<T, TIdType, TFilter>> _logger;
 
         public CachingGenericFiltrableRepository(
-            IGenericFiltrableRepository<T, TIdType, TFilter> genericRepository, 
-            ICustomMemoryCache customMemoryCache, 
+            IGenericFiltrableRepository<T, TIdType, TFilter> genericRepository,
+            ICustomMemoryCache customMemoryCache,
             ILogger<CachingGenericFiltrableRepository<T, TIdType, TFilter>> logger
             ) : base(genericRepository, customMemoryCache, logger)
         {
@@ -48,7 +48,6 @@ namespace Repository.Caching
 
             return repResult;
         }
-
 
         public virtual async Task<IReadOnlyCollection<T>> GetPageContentAsync(TFilter filter, int? page = default, int? pageSize = default, CancellationToken cancellationToken = default)
         {

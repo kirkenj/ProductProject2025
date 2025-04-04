@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Repository.Tests.Models;
+﻿using System.Collections;
 
-namespace Repository.Tests.Common
+namespace Repository.Models.Relational.Test.Models
 {
     public static class TestConstants
     {
-        public static readonly List<User> DefaultUsers = new()
-        {
+        public static readonly List<User> DefaultUsers =
+        [
             new()
             {
                 Id = Guid.Parse("11f694b8-d482-4f88-a4bd-dee39633c50e"),
@@ -55,36 +54,16 @@ namespace Repository.Tests.Common
                 Email = "Sanchezz@inbox.ru",
                 Address = "London"
             }
-        };
+        ];
 
-        public static async Task<TestDbContext> GetDbContextAsync(string? name = null)
+        public class EmptyUserFilterData : IEnumerable<object[]>
         {
-            var optionsBuilder = new DbContextOptionsBuilder<TestDbContext>();
-            optionsBuilder.UseInMemoryDatabase(name ?? Guid.NewGuid().ToString(), null);
-            TestDbContext testDbContext = new(optionsBuilder.Options);
-
-            testDbContext.Users.RemoveRange(testDbContext.Users);
-
-            testDbContext.Users.AddRange(DefaultUsers);
-
-            await testDbContext.SaveChangesAsync();
-
-            testDbContext.SaveChangesFailed += (a, e) => //idk whether it's a good solution
+            public IEnumerator<object[]> GetEnumerator()
             {
-                testDbContext.ChangeTracker.Clear();
-            };
+                yield return [new UserFilter()];
+            }
 
-            return testDbContext;
-        }
-
-        public static string CustomCacheCString => "localhost:3300";
-
-        public static RedisCustomMemoryCacheWithEvents GetEmptyReddis()
-        {
-            var val = new RedisCustomMemoryCacheWithEvents(CustomCacheCString);
-            val.ClearDb();
-            val.DropEvents();
-            return val;
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

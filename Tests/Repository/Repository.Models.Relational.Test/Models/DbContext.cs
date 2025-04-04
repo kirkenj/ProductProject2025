@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Tests.Models
+namespace Repository.Models.Relational.Test.Models
 {
     public class TestDbContext : DbContext
     {

@@ -1,4 +1,4 @@
-﻿namespace Repository.Tests.Models
+﻿namespace Repository.Models.Relational.Test.Models
 {
     public class UserFilter
     {
@@ -16,7 +16,7 @@
                 return set;
             }
 
-            if (filter.Ids != null && filter.Ids.Any())
+            if (filter.Ids != null && filter.Ids.Count != 0)
             {
                 set = set.Where(u => filter.Ids.Contains(u.Id));
             }

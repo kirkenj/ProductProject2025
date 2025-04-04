@@ -21,7 +21,6 @@ namespace Repository.Caching
         protected string CacheKeyPrefix => nameof(CachingGenericRepository<T, TIdType>);
         protected string CacheKeyFormatToAccessSingleViaId => CacheKeyPrefix + "{0}";
 
-
         public async Task AddAsync(T obj, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(obj);
@@ -100,9 +99,9 @@ namespace Repository.Caching
 
         public async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var key = CacheKeyPrefix + "All";
+            var cacheKeyAll = CacheKeyPrefix + "All";
 
-            var cacheResult = await _customMemoryCache.GetAsync<IReadOnlyCollection<T>>(key, cancellationToken);
+            var cacheResult = await _customMemoryCache.GetAsync<IReadOnlyCollection<T>>(cacheKeyAll, cancellationToken);
 
             if (cacheResult != null)
             {
@@ -112,8 +111,12 @@ namespace Repository.Caching
 
             var result = await _repository.GetAllAsync(cancellationToken);
 
-            var tasks = result.Select(r => SetCacheAsync(string.Format(CacheKeyFormatToAccessSingleViaId, r.Id), r, cancellationToken))
-                .Append(SetCacheAsync(key, result, cancellationToken));
+            var tasks = result.Select(r =>
+            {
+                var singleKey = string.Format(CacheKeyFormatToAccessSingleViaId, r.Id);
+                return SetCacheAsync(singleKey, r, cancellationToken);
+            })
+                .Append(SetCacheAsync(cacheKeyAll, result, cancellationToken));
 
             await Task.WhenAll(tasks);
 
