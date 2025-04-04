@@ -14,7 +14,6 @@ namespace AuthService.Core.Application.Tests.Features.User
     public class LoginHandlerTests
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly IHashProvider _hashProvider;
         private readonly IMapper _mapper;
         private readonly LoginHandler _handler;
@@ -22,10 +21,9 @@ namespace AuthService.Core.Application.Tests.Features.User
         public LoginHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
-            _roleRepository = Substitute.For<IRoleRepository>();
             _hashProvider = Substitute.For<IHashProvider>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new LoginHandler(_userRepository, _roleRepository, _hashProvider, _mapper);
+            _handler = new LoginHandler(_userRepository, _hashProvider, _mapper);
         }
 
         [Fact]

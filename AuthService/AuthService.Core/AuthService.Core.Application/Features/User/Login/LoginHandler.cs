@@ -16,7 +16,6 @@ namespace AuthService.Core.Application.Features.User.Login
         private readonly IMapper _mapper;
 
         public LoginHandler(IUserRepository userRepository,
-            IRoleRepository roleRepository,
             IHashProvider hashProvider,
             IMapper mapper)
         {
