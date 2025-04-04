@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\AuthService\AuthService.Core\AuthService.Core.Application\AuthService.Core.Application.csproj" />
   </ItemGroup>
 

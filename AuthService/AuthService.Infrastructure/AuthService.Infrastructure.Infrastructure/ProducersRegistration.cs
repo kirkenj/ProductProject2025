@@ -15,7 +15,6 @@ namespace AuthService.Infrastructure.Infrastructure
             services.RegisterProducer<UserRegistrationRequestCreated>(defaultSection);
             services.RegisterProducer<ForgotPassword>(defaultSection);
             services.RegisterProducer<AccountConfirmed>(defaultSection);
-            services.RegisterProducer<UserEmailChanged>(defaultSection);
             services.RegisterProducer<ChangeEmailRequest>(defaultSection);
 
             return services;
