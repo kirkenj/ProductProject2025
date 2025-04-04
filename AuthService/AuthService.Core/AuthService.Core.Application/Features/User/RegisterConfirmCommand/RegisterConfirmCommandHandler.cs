@@ -31,12 +31,9 @@ namespace AuthService.Core.Application.Features.User.RegisterConfirmCommand
         {
             try
             {
-                string loginEmail = request.Email;
-
-                string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, loginEmail, request.Token);
+                string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, request.Email, request.Token);
 
                 var cachedUserValue = await _memoryCache.GetAsync<Domain.Models.User>(cacheKey, cancellationToken);
-
                 if (cachedUserValue == null)
                 {
                     return Response<string>.NotFoundResponse("Invalid token or email");
