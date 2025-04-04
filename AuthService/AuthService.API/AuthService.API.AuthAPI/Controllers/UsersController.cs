@@ -62,7 +62,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return NotFound();
             }
 
-            Response<UserDto> result = await _mediator.Send(new GetUserDtoRequest() { Id = id.Value });
+            Response<UserDto> result = await _mediator.Send(new GetUserDetailRequest() { Id = id.Value });
             return result.GetActionResult();
         }
 
