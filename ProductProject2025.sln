@@ -135,6 +135,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Caching", "Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Models.Relational.Test", "Tests\Repository\Repository.Models.Relational.Test\Repository.Models.Relational.Test.csproj", "{4945401A-B5DB-4F48-895B-EF6BE0241743}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{43FDB319-3237-411E-AE0C-6589A024F165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Core.Application.Tests", "Tests\AuthService\AuthService.Core.Application.Tests\AuthService.Core.Application.Tests.csproj", "{89434CCB-C5B9-4783-9FB5-91C6D3791510}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +321,10 @@ Global
 		{4945401A-B5DB-4F48-895B-EF6BE0241743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4945401A-B5DB-4F48-895B-EF6BE0241743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4945401A-B5DB-4F48-895B-EF6BE0241743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89434CCB-C5B9-4783-9FB5-91C6D3791510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89434CCB-C5B9-4783-9FB5-91C6D3791510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89434CCB-C5B9-4783-9FB5-91C6D3791510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89434CCB-C5B9-4783-9FB5-91C6D3791510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +390,8 @@ Global
 		{2BCE87C2-AA09-4D59-8570-516DEBAB36A3} = {7AB7FAF5-20E9-4D2C-B373-508A4BC6AF15}
 		{710EBCDE-32FB-4BC9-9712-D3CAEC222488} = {DD15B616-8EA3-4C14-BA4E-B5E35AC39516}
 		{4945401A-B5DB-4F48-895B-EF6BE0241743} = {0177466B-6217-403E-B4C2-79E58802B9F4}
+		{43FDB319-3237-411E-AE0C-6589A024F165} = {0177466B-6217-403E-B4C2-79E58802B9F4}
+		{89434CCB-C5B9-4783-9FB5-91C6D3791510} = {43FDB319-3237-411E-AE0C-6589A024F165}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2DB40AF-E389-4793-9CD8-CCD99624132A}

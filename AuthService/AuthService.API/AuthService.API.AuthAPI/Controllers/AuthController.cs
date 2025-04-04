@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.Contracts;
-using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.ForgotPasswordComand;
 using AuthService.Core.Application.Features.User.Login;
+using AuthService.Core.Application.Models.DTOs.User;
 using CustomResponse;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

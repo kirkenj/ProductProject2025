@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.Features.User.DTOs;
+﻿using AuthService.Core.Application.Models.DTOs.User;
 
 namespace AuthService.API.AuthAPI.Contracts
 {

@@ -6,7 +6,6 @@ using AuthService.API.AuthAPI.ActionFIlters;
 using AuthService.API.AuthAPI.Contracts;
 using AuthService.API.AuthAPI.Models.Requests;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
-using AuthService.Core.Application.Features.User.DTOs;
 using AuthService.Core.Application.Features.User.GetUserDto;
 using AuthService.Core.Application.Features.User.GetUserList;
 using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
@@ -14,6 +13,7 @@ using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComan
 using AuthService.Core.Application.Features.User.UpdateUserLoginComand;
 using AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler;
 using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
+using AuthService.Core.Application.Models.DTOs.User;
 using Constants;
 using CustomResponse;
 using Extensions.ClaimsPrincipalExtensions;

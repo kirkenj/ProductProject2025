@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using AuthService.API.AuthAPI.Contracts;
 using AuthService.API.AuthAPI.Models.Jwt;
-using AuthService.Core.Application.Features.User.DTOs;
+using AuthService.Core.Application.Models.DTOs.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

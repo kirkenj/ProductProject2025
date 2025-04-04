@@ -1,8 +1,8 @@
-﻿using AuthService.Core.Application.Features.Role.DTOs;
-using AuthService.Core.Application.Features.User.Interfaces;
+﻿using AuthService.Core.Application.Features.User.Interfaces;
+using AuthService.Core.Application.Models.DTOs.Role;
 using Repository.Contracts;
 
-namespace AuthService.Core.Application.Features.User.DTOs
+namespace AuthService.Core.Application.Models.DTOs.User
 {
     public class UserDto : IIdObject<Guid>, IUserInfoDto
     {

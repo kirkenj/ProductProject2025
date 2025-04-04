@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.DTOs;
+using AuthService.Core.Application.Models.DTOs.User;
 using AutoMapper;
 using CustomResponse;
 using MediatR;

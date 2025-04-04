@@ -1,6 +1,6 @@
-﻿using AuthService.Core.Application.Features.Role.DTOs;
-using AuthService.Core.Application.Features.Role.GetRoleDetail;
+﻿using AuthService.Core.Application.Features.Role.GetRoleDetail;
 using AuthService.Core.Application.Features.Role.GetRoleListRequest;
+using AuthService.Core.Application.Models.DTOs.Role;
 using CustomResponse;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

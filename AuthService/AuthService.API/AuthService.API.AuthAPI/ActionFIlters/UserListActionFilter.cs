@@ -1,5 +1,5 @@
-﻿using AuthService.Core.Application.Features.Role.DTOs;
-using AuthService.Core.Application.Features.User.DTOs;
+﻿using AuthService.Core.Application.Models.DTOs.Role;
+using AuthService.Core.Application.Models.DTOs.User;
 using Constants;
 using Extensions.ClaimsPrincipalExtensions;
 using Microsoft.AspNetCore.Mvc;

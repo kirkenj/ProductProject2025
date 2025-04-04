@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.DTOs;
+using AuthService.Core.Application.Models.DTOs.User;
 using AutoMapper;
 using CustomResponse;
 using HashProvider.Contracts;
