@@ -30,9 +30,7 @@ namespace AuthService.Core.Application.Features.User.ForgotPasswordComand
 
         public async Task<Response<string>> Handle(ForgotPasswordComand request, CancellationToken cancellationToken)
         {
-            string emailAddress = request.Email;
-
-            Domain.Models.User? user = await _userRepository.GetAsync(new UserFilter { AccurateEmail = emailAddress });
+            Domain.Models.User? user = await _userRepository.GetAsync(new UserFilter { AccurateEmail = request.Email });
 
             var response = Response<string>.OkResponse("New password was sent on your email", "Success");
             if (user == null)
