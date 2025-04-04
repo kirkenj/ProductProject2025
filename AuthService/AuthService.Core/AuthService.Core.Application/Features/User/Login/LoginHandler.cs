@@ -28,8 +28,10 @@ namespace AuthService.Core.Application.Features.User.Login
         public async Task<Response<UserDto>> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
             var userToHandle = await _userRepository.GetAsync(new UserFilter { AccurateEmail = request.Email });
-
-            if (userToHandle == null) return Response<UserDto>.BadRequestResponse("Wrong password or email");
+            if (userToHandle == null)
+            {
+                return Response<UserDto>.BadRequestResponse("Wrong password or email");
+            }
 
             _hashProvider.HashAlgorithmName = userToHandle.HashAlgorithm;
             _hashProvider.Encoding = Encoding.GetEncoding(userToHandle.StringEncoding);

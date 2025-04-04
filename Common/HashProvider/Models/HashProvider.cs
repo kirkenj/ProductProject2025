@@ -42,5 +42,17 @@ namespace HashProvider.Models
 #pragma warning disable SYSLIB0045 // Type or member is obsolete
         private static HashAlgorithm? GetHashAlgorithm(string name) => HashAlgorithm.Create(name);
 #pragma warning restore SYSLIB0045 // Type or member is obsolete
+
+        public string GetHash(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
+
+            var pwdBytes = Encoding.GetBytes(password);
+            var pwdHash = HashFunction.ComputeHash(pwdBytes);
+            return Encoding.GetString(pwdHash);
+        }
     }
 }
