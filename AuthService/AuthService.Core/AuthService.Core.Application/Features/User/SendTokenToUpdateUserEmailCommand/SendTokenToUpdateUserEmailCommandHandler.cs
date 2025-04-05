@@ -29,22 +29,21 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
 
         public async Task<Response<string>> Handle(SendTokenToUpdateUserEmailRequest request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.Id, cancellationToken);
-            if (user == null)
+            if (await _userRepository.GetAsync(request.Id, cancellationToken) == null)
             {
-                return Response<string>.NotFoundResponse(nameof(user.Id), true);
+                return Response<string>.NotFoundResponse(nameof(Domain.Models.User), true);
             }
 
             var changeEmailRequest = new ChangeEmailRequest
             {
                 OtpToNewEmail = _passwordGenerator.Generate(),
-                UserId = user.Id,
+                UserId = request.Id,
                 NewEmail = request.Email,
                 OtpToOldEmail = _passwordGenerator.Generate()
             };
 
             await _memoryCache.SetAsync(
-                string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, user.Id),
+                string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, request.Id),
                 changeEmailRequest,
                 TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours),
                 cancellationToken);
