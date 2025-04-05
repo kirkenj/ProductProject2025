@@ -34,7 +34,11 @@ namespace ProductService.Core.Application.Tests.Features.Product
             var productList = new List<Domain.Models.Product>();
             var productDtoList = new List<ProductListDto>();
 
-            _producrRepository.GetPageContentAsync(Arg.Is(request.ProductFilter), Arg.Is(request.Page), Arg.Is(request.PageSize))
+            _producrRepository.GetPageContentAsync(
+                Arg.Is(request.ProductFilter), 
+                Arg.Is(request.Page), 
+                Arg.Is(request.PageSize),
+                Arg.Any<CancellationToken>())
                 .Returns(productList);
 
             _mapper.Map<List<ProductListDto>>(Arg.Is(productList)).Returns(productDtoList);

@@ -34,7 +34,11 @@ namespace AuthService.Core.Application.Tests.Features.User
             var userList = new List<Domain.Models.User>();
             var userDtoList = new List<UserDto>();
 
-            _userRepository.GetPageContentAsync(Arg.Is(request.UserFilter), Arg.Is(request.Page), Arg.Is(request.PageSize))
+            _userRepository.GetPageContentAsync(
+                Arg.Is(request.UserFilter), 
+                Arg.Is(request.Page), 
+                Arg.Is(request.PageSize),
+                Arg.Any<CancellationToken>())
                 .Returns(userList);
 
             _mapper.Map<List<UserDto>>(Arg.Is(userList)).Returns(userDtoList);
