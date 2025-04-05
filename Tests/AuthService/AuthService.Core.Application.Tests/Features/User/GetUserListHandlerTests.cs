@@ -35,8 +35,8 @@ namespace AuthService.Core.Application.Tests.Features.User
             var userDtoList = new List<UserDto>();
 
             _userRepository.GetPageContentAsync(
-                Arg.Is(request.UserFilter), 
-                Arg.Is(request.Page), 
+                Arg.Is(request.UserFilter),
+                Arg.Is(request.Page),
                 Arg.Is(request.PageSize),
                 Arg.Any<CancellationToken>())
                 .Returns(userList);

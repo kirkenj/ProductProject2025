@@ -35,8 +35,8 @@ namespace ProductService.Core.Application.Tests.Features.Product
             var productDtoList = new List<ProductListDto>();
 
             _producrRepository.GetPageContentAsync(
-                Arg.Is(request.ProductFilter), 
-                Arg.Is(request.Page), 
+                Arg.Is(request.ProductFilter),
+                Arg.Is(request.Page),
                 Arg.Is(request.PageSize),
                 Arg.Any<CancellationToken>())
                 .Returns(productList);

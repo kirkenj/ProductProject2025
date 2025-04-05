@@ -3,6 +3,7 @@ using MediatR;
 using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.ProductService;
 using ProductService.Core.Application.Contracts.Persistence;
+using ProductService.Core.Domain.Models;
 
 namespace ProductService.Core.Application.Features.Products.RemoveProduct
 {
@@ -19,14 +20,13 @@ namespace ProductService.Core.Application.Features.Products.RemoveProduct
 
         public async Task<Response<string>> Handle(RemovePrductComand request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetAsync(request.ProductId);
-
+            var product = await _productRepository.GetAsync(request.ProductId, cancellationToken);
             if (product == null)
             {
-                return Response<string>.NotFoundResponse(nameof(product.Id), true);
+                return Response<string>.NotFoundResponse(nameof(Product), true);
             }
 
-            await _productRepository.DeleteAsync(product.Id);
+            await _productRepository.DeleteAsync(product.Id, cancellationToken);
 
             await _productDeletedProducer.ProduceAsync(new()
             {

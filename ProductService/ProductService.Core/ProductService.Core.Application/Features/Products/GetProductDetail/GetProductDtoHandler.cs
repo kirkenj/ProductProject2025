@@ -20,7 +20,7 @@ namespace ProductService.Core.Application.Features.Products.GetProductDetail
         public async Task<Response<ProductDto>> Handle(GetProductDtoRequest request, CancellationToken cancellationToken)
         {
             var product = await _producrRepository.GetAsync(request.Id, cancellationToken);
-            
+
             return product == null ?
                 Response<ProductDto>.NotFoundResponse(nameof(request.Id), true)
                 : Response<ProductDto>.OkResponse(_mapper.Map<ProductDto>(product), "Success");

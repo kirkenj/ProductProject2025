@@ -20,9 +20,9 @@ namespace ProductService.Core.Application.Features.Products.CreateProduct
         private readonly ILogger<CreateProductCommandHandler> _logger;
 
         public CreateProductCommandHandler(
-            IProductRepository productRepository, 
-            IMapper mapper, 
-            IAuthApiClientService authClientService, 
+            IProductRepository productRepository,
+            IMapper mapper,
+            IAuthApiClientService authClientService,
             IKafkaProducer<ProductCreated> notificationProducer,
             ILogger<CreateProductCommandHandler> logger)
         {
