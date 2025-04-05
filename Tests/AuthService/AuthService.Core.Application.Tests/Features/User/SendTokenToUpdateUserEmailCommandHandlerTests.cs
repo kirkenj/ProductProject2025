@@ -67,6 +67,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         [Fact]
         public async Task Handle_RequestValid_SendsNotificationCachesToken()
         {
+            // Arrange
             var request = new SendTokenToUpdateUserEmailRequest
             {
                 Email = "SomeEmail",

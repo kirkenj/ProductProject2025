@@ -1,33 +1,30 @@
-﻿using AuthService.Core.Application.Contracts.Application;
-using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHandler;
+﻿using AuthService.Core.Application.Contracts.Persistence;
+using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
 using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
 namespace AuthService.Core.Application.Tests.Features.User
 {
-    public class UpdateUserPasswordCommandHandlerTests
+    public class UpdateUserRoleCommandHandlerTests
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordSetter _passwordSetter;
-        private readonly UpdateUserPasswordCommandHandler _handler;
+        private readonly UpdateUserRoleCommandHandler _handler;
 
-        public UpdateUserPasswordCommandHandlerTests()
+        public UpdateUserRoleCommandHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
-            _passwordSetter = Substitute.For<IPasswordSetter>();
-            _handler = new UpdateUserPasswordCommandHandler(_userRepository, _passwordSetter);
+            _handler = new UpdateUserRoleCommandHandler(_userRepository);
         }
 
         [Fact]
         public async Task Handle_UserNotFound_ReturnsNotFound()
         {
             // Arrange
-            var request = new UpdateUserPasswordCommand
+            var request = new UpdateUserRoleCommand
             {
                 Id = Guid.NewGuid(),
-                Password = "SomePassword"
+                RoleID = 3
             };
 
             _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
@@ -43,13 +40,13 @@ namespace AuthService.Core.Application.Tests.Features.User
         }
 
         [Fact]
-        public async Task Handle_UserFound_UpdatesPasswordReturnsOk()
+        public async Task Handle_UserFound_UpdatesRoleReturnsOk()
         {
             // Arrange
-            var request = new UpdateUserPasswordCommand
+            var request = new UpdateUserRoleCommand
             {
                 Id = Guid.NewGuid(),
-                Password = "SomePassword"
+                RoleID = 3
             };
 
             var targetUser = new Domain.Models.User { };
@@ -57,13 +54,12 @@ namespace AuthService.Core.Application.Tests.Features.User
             _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
                 .Returns(targetUser);
 
-            var expectedResult = Response<string>.OkResponse("Ok", "Password updated");
+            var expectedResult = Response<string>.OkResponse("Ok", "Role updated");
 
             // Act
             var result = await _handler.Handle(request, default);
 
             // Assert
-            _passwordSetter.Received().SetPassword(Arg.Is(request.Password), Arg.Is(targetUser));
             await _userRepository.Received().UpdateAsync(Arg.Is(targetUser), Arg.Any<CancellationToken>());
             Assert.Equivalent(result, expectedResult);
         }

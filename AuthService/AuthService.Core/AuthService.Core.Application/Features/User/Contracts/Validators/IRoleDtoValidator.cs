@@ -9,10 +9,7 @@ namespace AuthService.Core.Application.Features.User.Interfaces.Validators
         {
             RuleFor(p => p.RoleID)
                 .MustAsync(async (id, cancellationToken) =>
-                {
-                    var role = await roleRepository.GetAsync(id);
-                    return role != null;
-                })
+                    await roleRepository.GetAsync(id, cancellationToken) == null)
                 .WithMessage("Role with this id does not exist");
         }
     }

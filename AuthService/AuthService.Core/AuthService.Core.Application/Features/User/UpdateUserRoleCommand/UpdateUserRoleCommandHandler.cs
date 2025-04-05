@@ -18,7 +18,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
             Domain.Models.User? user = await _userRepository.GetAsync(request.Id, cancellationToken);
             if (user == null)
             {
-                return Response<string>.NotFoundResponse(nameof(user.Email), true);
+                return Response<string>.NotFoundResponse(nameof(Domain.Models.User), true);
             }
 
             user.RoleID = request.RoleID;
