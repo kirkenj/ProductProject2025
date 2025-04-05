@@ -1,7 +1,6 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Features.User.RegisterUserCommand;
 using AuthService.Core.Application.Models.User.Settings;
-using AuthService.Core.Application.Services;
 using AutoMapper;
 using Cache.Contracts;
 using CustomResponse;

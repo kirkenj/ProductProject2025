@@ -1,5 +1,4 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
-using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Application.Models.User.Settings;
 using AutoMapper;
 using Cache.Contracts;

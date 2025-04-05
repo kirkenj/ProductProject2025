@@ -16,18 +16,18 @@ namespace AuthService.Core.Application.Features.User.UpdateUserLoginCommand
 
         public async Task<Response<string>> Handle(UpdateUserLoginCommand request, CancellationToken cancellationToken)
         {
+            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.Id);
+            if (userToUpdate == null)
+            {
+                return Response<string>.NotFoundResponse(nameof(Domain.Models.User), true);
+            }
+
             var newLogin = request.NewLogin;
 
             Domain.Models.User? userWithNewlogin = await _userRepository.GetAsync(new UserFilter() { AccurateLogin = newLogin });
             if (userWithNewlogin != null)
             {
                 return Response<string>.BadRequestResponse("This login is already taken");
-            }
-
-            Domain.Models.User? userToUpdate = await _userRepository.GetAsync(request.Id);
-            if (userToUpdate == null)
-            {
-                return Response<string>.NotFoundResponse(nameof(userToUpdate.Id), true);
             }
 
             userToUpdate.Login = newLogin;

@@ -38,7 +38,7 @@ namespace AuthService.Core.Application.Tests.Features.User
                 .Returns(userList);
 
             _mapper.Map<List<UserDto>>(Arg.Is(userList)).Returns(userDtoList);
-        
+
             var expectedResult = Response<List<UserDto>>.OkResponse(userDtoList, "Success");
 
             // Act

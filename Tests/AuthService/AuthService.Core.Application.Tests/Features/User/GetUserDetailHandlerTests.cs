@@ -36,7 +36,7 @@ namespace AuthService.Core.Application.Tests.Features.User
 
             // Act
             var result = await _handler.Handle(request, default);
-        
+
             // Assert
             Assert.Equivalent(expectedResult, result);
         }
@@ -62,7 +62,7 @@ namespace AuthService.Core.Application.Tests.Features.User
 
             // Act
             var result = await _handler.Handle(request, default);
-        
+
             // Assert
             Assert.Equivalent(expectedResult, result);
         }
