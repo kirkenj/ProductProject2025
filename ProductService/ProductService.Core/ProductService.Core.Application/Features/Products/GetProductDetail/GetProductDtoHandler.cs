@@ -19,14 +19,11 @@ namespace ProductService.Core.Application.Features.Products.GetProductDetail
 
         public async Task<Response<ProductDto>> Handle(GetProductDtoRequest request, CancellationToken cancellationToken)
         {
-            var user = await _producrRepository.GetAsync(request.Id);
-
-            if (user == null)
-            {
-                return Response<ProductDto>.NotFoundResponse(nameof(request.Id), true);
-            }
-
-            return Response<ProductDto>.OkResponse(_mapper.Map<ProductDto>(user), "Success");
+            var product = await _producrRepository.GetAsync(request.Id);
+            
+            return product == null ?
+                Response<ProductDto>.NotFoundResponse(nameof(request.Id), true)
+                : Response<ProductDto>.OkResponse(_mapper.Map<ProductDto>(product), "Success");
         }
     }
 }
