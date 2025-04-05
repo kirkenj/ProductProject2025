@@ -2,7 +2,7 @@
 using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
-namespace AuthService.Core.Application.Features.User.RegisterUserComand
+namespace AuthService.Core.Application.Features.User.RegisterUserCommand
 {
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {

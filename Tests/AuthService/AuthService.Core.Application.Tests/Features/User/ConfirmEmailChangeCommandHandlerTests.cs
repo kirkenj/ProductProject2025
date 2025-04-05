@@ -11,14 +11,14 @@ using NSubstitute.ReturnsExtensions;
 
 namespace AuthService.Core.Application.Tests.Features.User
 {
-    public class ConfirmEmailChangeComandHandlerTests
+    public class ConfirmEmailChangeCommandHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly ICustomMemoryCache _memoryCache;
         private readonly UpdateUserEmailSettings _updateUserEmailSettings;
         private readonly ConfirmEmailChangeComandHandler _handler;
 
-        public ConfirmEmailChangeComandHandlerTests()
+        public ConfirmEmailChangeCommandHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _memoryCache = Substitute.For<ICustomMemoryCache>();

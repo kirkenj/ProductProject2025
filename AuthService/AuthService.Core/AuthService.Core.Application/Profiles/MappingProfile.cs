@@ -1,5 +1,5 @@
-﻿using AuthService.Core.Application.Features.User.RegisterUserComand;
-using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand;
+﻿using AuthService.Core.Application.Features.User.RegisterUserCommand;
+using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand;
 using AuthService.Core.Application.Models.DTOs.Role;
 using AuthService.Core.Application.Models.DTOs.User;
 using AuthService.Core.Domain.Models;
@@ -13,7 +13,7 @@ namespace AuthService.Core.Application.Profiles
         {
             CreateMap<User, UserDto>();
             CreateMap<RegisterUserCommand, User>().ReverseMap();
-            CreateMap<User, UpdateNotSensitiveUserInfoComand>();
+            CreateMap<User, UpdateNotSensitiveUserInfoCommand>();
             CreateMap<Role, RoleDto>().ReverseMap();
         }
     }

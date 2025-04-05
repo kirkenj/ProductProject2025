@@ -14,12 +14,7 @@ namespace AuthService.Core.Application.Features.User.Interfaces.Validators
                 .MustAsync(async (Email, cancellationToken) =>
                 {
                     var resultUser = await userRepository.GetAsync(new UserFilter { AccurateEmail = Email });
-                    if (resultUser == null)
-                    {
-                        return true;
-                    }
-
-                    return resultUser.Email != Email;
+                    return resultUser == null;
                 })
                 .WithMessage("{PropertyName} is taken");
         }

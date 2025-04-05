@@ -3,9 +3,9 @@ using CustomResponse;
 using MediatR;
 using Repository.Contracts;
 
-namespace AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand
+namespace AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand
 {
-    public class UpdateNotSensitiveUserInfoComand : IRequest<Response<string>>, IIdObject<Guid>, IUserInfoDto
+    public class UpdateNotSensitiveUserInfoCommand : IRequest<Response<string>>, IIdObject<Guid>, IUserInfoDto
     {
         public Guid Id { get; set; }
         public string Address { get; set; } = null!;

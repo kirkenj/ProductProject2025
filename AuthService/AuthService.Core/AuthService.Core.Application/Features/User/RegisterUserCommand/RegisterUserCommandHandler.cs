@@ -1,4 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
+using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Application.Models.User.Settings;
 using AutoMapper;
 using Cache.Contracts;
@@ -8,9 +9,9 @@ using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
-namespace AuthService.Core.Application.Features.User.RegisterUserComand
+namespace AuthService.Core.Application.Features.User.RegisterUserCommand
 {
-    public class RegisterUserComandHandler : IRequestHandler<RegisterUserCommand, Response<string>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Response<string>>
     {
         private readonly IPasswordSetter _passwordSetter;
         private readonly CreateUserSettings _createUserSettings;
@@ -19,7 +20,7 @@ namespace AuthService.Core.Application.Features.User.RegisterUserComand
         private readonly IKafkaProducer<UserRegistrationRequestCreated> _userRegistrationRequestCreatedKafkaProducer;
         private readonly IMapper _mapper;
 
-        public RegisterUserComandHandler(IOptions<CreateUserSettings> createUserSettings,
+        public RegisterUserCommandHandler(IOptions<CreateUserSettings> createUserSettings,
             IMapper mapper,
             IPasswordGenerator passwordGenerator,
             ICustomMemoryCache memoryCache,
@@ -35,7 +36,7 @@ namespace AuthService.Core.Application.Features.User.RegisterUserComand
         }
 
         public async Task<Response<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
-        {
+        {   // P.S.  check for free Email is handled into validator (spagetti code, lol :DDD)
             Domain.Models.User user = _mapper.Map<Domain.Models.User>(request);
 
             user.Id = Guid.NewGuid();

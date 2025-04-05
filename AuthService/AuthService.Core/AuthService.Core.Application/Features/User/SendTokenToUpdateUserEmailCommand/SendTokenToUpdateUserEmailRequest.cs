@@ -3,7 +3,7 @@ using CustomResponse;
 using MediatR;
 using Repository.Contracts;
 
-namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand
+namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand
 {
     public class SendTokenToUpdateUserEmailRequest : IRequest<Response<string>>, IEmailUpdateDto, IIdObject<Guid>
     {

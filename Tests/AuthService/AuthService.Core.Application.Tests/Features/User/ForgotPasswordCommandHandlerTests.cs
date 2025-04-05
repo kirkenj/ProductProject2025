@@ -10,21 +10,21 @@ using NSubstitute.ReturnsExtensions;
 
 namespace AuthService.Core.Application.Tests.Features.User
 {
-    public class ForgotPasswordComandHandlerTests
+    public class ForgotPasswordCommandHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly IKafkaProducer<ForgotPassword> _producer;
         private readonly IPasswordSetter _passwordSetter;
         private readonly IPasswordGenerator _passwordGenerator;
-        private readonly ForgotPasswordComandHandler _handler;
+        private readonly ForgotPasswordCommandHandler _handler;
 
-        public ForgotPasswordComandHandlerTests()
+        public ForgotPasswordCommandHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _producer = Substitute.For<IKafkaProducer<ForgotPassword>>();
             _passwordSetter = Substitute.For<IPasswordSetter>();
             _passwordGenerator = Substitute.For<IPasswordGenerator>();
-            _handler = new ForgotPasswordComandHandler(_userRepository, _producer, _passwordSetter, _passwordGenerator);
+            _handler = new ForgotPasswordCommandHandler(_userRepository, _producer, _passwordSetter, _passwordGenerator);
         }
 
         [Fact]

@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Features.User.RegisterConfirmCommand;
-using AuthService.Core.Application.Features.User.RegisterUserComand;
+using AuthService.Core.Application.Features.User.RegisterUserCommand;
 using CustomResponse;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

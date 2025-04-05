@@ -2,7 +2,7 @@
 using CustomResponse;
 using MediatR;
 
-namespace AuthService.Core.Application.Features.User.RegisterUserComand
+namespace AuthService.Core.Application.Features.User.RegisterUserCommand
 {
     public class RegisterUserCommand : IRequest<Response<string>>, IEmailUpdateDto, IUserInfoDto
     {

@@ -8,9 +8,9 @@ using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.AuthService;
 using Microsoft.Extensions.Options;
 
-namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand
+namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand
 {
-    public class SendTokenToUpdateUserEmailComandHandler : IRequestHandler<SendTokenToUpdateUserEmailRequest, Response<string>>
+    public class SendTokenToUpdateUserEmailCommandHandler : IRequestHandler<SendTokenToUpdateUserEmailRequest, Response<string>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IKafkaProducer<ChangeEmailRequest> _changeEmailRequestCreatedProducer;
@@ -18,7 +18,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
         private readonly ICustomMemoryCache _memoryCache;
         private readonly UpdateUserEmailSettings _updateUserEmailSettings;
 
-        public SendTokenToUpdateUserEmailComandHandler(IUserRepository userRepository, ICustomMemoryCache memoryCache, IPasswordGenerator passwordGenerator, IOptions<UpdateUserEmailSettings> options, IKafkaProducer<ChangeEmailRequest> changeEmailRequestCreatedProducer)
+        public SendTokenToUpdateUserEmailCommandHandler(IUserRepository userRepository, ICustomMemoryCache memoryCache, IPasswordGenerator passwordGenerator, IOptions<UpdateUserEmailSettings> options, IKafkaProducer<ChangeEmailRequest> changeEmailRequestCreatedProducer)
         {
             _userRepository = userRepository;
             _changeEmailRequestCreatedProducer = changeEmailRequestCreatedProducer;
@@ -29,8 +29,7 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
 
         public async Task<Response<string>> Handle(SendTokenToUpdateUserEmailRequest request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
-
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id, cancellationToken);
             if (user == null)
             {
                 return Response<string>.NotFoundResponse(nameof(user.Id), true);
@@ -47,7 +46,8 @@ namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailC
             await _memoryCache.SetAsync(
                 string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, user.Id),
                 changeEmailRequest,
-                TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours));
+                TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours),
+                cancellationToken);
 
             await _changeEmailRequestCreatedProducer.ProduceAsync(changeEmailRequest, cancellationToken);
 

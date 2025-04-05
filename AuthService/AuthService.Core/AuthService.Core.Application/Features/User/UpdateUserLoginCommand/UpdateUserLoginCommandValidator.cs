@@ -2,11 +2,11 @@
 using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
-namespace AuthService.Core.Application.Features.User.UpdateUserLoginComand
+namespace AuthService.Core.Application.Features.User.UpdateUserLoginCommand
 {
-    public class UpdateUserLoginComandValidator : AbstractValidator<UpdateUserLoginComand>
+    public class UpdateUserLoginCommandValidator : AbstractValidator<UpdateUserLoginCommand>
     {
-        public UpdateUserLoginComandValidator(IUserRepository userRepository)
+        public UpdateUserLoginCommandValidator(IUserRepository userRepository)
         {
             Include(new IIdDtoValidator<Guid>());
 

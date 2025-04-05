@@ -3,9 +3,9 @@ using CustomResponse;
 using MediatR;
 using Repository.Contracts;
 
-namespace AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler
+namespace AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHandler
 {
-    public class UpdateUserPasswordComand : IRequest<Response<string>>, IPasswordDto, IIdObject<Guid>
+    public class UpdateUserPasswordCommand : IRequest<Response<string>>, IPasswordDto, IIdObject<Guid>
     {
         public Guid Id { get; set; }
         public string Password { get; set; } = null!;

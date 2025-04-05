@@ -15,8 +15,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
 
         public async Task<Response<string>> Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
         {
-            Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
-
+            Domain.Models.User? user = await _userRepository.GetAsync(request.Id, cancellationToken);
             if (user == null)
             {
                 return Response<string>.NotFoundResponse(nameof(user.Email), true);
@@ -24,7 +23,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserRoleCommand
 
             user.RoleID = request.RoleID;
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user, cancellationToken);
 
             return Response<string>.OkResponse("Ok", "Role updated");
         }

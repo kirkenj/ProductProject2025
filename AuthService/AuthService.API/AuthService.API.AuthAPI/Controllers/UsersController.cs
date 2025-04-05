@@ -8,10 +8,10 @@ using AuthService.API.AuthAPI.Models.Requests;
 using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
 using AuthService.Core.Application.Features.User.GetUserDto;
 using AuthService.Core.Application.Features.User.GetUserList;
-using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand;
-using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoComand;
-using AuthService.Core.Application.Features.User.UpdateUserLoginComand;
-using AuthService.Core.Application.Features.User.UpdateUserPasswordComandHandler;
+using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand;
+using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand;
+using AuthService.Core.Application.Features.User.UpdateUserLoginCommand;
+using AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHandler;
 using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
 using AuthService.Core.Application.Models.DTOs.User;
 using Constants;
@@ -83,7 +83,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return Forbid();
             }
 
-            Response<string> result = await _mediator.Send(new UpdateNotSensitiveUserInfoComand
+            Response<string> result = await _mediator.Send(new UpdateNotSensitiveUserInfoCommand
             {
                 Id = id.Value,
                 Address = updateUserModel.Address,
@@ -167,7 +167,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return Forbid();
             }
 
-            Response<string> result = await _mediator.Send(new UpdateUserLoginComand
+            Response<string> result = await _mediator.Send(new UpdateUserLoginCommand
             {
                 Id = id.Value,
                 NewLogin = newLogin
@@ -216,7 +216,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return Forbid();
             }
 
-            Response<string> result = await _mediator.Send(new UpdateUserPasswordComand
+            Response<string> result = await _mediator.Send(new UpdateUserPasswordCommand
             {
                 Id = id.Value,
                 Password = newPassword

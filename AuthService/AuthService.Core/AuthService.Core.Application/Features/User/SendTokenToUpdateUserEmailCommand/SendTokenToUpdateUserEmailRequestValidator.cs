@@ -2,7 +2,7 @@
 using AuthService.Core.Application.Features.User.Interfaces.Validators;
 using FluentValidation;
 
-namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailComand
+namespace AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand
 {
     public class SendTokenToUpdateUserEmailRequestValidator : AbstractValidator<SendTokenToUpdateUserEmailRequest>
     {

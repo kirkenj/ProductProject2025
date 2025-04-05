@@ -9,14 +9,14 @@ using Messaging.Messages.AuthService;
 
 namespace AuthService.Core.Application.Features.User.ForgotPasswordComand
 {
-    public class ForgotPasswordComandHandler : IRequestHandler<ForgotPasswordComand, Response<string>>
+    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComand, Response<string>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IKafkaProducer<ForgotPassword> _forgotPasswordProducer;
         private readonly IPasswordSetter _passwordSetter;
         private readonly IPasswordGenerator _passwordGenerator;
 
-        public ForgotPasswordComandHandler(
+        public ForgotPasswordCommandHandler(
             IUserRepository userRepository,
             IKafkaProducer<ForgotPassword> forgotPasswordProducer,
             IPasswordSetter passwordSetter,
