@@ -21,7 +21,7 @@ namespace AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHa
             Domain.Models.User? user = await _userRepository.GetAsync(request.Id);
             if (user == null)
             {
-                return Response<string>.NotFoundResponse(nameof(user.Id), true);
+                return Response<string>.NotFoundResponse(nameof(Domain.Models.User), true);
             }
 
             _passwordSetter.SetPassword(request.Password, user);
