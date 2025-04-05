@@ -13,7 +13,7 @@ namespace AuthService.Core.Application.Profiles
         {
             CreateMap<User, UserDto>();
             CreateMap<RegisterUserCommand, User>().ReverseMap();
-            CreateMap<User, UpdateNotSensitiveUserInfoCommand>();
+            CreateMap<UpdateNotSensitiveUserInfoCommand, User>().ReverseMap();
             CreateMap<Role, RoleDto>().ReverseMap();
         }
     }
