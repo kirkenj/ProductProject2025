@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Clients.AuthApi;
+using Clients.Adapters.AuthClient.Contracts;
 using NotificationService.Core.Application.Contracts.Application;
 
 namespace NotificationService.Core.Application.Features.ProductService.ProductDeleted
@@ -9,6 +9,7 @@ namespace NotificationService.Core.Application.Features.ProductService.ProductDe
         public string UserId { get; set; } = string.Empty;
         public string ProductId { get; set; } = string.Empty;
         [JsonIgnore]
-        public UserDto UserDto { get; set; } = null!;
+        public AuthClientUser? UserDto { get; set; } = null!;
+        public string ProductName { get; set; } = string.Empty;
     }
 }

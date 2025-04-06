@@ -13,11 +13,16 @@
   </ItemGroup>
 	
   <ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\Clients\Adapters\AuthClient\Clients.Adapters.AuthClient.Contracts\Clients.Adapters.AuthClient.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Kafka.Producer\Messaging.Kafka.Producer.Contracts\Messaging.Kafka.Producer.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.ProductService\Messaging.Messages.ProductService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Response\CustomResponse.csproj" />
 	  <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Domain\ProductService.Core.Domain.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Contracts\Infrastructure\" />
   </ItemGroup>
 
 </Project>

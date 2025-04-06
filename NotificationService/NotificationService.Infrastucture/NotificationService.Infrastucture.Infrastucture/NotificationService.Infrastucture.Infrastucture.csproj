@@ -13,7 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Cache\Cache.Models.InMemory\Cache.Models.InMemory.csproj" />
+    <ProjectReference Include="..\..\..\Common\Cache\Cache.Models.Reddis\Cache.Models.Reddis.csproj" />
+    <ProjectReference Include="..\..\..\Common\Clients\Adapters\AuthClient\Clients.Adapters.AuthClient.Services\Clients.Adapters.AuthClient.Services.csproj" />
+    <ProjectReference Include="..\..\..\Common\Clients\Adapters\ProductClient\Clients.Adapters.ProductClient.Services\Clients.Adapters.ProductClient.Services.csproj" />
     <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.Services\EmailSender.Services.csproj" />
+    <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
   </ItemGroup>
 
 </Project>

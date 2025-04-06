@@ -9,7 +9,7 @@ namespace CustomResponse
         public string Message { get; set; } = string.Empty;
         public T? Result { get; set; } = default!;
         public HttpStatusCode StatusCode { get; set; } = default!;
-        public bool Success => (int)StatusCode - 200 < 100;
+        public bool Success => (int)StatusCode - 200 < 100 && (int)StatusCode - 200 >= 0;
 
 
         public static Response<T> BadRequestResponse(string message) => new()

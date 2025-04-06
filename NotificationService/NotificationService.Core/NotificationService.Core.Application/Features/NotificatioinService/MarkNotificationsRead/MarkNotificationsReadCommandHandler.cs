@@ -34,7 +34,7 @@ namespace NotificationService.Core.Application.Features.NotificatioinService.Mar
                 var updateTasks = notificationsToMark.Select(notification =>
                 {
                     notification.IsRead = true;
-                    return _notificationRepository.UpdateAsync(notification);
+                    return _notificationRepository.UpdateAsync(notification, cancellationToken);
                 });
 
                 await Task.WhenAll(updateTasks);

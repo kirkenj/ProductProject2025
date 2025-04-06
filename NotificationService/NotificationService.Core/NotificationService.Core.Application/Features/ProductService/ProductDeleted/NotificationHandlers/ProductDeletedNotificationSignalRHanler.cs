@@ -12,16 +12,12 @@ namespace NotificationService.Core.Application.Features.ProductService.ProductDe
         {
         }
 
-        protected override Task<SignalRNotification> GetNotificatoinForTargetService(ProductDeletedNotification notification, CancellationToken cancellationToken)
+        protected override Task<SignalRNotification> GetNotificatoinForTargetService(ProductDeletedNotification notification, CancellationToken cancellationToken) => Task.FromResult(new SignalRNotification
         {
-            return Task.FromResult(
-                new SignalRNotification
-                {
-                    UserId = notification.UserId,
-                    Body = JsonSerializer.Serialize(notification),
-                    Subject = Resources.ProductCreatedNotificationType
-                }
-                );
-        }
+            UserId = notification.UserId,
+            Body = JsonSerializer.Serialize(notification),
+            Subject = Resources.ProductCreatedNotificationType
+        });
     }
 }
+

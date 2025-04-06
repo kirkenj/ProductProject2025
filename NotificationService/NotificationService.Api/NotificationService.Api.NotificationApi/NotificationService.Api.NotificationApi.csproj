@@ -24,8 +24,4 @@
     <ProjectReference Include="..\NotificationService.Api.Consumers\NotificationService.Api.Consumers.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
-
 </Project>

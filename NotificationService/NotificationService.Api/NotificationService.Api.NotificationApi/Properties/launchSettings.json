@@ -7,6 +7,8 @@
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "UseConsoleEmailSender": "true",
+                "RedisUri": "localhost:3300",
+                "UseDefaultCache": "false",
                 "AuthApiAddress": "https://localhost:7067",
                 "ProductApiAddress": "https://localhost:7198",
                 "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"
@@ -21,6 +23,8 @@
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "UseConsoleEmailSender": "true",
+                "RedisUri": "localhost:3300",
+                "UseDefaultCache": "false",
                 "AuthApiAddress": "https://localhost:7067",
                 "ProductApiAddress": "https://localhost:7198",
                 "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"

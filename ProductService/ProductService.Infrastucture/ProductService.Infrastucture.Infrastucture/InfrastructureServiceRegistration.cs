@@ -1,13 +1,10 @@
-﻿using System.Reflection;
-using Cache.Models.InMemory;
+﻿using Cache.Models.InMemory;
 using Cache.Models.Reddis;
-using Clients.AuthApi;
+using Clients.Adapters.AuthClient.Services;
 using Exceptions;
 using HttpDelegatingHandlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProductService.Core.Application.Contracts.AuthService;
-using ProductService.Infrastucture.Infrastucture.AuthClient;
 
 
 namespace ProductService.Infrastucture.Infrastucture
@@ -27,22 +24,15 @@ namespace ProductService.Infrastucture.Infrastucture
 
             services.AddHttpClient(HTTTP_CLIENT_NAME).AddHttpMessageHandler<AuthHeaderHandler>();
 
-            services.AddScoped<IAuthApiClient, AuthApiClient>(sp =>
+            var settings = new AuthClientSettings()
             {
-                var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
-                var client = clientFactory.CreateClient(HTTTP_CLIENT_NAME);
-                var url = Environment.GetEnvironmentVariable(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME)
-                    ?? throw new CouldNotGetEnvironmentVariableException(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME);
-                return new AuthApiClient(url, client);
-            });
-
-            services.AddScoped<IAuthApiClientService, AuthClientService>();
-
-            var assembly = Assembly.GetExecutingAssembly();
-            services.AddAutoMapper(assembly);
+                ServiceUri = Environment.GetEnvironmentVariable(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME)
+                    ?? throw new CouldNotGetEnvironmentVariableException(AUTH_API_URI_ENVIRONMENT_VARIBALE_NAME, typeof(string).Name),
+                HttpClientName = HTTTP_CLIENT_NAME
+            };
+            services.AddAuthClientService(settings);
 
             var useDefaultCacheStr = Environment.GetEnvironmentVariable(USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME);
-
             if (useDefaultCacheStr != null && bool.TryParse(useDefaultCacheStr, out bool result) && result)
             {
                 services.AddInMemoruCustomMemoryCache();
@@ -50,7 +40,7 @@ namespace ProductService.Infrastucture.Infrastucture
             else
             {
                 var redisConString = Environment.GetEnvironmentVariable(REDIS_URL_ENVIRONMENT_VARIBALE_NAME)
-                    ?? throw new CouldNotGetEnvironmentVariableException(REDIS_URL_ENVIRONMENT_VARIBALE_NAME);
+                    ?? throw new CouldNotGetEnvironmentVariableException(REDIS_URL_ENVIRONMENT_VARIBALE_NAME, typeof(string).Name);
                 services.AddReddisCustomMemoryCache(redisConString);
             }
 

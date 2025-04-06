@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Text.Json;
+using MediatR;
 using NotificationService.Core.Application.Contracts.Application;
 using NotificationService.Core.Application.Contracts.Infrastructure;
 using NotificationService.Core.Application.Models.TargetServicesModels;
@@ -20,6 +21,11 @@ namespace NotificationService.Core.Application.Models.Handlers
             await _signalRNotificationService.Send(notificationToSend, cancellationToken);
         }
 
-        protected abstract Task<SignalRNotification> GetNotificatoinForTargetService(T notification, CancellationToken cancellationToken);
+        protected virtual Task<SignalRNotification> GetNotificatoinForTargetService(T notification, CancellationToken cancellationToken) => Task.FromResult(new SignalRNotification
+        {
+            Subject = typeof(T).Name,
+            Body = JsonSerializer.Serialize(notification, typeof(T)),
+            UserId = notification.UserId,
+        });
     }
 }

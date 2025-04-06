@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cache\Cache.Models.InMemory\Cache.Models.InMemory.csproj" />
     <ProjectReference Include="..\..\..\Common\Cache\Cache.Models.Reddis\Cache.Models.Reddis.csproj" />
+    <ProjectReference Include="..\..\..\Common\Clients\Adapters\AuthClient\Clients.Adapters.AuthClient.Services\Clients.Adapters.AuthClient.Services.csproj" />
     <ProjectReference Include="..\..\..\Common\Clients\Clients.AuthServiceClient\Clients.AuthServiceClient.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\..\..\Common\HttpDelegatingHandlers\HttpDelegatingHandlers.csproj" />

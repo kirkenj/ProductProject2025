@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Clients.Adapters.AuthClient.Contracts;
 using CustomResponse;
 using MediatR;
 using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.ProductService;
 using Microsoft.Extensions.Logging;
-using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Domain.Models;
 

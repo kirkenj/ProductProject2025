@@ -1,4 +1,4 @@
-﻿namespace ProductService.Core.Application.Models.UserClient
+﻿namespace Clients.Adapters.AuthClient.Contracts
 {
     public class AuthClientUser
     {

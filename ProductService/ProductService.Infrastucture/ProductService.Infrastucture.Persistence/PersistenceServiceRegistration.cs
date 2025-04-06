@@ -15,7 +15,7 @@ namespace ProductService.Infrastucture.Persistence
             services.AddScoped<IProductRepository, ProductRepository>();
 
             var cString = Environment.GetEnvironmentVariable(DATABASE_CONNECTION_STRING_ENVIRONMENT_VARIBALE_NAME)
-                ?? throw new CouldNotGetEnvironmentVariableException(DATABASE_CONNECTION_STRING_ENVIRONMENT_VARIBALE_NAME);
+                ?? throw new CouldNotGetEnvironmentVariableException(DATABASE_CONNECTION_STRING_ENVIRONMENT_VARIBALE_NAME, typeof(string).Name);
 
             services.AddDbContext<ProductDbContext>(options =>
             {

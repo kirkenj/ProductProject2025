@@ -1,4 +1,4 @@
-﻿using Clients.AuthApi;
+﻿using Clients.Adapters.AuthClient.Contracts;
 using EmailSender.Contracts;
 using EmailSender.Models;
 using MediatR;
@@ -8,11 +8,11 @@ namespace NotificationService.Core.Application.Features.AuthService.ChangeEmailR
 {
     public class ChangeEmailRequestCommandHandler : IRequestHandler<ChangeEmailRequestCommand>
     {
-        private readonly IAuthApiClient _authApiClient;
+        private readonly IAuthApiClientService _authApiClient;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ChangeEmailRequestCommandHandler> _logger;
 
-        public ChangeEmailRequestCommandHandler(IEmailSender emailSender, ILogger<ChangeEmailRequestCommandHandler> logger, IAuthApiClient authApiClient)
+        public ChangeEmailRequestCommandHandler(IEmailSender emailSender, ILogger<ChangeEmailRequestCommandHandler> logger, IAuthApiClientService authApiClient)
         {
             _authApiClient = authApiClient;
             _emailSender = emailSender;
@@ -23,16 +23,16 @@ namespace NotificationService.Core.Application.Features.AuthService.ChangeEmailR
         {
             try
             {
-                var user = await _authApiClient.UsersGETAsync(request.UserId, cancellationToken);
-                if (user == null)
+                var userResult = await _authApiClient.GetUser(request.UserId);
+                if (userResult.Result == null)
                 {
-                    _logger.LogError("Couldn't get user with id {id}", request.UserId);
+                    _logger.LogError("Couldn't get user with id {id} ({code})", request.UserId, userResult.StatusCode);
                     return;
                 }
 
                 var emailToOldEmail = new Email()
                 {
-                    To = user.Email,
+                    To = userResult.Result.Email,
                     Body = $"Token to change email: \'{request.OtpToOldEmail}\'",
                     Subject = "Email change"
                 };

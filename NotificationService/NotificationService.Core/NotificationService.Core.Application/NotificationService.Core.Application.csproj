@@ -10,9 +10,9 @@
     <PackageReference Include="AutoMapper" Version="14.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-	  <ProjectReference Include="..\..\..\Common\Clients\Clients.AuthServiceClient\Clients.AuthServiceClient.csproj" />
-	  <ProjectReference Include="..\..\..\Common\Clients\Clients.ProductService\Clients.ProductServiceClient.csproj" />
+  <ItemGroup>	  
+	  <ProjectReference Include="..\..\..\Common\Clients\Adapters\AuthClient\Clients.Adapters.AuthClient.Contracts\Clients.Adapters.AuthClient.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\Common\Clients\Adapters\ProductClient\Clients.Adapters.ProductClient.Contracts\Clients.Adapters.ProductClient.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\EmailSender\EmailSender.Contracts\EmailSender.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\Common\Messaging\Messaging.Messages\Messaging.Messages.AuthService\Messaging.Messages.AuthService.csproj" />
 	  <ProjectReference Include="..\..\..\Common\CQRS\MediatRExtensions\MediatRExtensions.csproj" />

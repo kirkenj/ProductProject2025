@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clients.Adapters.AuthClient.Contracts;
 using CustomResponse;
 using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.ProductService;

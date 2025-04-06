@@ -1,4 +1,4 @@
-﻿using Clients.AuthApi;
+﻿using Clients.Adapters.AuthClient.Contracts;
 using EmailSender.Contracts;
 using EmailSender.Models;
 using MediatR;
@@ -9,10 +9,10 @@ namespace NotificationService.Core.Application.Features.AuthService.ForgotPasswo
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand>
     {
         private readonly IEmailSender _emailSender;
-        private readonly IAuthApiClient _authApiClient;
+        private readonly IAuthApiClientService _authApiClient;
         private readonly ILogger<ForgotPasswordCommandHandler> _logger;
 
-        public ForgotPasswordCommandHandler(IAuthApiClient authApiClient, IEmailSender emailSender, ILogger<ForgotPasswordCommandHandler> logger)
+        public ForgotPasswordCommandHandler(IAuthApiClientService authApiClient, IEmailSender emailSender, ILogger<ForgotPasswordCommandHandler> logger)
         {
             _authApiClient = authApiClient;
             _emailSender = emailSender;
@@ -23,8 +23,8 @@ namespace NotificationService.Core.Application.Features.AuthService.ForgotPasswo
         {
             try
             {
-                var user = await _authApiClient.UsersGETAsync(request.UserId, cancellationToken);
-                if (user == null)
+                var user = await _authApiClient.GetUser(request.UserId);
+                if (user.Result == null)
                 {
                     _logger.LogError("Couldn't get user with id {id}", request.UserId);
                     return;
@@ -32,7 +32,7 @@ namespace NotificationService.Core.Application.Features.AuthService.ForgotPasswo
 
                 var email = new Email()
                 {
-                    To = user.Email,
+                    To = user.Result.Email,
                     Body = $"Your new password: \'{request.NewPassword}\'",
                     Subject = "Password recovery"
                 };
