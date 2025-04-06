@@ -5,10 +5,8 @@ using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.ProductService;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.Features.Products.Commands.CreateProductCommand;
-using ProductService.Core.Application.Models.UserClient;
 
 
 namespace ProductService.Core.Application.Tests.Features.Product
@@ -40,7 +38,7 @@ namespace ProductService.Core.Application.Tests.Features.Product
                 ProducerId = Guid.NewGuid(),
             };
 
-            var authServiceResponse = new ClientResponse<AuthClientUser?>()
+            var authServiceResponse = new Response<AuthClientUser?>()
             {
                 Result = null
             };
@@ -65,7 +63,7 @@ namespace ProductService.Core.Application.Tests.Features.Product
                 ProducerId = Guid.NewGuid(),
             };
 
-            var authServiceResponse = new ClientResponse<AuthClientUser?>()
+            var authServiceResponse = new Response<AuthClientUser?>()
             {
                 Result = new AuthClientUser()
             };

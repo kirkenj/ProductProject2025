@@ -6,10 +6,8 @@ using Messaging.Messages.ProductService;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand;
-using ProductService.Core.Application.Models.UserClient;
 
 namespace ProductService.Core.Application.Tests.Features.Product
 {
@@ -72,7 +70,7 @@ namespace ProductService.Core.Application.Tests.Features.Product
                 .Returns(targerProduct);
 
             _authApiClientService.GetUser(Arg.Is(request.ProducerId))
-                .Returns(new ClientResponse<AuthClientUser?> { Result = null });
+                .Returns(new Response<AuthClientUser?> { Result = null });
 
             var expectedResult = Response<string>.BadRequestResponse($"User not found ({request.ProducerId})");
 
@@ -102,7 +100,7 @@ namespace ProductService.Core.Application.Tests.Features.Product
                 .Returns(targerProduct);
 
             _authApiClientService.GetUser(Arg.Is(request.ProducerId))
-                .Returns(new ClientResponse<AuthClientUser?> { Result = new() });
+                .Returns(new Response<AuthClientUser?> { Result = new() });
 
             var expectedResult = Response<string>.OkResponse("Success", "Product updated");
 

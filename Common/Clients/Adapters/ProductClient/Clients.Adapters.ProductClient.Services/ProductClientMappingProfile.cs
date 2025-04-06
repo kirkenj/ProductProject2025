@@ -6,7 +6,7 @@ namespace Clients.Adapters.ProductClient.Services
     {
         public ProductClientMappingProfile()
         {
-            CreateMap<Contracts.ProductDto, ProductService.Clients.ProductServiceClient.ProductDto>().ReverseMap();
+            CreateMap<Contracts.ProductDto, ProductApi.ProductDto>().ReverseMap();
         }
     }
 }

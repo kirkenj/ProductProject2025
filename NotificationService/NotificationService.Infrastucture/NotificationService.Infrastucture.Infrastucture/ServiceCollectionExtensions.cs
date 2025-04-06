@@ -33,7 +33,7 @@ namespace NotificationService.Infrastucture.Infrastucture
             services.AddAuthClientService(new AuthClientSettings { ServiceUri = authApiAddress });
 
             var productApiAddress = Environment.GetEnvironmentVariable("ProductApiAddress") ?? throw new CouldNotGetEnvironmentVariableException("ProductApiAddress", typeof(string).Name);
-            services.AddProductClientService(new ProductClientSettings { ServiceUri = authApiAddress });
+            services.AddProductClientService(new ProductClientSettings { ServiceUri = productApiAddress });
 
             var useDefaultCacheStr = Environment.GetEnvironmentVariable(USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME);
             if (useDefaultCacheStr != null && bool.TryParse(useDefaultCacheStr, out bool result) && result)

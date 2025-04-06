@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
 using NotificationService.Core.Application.Contracts.Infrastructure;
 using NotificationService.Core.Application.Models.TargetServicesModels;
 
@@ -17,7 +18,7 @@ namespace NotificationService.Api.NotificationApi.Services
 
         public async Task Send(SignalRNotification message, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Notification to {targetGroup}: {message}", message.UserId ?? "All", message.Body);
+            _logger.LogInformation("Notification to {targetGroup}: {message}", message.UserId ?? "All", JsonSerializer.Serialize(message));
 
             IClientProxy targetConnections = string.IsNullOrWhiteSpace(message.UserId) ?
                 _hubContext.Clients.All :

@@ -2,7 +2,7 @@
 using AutoMapper;
 using Cache.Contracts;
 using Clients.Adapters.ProductClient.Contracts;
-using Clients.ProductService.Clients.ProductServiceClient;
+using Clients.ProductApi;
 using CustomResponse;
 using Microsoft.Extensions.Logging;
 

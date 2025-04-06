@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Clients.Adapters.ProductClient.Contracts;
-using Clients.ProductService.Clients.ProductServiceClient;
+using Clients.ProductApi;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Clients.Adapters.ProductClient.Services
