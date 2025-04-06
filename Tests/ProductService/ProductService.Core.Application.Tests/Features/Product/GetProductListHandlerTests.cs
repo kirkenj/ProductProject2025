@@ -3,7 +3,7 @@ using CustomResponse;
 using NSubstitute;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.DTOs.Product;
-using ProductService.Core.Application.Features.Products.GetProducListDto;
+using ProductService.Core.Application.Features.Products.Queries.GetProductListDtoQuery;
 
 namespace ProductService.Core.Application.Tests.Features.Product
 {
@@ -11,20 +11,20 @@ namespace ProductService.Core.Application.Tests.Features.Product
     {
         private readonly IProductRepository _producrRepository;
         private readonly IMapper _mapper;
-        private readonly GetProductListHandler _handler;
+        private readonly GetProductListDtoQueryHandler _handler;
 
         public GetProductListHandlerTests()
         {
             _producrRepository = Substitute.For<IProductRepository>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new GetProductListHandler(_producrRepository, _mapper);
+            _handler = new GetProductListDtoQueryHandler(_producrRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_ReturnsOkAndDtoList()
         {
             // Arrange
-            var request = new GetProductListDtoRequest
+            var request = new GetProductListDtoQuery
             {
                 Page = 1,
                 PageSize = 10,

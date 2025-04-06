@@ -3,9 +3,9 @@ using MediatR;
 using ProductService.Core.Application.DTOs.Product;
 using ProductService.Core.Application.Models.Product;
 
-namespace ProductService.Core.Application.Features.Products.GetProducListDto
+namespace ProductService.Core.Application.Features.Products.Queries.GetProductListDtoQuery
 {
-    public class GetProductListDtoRequest : IRequest<Response<IEnumerable<ProductListDto>>>
+    public class GetProductListDtoQuery : IRequest<Response<IEnumerable<ProductListDto>>>
     {
         public ProductFilter ProductFilter { get; set; } = null!;
         public int? Page { get; set; }

@@ -8,22 +8,22 @@ using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Domain.Models;
 
-namespace ProductService.Core.Application.Features.Products.UpdateProduct
+namespace ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand
 {
-    public class UpdateProductComandHandler : IRequestHandler<UpdateProductCommand, Response<string>>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Response<string>>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly IKafkaProducer<ProductProducerUpdated> _productProducerUpdatedProducer;
         private readonly IAuthApiClientService _authApiClientService;
-        private readonly ILogger<UpdateProductComandHandler> _logger;
+        private readonly ILogger<UpdateProductCommandHandler> _logger;
 
-        public UpdateProductComandHandler(
+        public UpdateProductCommandHandler(
             IProductRepository productRepository,
             IMapper mapper,
             IAuthApiClientService authApiClientService,
             IKafkaProducer<ProductProducerUpdated> productProducerUpdatedProducer,
-            ILogger<UpdateProductComandHandler> logger)
+            ILogger<UpdateProductCommandHandler> logger)
         {
             _productRepository = productRepository;
             _mapper = mapper;

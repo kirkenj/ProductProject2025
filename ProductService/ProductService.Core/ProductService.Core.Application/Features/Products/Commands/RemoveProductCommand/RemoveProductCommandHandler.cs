@@ -5,22 +5,22 @@ using Messaging.Messages.ProductService;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Domain.Models;
 
-namespace ProductService.Core.Application.Features.Products.RemoveProduct
+namespace ProductService.Core.Application.Features.Products.Commands.RemoveProductCommand
 {
-    public class RemoveProductComandHandler : IRequestHandler<RemovePrductComand, Response<string>>
+    public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand, Response<string>>
     {
         private readonly IProductRepository _productRepository;
         private readonly IKafkaProducer<ProductDeleted> _productDeletedProducer;
 
-        public RemoveProductComandHandler(IProductRepository productRepository, IKafkaProducer<ProductDeleted> productDeletedProducer)
+        public RemoveProductCommandHandler(IProductRepository productRepository, IKafkaProducer<ProductDeleted> productDeletedProducer)
         {
             _productRepository = productRepository;
             _productDeletedProducer = productDeletedProducer;
         }
 
-        public async Task<Response<string>> Handle(RemovePrductComand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetAsync(request.ProductId, cancellationToken);
+            var product = await _productRepository.GetAsync(request.Id, cancellationToken);
             if (product == null)
             {
                 return Response<string>.NotFoundResponse(nameof(Product), true);
@@ -30,7 +30,7 @@ namespace ProductService.Core.Application.Features.Products.RemoveProduct
 
             await _productDeletedProducer.ProduceAsync(new()
             {
-                Id = request.ProductId,
+                Id = request.Id,
                 Name = product.Name,
                 OwnerId = product.ProducerId
             }, cancellationToken);

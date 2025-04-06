@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Threading;
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;

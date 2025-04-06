@@ -4,7 +4,7 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Application.DTOs.Product;
-using ProductService.Core.Application.Features.Products.GetProductDetail;
+using ProductService.Core.Application.Features.Products.Queries.GetProductDtoQuery;
 
 namespace ProductService.Core.Application.Tests.Features.Product
 {
@@ -12,20 +12,20 @@ namespace ProductService.Core.Application.Tests.Features.Product
     {
         private readonly IProductRepository _producrRepository;
         private readonly IMapper _mapper;
-        private readonly GetProductDtoHandler _handler;
+        private readonly GetProductDtoQueryHandler _handler;
 
         public GetProductDtoHandlerTests()
         {
             _producrRepository = Substitute.For<IProductRepository>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new GetProductDtoHandler(_producrRepository, _mapper);
+            _handler = new GetProductDtoQueryHandler(_producrRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_UserNotFound_ReturnsNotFound()
         {
             // Arrange
-            var request = new GetProductDtoRequest
+            var request = new GetProductDtoQuery
             {
                 Id = Guid.NewGuid(),
             };
@@ -45,7 +45,7 @@ namespace ProductService.Core.Application.Tests.Features.Product
         public async Task Handle_UserFound_ReturnsMappedValue()
         {
             // Arrange
-            var request = new GetProductDtoRequest
+            var request = new GetProductDtoQuery
             {
                 Id = Guid.NewGuid(),
             };

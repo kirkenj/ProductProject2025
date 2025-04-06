@@ -60,7 +60,7 @@ namespace AuthService.Core.Application.Tests.Features.User.Commands
                 .Returns(new Domain.Models.User());
 
             var expectedResult = Response<string>.BadRequestResponse("Email is taken");
-            
+
             // Act
             var result = await _handler.Handle(request, default);
 

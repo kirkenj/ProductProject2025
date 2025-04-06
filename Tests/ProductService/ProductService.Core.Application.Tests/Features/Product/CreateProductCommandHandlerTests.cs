@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
-using ProductService.Core.Application.Features.Products.CreateProduct;
+using ProductService.Core.Application.Features.Products.Commands.CreateProductCommand;
 using ProductService.Core.Application.Models.UserClient;
 
 

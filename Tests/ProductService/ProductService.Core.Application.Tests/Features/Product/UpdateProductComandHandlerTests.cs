@@ -7,7 +7,7 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using ProductService.Core.Application.Contracts.AuthService;
 using ProductService.Core.Application.Contracts.Persistence;
-using ProductService.Core.Application.Features.Products.UpdateProduct;
+using ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand;
 using ProductService.Core.Application.Models.UserClient;
 
 namespace ProductService.Core.Application.Tests.Features.Product
@@ -18,8 +18,8 @@ namespace ProductService.Core.Application.Tests.Features.Product
         private readonly IMapper _mapper;
         private readonly IKafkaProducer<ProductProducerUpdated> _productProducerUpdatedProducer;
         private readonly IAuthApiClientService _authApiClientService;
-        private readonly ILogger<UpdateProductComandHandler> _logger;
-        private readonly UpdateProductComandHandler _handler;
+        private readonly ILogger<UpdateProductCommandHandler> _logger;
+        private readonly UpdateProductCommandHandler _handler;
 
         public UpdateProductComandHandlerTests()
         {
@@ -27,8 +27,8 @@ namespace ProductService.Core.Application.Tests.Features.Product
             _mapper = Substitute.For<IMapper>();
             _productProducerUpdatedProducer = Substitute.For<IKafkaProducer<ProductProducerUpdated>>();
             _authApiClientService = Substitute.For<IAuthApiClientService>();
-            _logger = Substitute.For<ILogger<UpdateProductComandHandler>>();
-            _handler = new UpdateProductComandHandler(_productRepository, _mapper, _authApiClientService, _productProducerUpdatedProducer, _logger);
+            _logger = Substitute.For<ILogger<UpdateProductCommandHandler>>();
+            _handler = new UpdateProductCommandHandler(_productRepository, _mapper, _authApiClientService, _productProducerUpdatedProducer, _logger);
         }
 
         [Fact]

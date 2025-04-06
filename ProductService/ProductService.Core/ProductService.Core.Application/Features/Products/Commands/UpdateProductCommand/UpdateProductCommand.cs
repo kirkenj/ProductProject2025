@@ -1,8 +1,8 @@
 ﻿using CustomResponse;
 using MediatR;
-using ProductService.Core.Application.Features.Products.Contracts.Validators;
+using ProductService.Core.Application.Models.Product.Contracts.Validators;
 
-namespace ProductService.Core.Application.Features.Products.UpdateProduct
+namespace ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand
 {
     public class UpdateProductCommand : IRequest<Response<string>>, IEditProductDto
     {

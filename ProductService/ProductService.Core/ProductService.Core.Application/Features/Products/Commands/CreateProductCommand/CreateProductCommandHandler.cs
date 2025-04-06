@@ -9,7 +9,7 @@ using ProductService.Core.Application.Contracts.Persistence;
 using ProductService.Core.Domain.Models;
 
 
-namespace ProductService.Core.Application.Features.Products.CreateProduct
+namespace ProductService.Core.Application.Features.Products.Commands.CreateProductCommand
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Response<Guid>>
     {

@@ -1,8 +1,8 @@
 ﻿using CustomResponse;
 using MediatR;
-using ProductService.Core.Application.Features.Products.Contracts.Validators;
+using ProductService.Core.Application.Models.Product.Contracts.Validators;
 
-namespace ProductService.Core.Application.Features.Products.CreateProduct
+namespace ProductService.Core.Application.Features.Products.Commands.CreateProductCommand
 {
     public class CreateProductCommand : IRequest<Response<Guid>>, IEditProductDto
     {

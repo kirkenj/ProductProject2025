@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using ProductService.Core.Application.Features.Products.Contracts;
+using ProductService.Core.Application.Models.Product.Contracts;
 
-namespace ProductService.Core.Application.Features.Products.UpdateProduct
+namespace ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand
 {
     public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {

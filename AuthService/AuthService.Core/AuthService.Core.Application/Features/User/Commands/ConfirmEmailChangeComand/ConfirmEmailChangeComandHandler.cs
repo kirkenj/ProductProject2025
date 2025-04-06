@@ -26,7 +26,7 @@ namespace AuthService.Core.Application.Features.User.Commands.ConfirmEmailChange
         public async Task<Response<string>> Handle(ConfirmEmailChangeComand request, CancellationToken cancellationToken)
         {
             var cacheKey = string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, request.Id);
-            
+
             ChangeEmailRequest? cachedDetailsValue = await _memoryCache.GetAsync<ChangeEmailRequest>(cacheKey, cancellationToken);
             if (cachedDetailsValue == null)
             {

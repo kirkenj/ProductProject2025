@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Api.ProductAPI.Models;
 using ProductService.Core.Application.DTOs.Product;
-using ProductService.Core.Application.Features.Products.CreateProduct;
-using ProductService.Core.Application.Features.Products.GetProducListDto;
-using ProductService.Core.Application.Features.Products.GetProductDetail;
-using ProductService.Core.Application.Features.Products.RemoveProduct;
-using ProductService.Core.Application.Features.Products.UpdateProduct;
+using ProductService.Core.Application.Features.Products.Commands.CreateProductCommand;
+using ProductService.Core.Application.Features.Products.Commands.RemoveProductCommand;
+using ProductService.Core.Application.Features.Products.Commands.UpdateProductCommand;
+using ProductService.Core.Application.Features.Products.Queries.GetProductDtoQuery;
+using ProductService.Core.Application.Features.Products.Queries.GetProductListDtoQuery;
 using ProductService.Core.Application.Models.Product;
 
 
@@ -30,14 +30,14 @@ namespace ProductService.Api.ProductAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductListDto>>> Get([FromQuery] ProductFilter productFilter, int? page, int? pageSize)
         {
-            Response<IEnumerable<ProductListDto>> result = await _mediator.Send(new GetProductListDtoRequest() { ProductFilter = productFilter, Page = page, PageSize = pageSize });
+            Response<IEnumerable<ProductListDto>> result = await _mediator.Send(new GetProductListDtoQuery() { ProductFilter = productFilter, Page = page, PageSize = pageSize });
             return result.GetActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get(Guid id)
         {
-            Response<ProductDto> result = await _mediator.Send(new GetProductDtoRequest() { Id = id });
+            Response<ProductDto> result = await _mediator.Send(new GetProductDtoQuery() { Id = id });
             return result.GetActionResult();
         }
 
@@ -59,7 +59,7 @@ namespace ProductService.Api.ProductAPI.Controllers
         [Produces("text/plain")]
         public async Task<ActionResult<string>> Put(Guid id, [FromBody] UpdateProductModel updateProductModel)
         {
-            Response<ProductDto> productRequestResult = await _mediator.Send(new GetProductDtoRequest() { Id = id });
+            Response<ProductDto> productRequestResult = await _mediator.Send(new GetProductDtoQuery() { Id = id });
 
             if (productRequestResult.Success == false)
             {
@@ -101,7 +101,7 @@ namespace ProductService.Api.ProductAPI.Controllers
         [Produces("text/plain")]
         public async Task<ActionResult<string>> Delete(Guid id)
         {
-            Response<ProductDto> productRequestResult = await _mediator.Send(new GetProductDtoRequest() { Id = id });
+            Response<ProductDto> productRequestResult = await _mediator.Send(new GetProductDtoQuery() { Id = id });
 
             if (productRequestResult.Success == false)
             {
@@ -115,7 +115,7 @@ namespace ProductService.Api.ProductAPI.Controllers
 
             if (User.IsInRole(ApiConstants.ADMIN_AUTH_ROLE_NAME) || productRequestResult.Result.ProducerId == User.GetUserId())
             {
-                return (await _mediator.Send(new RemovePrductComand() { ProductId = id })).GetActionResult();
+                return (await _mediator.Send(new RemoveProductCommand() { Id = id })).GetActionResult();
             }
 
             return BadRequest("You are not the owner of the product");
