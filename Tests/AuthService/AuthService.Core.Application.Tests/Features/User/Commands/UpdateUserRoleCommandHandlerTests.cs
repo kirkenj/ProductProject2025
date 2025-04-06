@@ -4,17 +4,41 @@ using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
     public class UpdateUserRoleCommandHandlerTests
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly UpdateUserRoleCommandHandler _handler;
 
         public UpdateUserRoleCommandHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new UpdateUserRoleCommandHandler(_userRepository);
+            _roleRepository = Substitute.For<IRoleRepository>();
+            _handler = new UpdateUserRoleCommandHandler(_userRepository, _roleRepository);
+        }
+
+        [Fact]
+        public async Task Handle_RoleNotFound_ReturnsNotFound()
+        {
+            // Arrange
+            var request = new UpdateUserRoleCommand
+            {
+                Id = Guid.NewGuid(),
+                RoleID = 3
+            };
+
+            _roleRepository.GetAsync(Arg.Is(request.RoleID), Arg.Any<CancellationToken>())
+                .ReturnsNull();
+
+            var expectedResult = Response<string>.NotFoundResponse(nameof(Domain.Models.Role), true);
+
+            // Act
+            var result = await _handler.Handle(request, default);
+
+            // Assert
+            Assert.Equivalent(result, expectedResult);
         }
 
         [Fact]
@@ -26,6 +50,9 @@ namespace AuthService.Core.Application.Tests.Features.User
                 Id = Guid.NewGuid(),
                 RoleID = 3
             };
+
+            _roleRepository.GetAsync(Arg.Is(request.RoleID), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.Role());
 
             _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
                 .ReturnsNull();
@@ -50,6 +77,9 @@ namespace AuthService.Core.Application.Tests.Features.User
             };
 
             var targetUser = new Domain.Models.User { };
+
+            _roleRepository.GetAsync(Arg.Is(request.RoleID), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.Role());
 
             _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
                 .Returns(targetUser);

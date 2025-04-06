@@ -9,16 +9,16 @@ using HashProvider.Contracts;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Queries
 {
-    public class LoginHandlerTests
+    public class LoginQueryHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly IHashProvider _hashProvider;
         private readonly IMapper _mapper;
         private readonly LoginQueryHandler _handler;
 
-        public LoginHandlerTests()
+        public LoginQueryHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _hashProvider = Substitute.For<IHashProvider>();

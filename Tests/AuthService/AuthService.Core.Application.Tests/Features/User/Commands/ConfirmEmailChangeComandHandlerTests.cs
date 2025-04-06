@@ -9,16 +9,16 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
-    public class ConfirmEmailChangeCommandHandlerTests
+    public class ConfirmEmailChangeComandHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly ICustomMemoryCache _memoryCache;
         private readonly UpdateUserEmailSettings _updateUserEmailSettings;
         private readonly ConfirmEmailChangeComandHandler _handler;
 
-        public ConfirmEmailChangeCommandHandlerTests()
+        public ConfirmEmailChangeComandHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _memoryCache = Substitute.For<ICustomMemoryCache>();
@@ -58,7 +58,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         [InlineData(true, false, false)]
         [InlineData(true, false, true)]
         [InlineData(true, true, false)]
-        public async Task HandleAsync_InvalidTokens_ReturnsInvalidToken(bool userIdValid, bool otpNewValid, bool otpOldValid)
+        public async Task HandleAsync_InvalidTokensOrUserId_ReturnsInvalidToken(bool userIdValid, bool otpNewValid, bool otpOldValid)
         {
             // Arrange
             var request = new ConfirmEmailChangeComand()

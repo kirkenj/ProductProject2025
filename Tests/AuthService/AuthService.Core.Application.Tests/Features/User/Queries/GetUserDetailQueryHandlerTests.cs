@@ -6,15 +6,15 @@ using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Queries
 {
-    public class GetUserDetailHandlerTests
+    public class GetUserDetailQueryHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly GetUserDetailQueryHandler _handler;
 
-        public GetUserDetailHandlerTests()
+        public GetUserDetailQueryHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _mapper = Substitute.For<IMapper>();

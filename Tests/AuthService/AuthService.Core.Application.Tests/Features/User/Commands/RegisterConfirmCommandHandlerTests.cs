@@ -1,4 +1,5 @@
-﻿using AuthService.Core.Application.Contracts.Persistence;
+﻿using Application.Models.User;
+using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Application.Features.User.Commands.RegisterConfirmCommand;
 using AuthService.Core.Application.Models.User.Settings;
 using Cache.Contracts;
@@ -6,10 +7,9 @@ using CustomResponse;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
     public class RegisterConfirmCommandHandlerTests
     {
@@ -58,7 +58,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         }
 
         [Fact]
-        public async Task Handle_RequestFoundInCache_AddsValueToRepositoryReturnsOk()
+        public async Task Handle_EmailTaken_ReturnsBadRequest()
         {
             // Arrange
             var request = new RegisterConfirmCommand()
@@ -69,13 +69,91 @@ namespace AuthService.Core.Application.Tests.Features.User
 
             string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, request.Email, request.Token);
 
-            var targetUser = new Domain.Models.User();
+            var targetUser = new Domain.Models.User
+            {
+                Email = "SomeEmail"
+            };
 
             _memoryCache.GetAsync<Domain.Models.User>(Arg.Is(cacheKey), Arg.Any<CancellationToken>())
                 .Returns(targetUser);
 
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateEmail == targetUser.Email), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.User());
+
+            var expectedResult = Response<string>.BadRequestResponse("Email is taken");
+
+            // Act
+            var result = await _handler.Handle(request, default);
+
+            // Assert
+            Assert.Equivalent(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task Handle_LoginTaken_ReturnsBadRequest()
+        {
+            // Arrange
+            var request = new RegisterConfirmCommand()
+            {
+                Email = Guid.NewGuid().ToString(),
+                Token = Guid.NewGuid().ToString()
+            };
+
+            string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, request.Email, request.Token);
+
+            var targetUser = new Domain.Models.User
+            {
+                Email = "SomeEmail",
+                Login = "SomeLogin"
+            };
+
+            _memoryCache.GetAsync<Domain.Models.User>(Arg.Is(cacheKey), Arg.Any<CancellationToken>())
+                .Returns(targetUser);
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateEmail == targetUser.Email), Arg.Any<CancellationToken>())
+                .ReturnsNull();
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateLogin == targetUser.Login), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.User());
+
+            var expectedResult = Response<string>.BadRequestResponse("Login is taken");
+
+            // Act
+            var result = await _handler.Handle(request, default);
+
+            // Assert
+            Assert.Equivalent(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task Handle_ValidRequest_ReturnsOkAddsUser()
+        {
+            // Arrange
+            var request = new RegisterConfirmCommand()
+            {
+                Email = Guid.NewGuid().ToString(),
+                Token = Guid.NewGuid().ToString()
+            };
+
+            string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, request.Email, request.Token);
+
+            var targetUser = new Domain.Models.User
+            {
+                Email = "SomeEmail",
+                Login = "SomeLogin"
+            };
+
+            _memoryCache.GetAsync<Domain.Models.User>(Arg.Is(cacheKey), Arg.Any<CancellationToken>())
+                .Returns(targetUser);
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateEmail == targetUser.Email), Arg.Any<CancellationToken>())
+                .ReturnsNull();
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateLogin == targetUser.Login), Arg.Any<CancellationToken>())
+                .ReturnsNull();
 
             var expectedResult = Response<string>.OkResponse("Success", string.Empty);
+
             // Act
             var result = await _handler.Handle(request, default);
 
@@ -83,29 +161,6 @@ namespace AuthService.Core.Application.Tests.Features.User
             Assert.Equivalent(expectedResult, result);
             await _userRepository.Received().AddAsync(Arg.Is(targetUser), Arg.Any<CancellationToken>());
             await _memoryCache.Received().RemoveAsync(Arg.Is(cacheKey), Arg.Any<CancellationToken>());
-        }
-
-        [Fact]
-        public async Task Handle_ExceptionThrown_ReturnsErrorResponse()
-        {
-            // Arrange
-            var request = new RegisterConfirmCommand()
-            {
-                Email = Guid.NewGuid().ToString(),
-                Token = Guid.NewGuid().ToString()
-            };
-
-            string cacheKey = string.Format(_createUserSettings.KeyForRegistrationCachingFormat, request.Email, request.Token);
-
-            _memoryCache.GetAsync<Domain.Models.User>(Arg.Is(cacheKey), Arg.Any<CancellationToken>())
-                .Throws<Exception>();
-
-            var expectedResult = Response<string>.ServerErrorResponse("Error :(");
-            // Act
-            var result = await _handler.Handle(request, default);
-
-            // Assert
-            Assert.Equivalent(expectedResult, result);
         }
     }
 }

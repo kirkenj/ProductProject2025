@@ -5,15 +5,15 @@ using AutoMapper;
 using CustomResponse;
 using NSubstitute;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Queries
 {
-    public class GetUserListHandlerTests
+    public class GetUserListQueryHandlerTests
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly GetUserListQueryHandler _handler;
 
-        public GetUserListHandlerTests()
+        public GetUserListQueryHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _mapper = Substitute.For<IMapper>();

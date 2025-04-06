@@ -41,7 +41,7 @@ namespace AuthService.Core.Application.Features.User.Commands.ForgotPasswordComm
             string newPassword = _passwordGenerator.Generate();
 
             _passwordSetter.SetPassword(newPassword, user);
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user, cancellationToken);
 
             await _forgotPasswordProducer.ProduceAsync(new ForgotPassword { UserId = user.Id, NewPassword = newPassword }, cancellationToken);
 

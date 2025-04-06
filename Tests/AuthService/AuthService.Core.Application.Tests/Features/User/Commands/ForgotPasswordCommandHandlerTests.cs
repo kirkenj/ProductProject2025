@@ -8,7 +8,7 @@ using Messaging.Messages.AuthService;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
     public class ForgotPasswordCommandHandlerTests
     {

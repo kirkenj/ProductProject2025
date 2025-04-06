@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using System.Threading;
+using Application.Models.User;
 using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
 using AuthService.Core.Application.Features.User.Commands.SendTokenToUpdateUserEmailRequest;
@@ -11,7 +13,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
     public class SendTokenToUpdateUserEmailCommandHandlerTests
     {
@@ -65,6 +67,30 @@ namespace AuthService.Core.Application.Tests.Features.User
         }
 
         [Fact]
+        public async Task Handle_EmailTaken_ReturnsBadRequest()
+        {
+            // Arrange
+            var request = new SendTokenToUpdateUserEmailCommand
+            {
+                Email = "SomeEmail",
+                Id = Guid.NewGuid(),
+            };
+
+            _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.User());
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateEmail == request.Email), Arg.Any<CancellationToken>())
+                .Returns(new Domain.Models.User());
+
+            var expectedResult = Response<string>.BadRequestResponse("Email is taken");
+            // Act
+            var result = await _handler.Handle(request, default);
+
+            // Assert
+            Assert.Equivalent(expectedResult, result);
+        }
+
+        [Fact]
         public async Task Handle_RequestValid_SendsNotificationCachesToken()
         {
             // Arrange
@@ -76,6 +102,9 @@ namespace AuthService.Core.Application.Tests.Features.User
 
             _userRepository.GetAsync(Arg.Is(request.Id), Arg.Any<CancellationToken>())
                 .Returns(new Domain.Models.User());
+
+            _userRepository.GetAsync(Arg.Is<UserFilter>(f => f.AccurateEmail == request.Email), Arg.Any<CancellationToken>())
+                .ReturnsNull();
 
             var tokens = new string[] { "token1", "token2" };
 
@@ -96,12 +125,12 @@ namespace AuthService.Core.Application.Tests.Features.User
 
             await _memoryCache.Received().SetAsync(
                 Arg.Is(string.Format(_updateUserEmailSettings.UpdateUserEmailCacheKeyFormat, request.Id)),
-                Arg.Is<ChangeEmailRequest>(comparePredicate),
+                Arg.Is(comparePredicate),
                 Arg.Is(TimeSpan.FromHours(_updateUserEmailSettings.EmailUpdateTimeOutHours)),
                 Arg.Any<CancellationToken>());
 
             await _changeEmailRequestCreatedProducer.ProduceAsync(
-                Arg.Is<ChangeEmailRequest>(comparePredicate),
+                Arg.Is(comparePredicate),
                 Arg.Any<CancellationToken>());
         }
     }

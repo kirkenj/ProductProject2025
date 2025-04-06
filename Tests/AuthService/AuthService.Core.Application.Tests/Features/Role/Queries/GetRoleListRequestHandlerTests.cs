@@ -5,7 +5,7 @@ using AutoMapper;
 using CustomResponse;
 using NSubstitute;
 
-namespace AuthService.Core.Application.Tests.Features.Role
+namespace AuthService.Core.Application.Tests.Features.Role.Queries
 {
     public class GetRoleListRequestHandlerTests
     {

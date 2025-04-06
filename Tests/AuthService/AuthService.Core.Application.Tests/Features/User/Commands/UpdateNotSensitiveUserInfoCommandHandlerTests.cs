@@ -5,7 +5,7 @@ using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AuthService.Core.Application.Tests.Features.User
+namespace AuthService.Core.Application.Tests.Features.User.Commands
 {
     public class UpdateNotSensitiveUserInfoCommandHandlerTests
     {
