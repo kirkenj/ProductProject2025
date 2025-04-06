@@ -1,4 +1,4 @@
-﻿using AuthService.Core.Application.Features.User.Interfaces;
+﻿using AuthService.Core.Application.Models.DTOs.Contracts;
 using AuthService.Core.Application.Models.DTOs.Role;
 using Repository.Contracts;
 

@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.RegisterConfirmCommand;
+using AuthService.Core.Application.Features.User.Commands.RegisterConfirmCommand;
 using AuthService.Core.Application.Models.User.Settings;
 using Cache.Contracts;
 using CustomResponse;

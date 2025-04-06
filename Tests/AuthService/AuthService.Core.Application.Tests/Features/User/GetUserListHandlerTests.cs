@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.GetUserList;
+using AuthService.Core.Application.Features.User.Queries.GetUserListQuery;
 using AuthService.Core.Application.Models.DTOs.User;
 using AutoMapper;
 using CustomResponse;
@@ -11,20 +11,20 @@ namespace AuthService.Core.Application.Tests.Features.User
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly GetUserListHandler _handler;
+        private readonly GetUserListQueryHandler _handler;
 
         public GetUserListHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new GetUserListHandler(_userRepository, _mapper);
+            _handler = new GetUserListQueryHandler(_userRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_ReturnsOkAndUserDtoList()
         {
             // Arrange
-            var request = new GetUserListRequest
+            var request = new GetUserListQuery
             {
                 Page = 1,
                 PageSize = 10,

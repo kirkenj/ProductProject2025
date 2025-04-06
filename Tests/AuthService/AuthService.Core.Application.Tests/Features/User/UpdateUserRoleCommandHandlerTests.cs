@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserRoleCommand;
 using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

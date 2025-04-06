@@ -1,7 +1,7 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.ForgotPasswordComand;
+using AuthService.Core.Application.Features.User.Commands.ForgotPasswordCommand;
 using CustomResponse;
 using Messaging.Kafka.Producer.Contracts;
 using Messaging.Messages.AuthService;

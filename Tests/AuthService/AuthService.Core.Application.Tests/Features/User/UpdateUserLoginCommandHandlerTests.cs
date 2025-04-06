@@ -1,6 +1,6 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.UpdateUserLoginCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserLoginCommand;
 using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

@@ -1,6 +1,6 @@
 ﻿using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHandler;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserPasswordCommand;
 using CustomResponse;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

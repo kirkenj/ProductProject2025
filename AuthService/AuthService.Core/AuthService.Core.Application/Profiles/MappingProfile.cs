@@ -1,5 +1,5 @@
-﻿using AuthService.Core.Application.Features.User.RegisterUserCommand;
-using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand;
+﻿using AuthService.Core.Application.Features.User.Commands.RegisterUserCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateNotSensitiveUserInfoCommand;
 using AuthService.Core.Application.Models.DTOs.Role;
 using AuthService.Core.Application.Models.DTOs.User;
 using AuthService.Core.Domain.Models;

@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.Role.GetRoleListRequest;
+using AuthService.Core.Application.Features.Role.Queries.GetRoleListRequest;
 using AuthService.Core.Application.Models.DTOs.Role;
 using AutoMapper;
 using CustomResponse;
@@ -11,20 +11,20 @@ namespace AuthService.Core.Application.Tests.Features.Role
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
-        private readonly GetRoleListRequestHandler _hanler;
+        private readonly GetRoleListQueryHandler _hanler;
 
         public GetRoleListRequestHandlerTests()
         {
             _roleRepository = Substitute.For<IRoleRepository>();
             _mapper = Substitute.For<IMapper>();
-            _hanler = new GetRoleListRequestHandler(_roleRepository, _mapper);
+            _hanler = new GetRoleListQueryHandler(_roleRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_ReturnsMappedValuesWithOkResponse()
         {
             // Arrange
-            var request = new GetRoleListRequest();
+            var request = new GetRoleListQuery();
 
             var roles = new List<Domain.Models.Role>() { new() };
 

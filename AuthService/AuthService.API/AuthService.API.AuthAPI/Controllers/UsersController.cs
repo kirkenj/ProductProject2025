@@ -5,14 +5,14 @@ using AuthAPI.Models.Requests;
 using AuthService.API.AuthAPI.ActionFIlters;
 using AuthService.API.AuthAPI.Contracts;
 using AuthService.API.AuthAPI.Models.Requests;
-using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
-using AuthService.Core.Application.Features.User.GetUserDto;
-using AuthService.Core.Application.Features.User.GetUserList;
-using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand;
-using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand;
-using AuthService.Core.Application.Features.User.UpdateUserLoginCommand;
-using AuthService.Core.Application.Features.User.UpdateUserPasswordCommandHandler;
-using AuthService.Core.Application.Features.User.UpdateUserRoleCommand;
+using AuthService.Core.Application.Features.User.Commands.ConfirmEmailChangeComand;
+using AuthService.Core.Application.Features.User.Commands.SendTokenToUpdateUserEmailRequest;
+using AuthService.Core.Application.Features.User.Commands.UpdateNotSensitiveUserInfoCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserLoginCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserPasswordCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateUserRoleCommand;
+using AuthService.Core.Application.Features.User.Queries.GetUserDetailQuery;
+using AuthService.Core.Application.Features.User.Queries.GetUserListQuery;
 using AuthService.Core.Application.Models.DTOs.User;
 using Constants;
 using CustomResponse;
@@ -47,7 +47,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 filter.Address = null;
             }
 
-            Response<List<UserDto>> result = await _mediator.Send(new GetUserListRequest() { UserFilter = filter, Page = page, PageSize = pageSize });
+            Response<List<UserDto>> result = await _mediator.Send(new GetUserListQuery() { UserFilter = filter, Page = page, PageSize = pageSize });
             return result.GetActionResult();
         }
 
@@ -62,7 +62,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return NotFound();
             }
 
-            Response<UserDto> result = await _mediator.Send(new GetUserDetailRequest() { Id = id.Value });
+            Response<UserDto> result = await _mediator.Send(new GetUserDetailQuery() { Id = id.Value });
             return result.GetActionResult();
         }
 
@@ -109,7 +109,7 @@ namespace AuthService.API.AuthAPI.Controllers
                 return Forbid();
             }
 
-            Response<string> result = await _mediator.Send(new SendTokenToUpdateUserEmailRequest
+            Response<string> result = await _mediator.Send(new SendTokenToUpdateUserEmailCommand
             {
                 Id = id.Value,
                 Email = newEmail

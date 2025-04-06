@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.GetUserDto;
+using AuthService.Core.Application.Features.User.Queries.GetUserDetailQuery;
 using AuthService.Core.Application.Models.DTOs.User;
 using AutoMapper;
 using CustomResponse;
@@ -12,20 +12,20 @@ namespace AuthService.Core.Application.Tests.Features.User
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly GetUserDetailHandler _handler;
+        private readonly GetUserDetailQueryHandler _handler;
 
         public GetUserDetailHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new GetUserDetailHandler(_userRepository, _mapper);
+            _handler = new GetUserDetailQueryHandler(_userRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_UserNotFound_ReturnsNotFound()
         {
             // Arrange
-            var request = new GetUserDetailRequest
+            var request = new GetUserDetailQuery
             {
                 Id = Guid.NewGuid(),
             };
@@ -45,7 +45,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         public async Task Handle_UserFound_ReturnsMappedValue()
         {
             // Arrange
-            var request = new GetUserDetailRequest
+            var request = new GetUserDetailQuery
             {
                 Id = Guid.NewGuid(),
             };

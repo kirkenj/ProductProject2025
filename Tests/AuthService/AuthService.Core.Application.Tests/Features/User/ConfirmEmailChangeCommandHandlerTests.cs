@@ -1,6 +1,6 @@
 ﻿using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.ConfirmEmailChangeComand;
+using AuthService.Core.Application.Features.User.Commands.ConfirmEmailChangeComand;
 using AuthService.Core.Application.Models.User.Settings;
 using Cache.Contracts;
 using CustomResponse;

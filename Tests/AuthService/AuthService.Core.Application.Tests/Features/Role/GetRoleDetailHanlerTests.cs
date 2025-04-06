@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.Role.GetRoleDetail;
+using AuthService.Core.Application.Features.Role.Queries.GetRoleDtoQuery;
 using AuthService.Core.Application.Models.DTOs.Role;
 using AutoMapper;
 using CustomResponse;
@@ -12,20 +12,20 @@ namespace AuthService.Core.Application.Tests.Features.Role
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
-        private readonly GetRoleDetailHandler _hanler;
+        private readonly GetRoleDtoQueryHandler _hanler;
 
         public GetRoleDetailHanlerTests()
         {
             _roleRepository = Substitute.For<IRoleRepository>();
             _mapper = Substitute.For<IMapper>();
-            _hanler = new GetRoleDetailHandler(_roleRepository, _mapper);
+            _hanler = new GetRoleDtoQueryHandler(_roleRepository, _mapper);
         }
 
         [Fact]
         public async Task Handle_IdNotFound_ReturnsOkResponse()
         {
             // Arrange
-            var request = new GetRoleDtoRequest()
+            var request = new GetRoleDtoQuery()
             {
                 Id = 1
             };
@@ -45,7 +45,7 @@ namespace AuthService.Core.Application.Tests.Features.Role
         public async Task Handle_IdFound_ReturnsNotFoundResponse()
         {
             // Arrange
-            var request = new GetRoleDtoRequest()
+            var request = new GetRoleDtoQuery()
             {
                 Id = 1
             };

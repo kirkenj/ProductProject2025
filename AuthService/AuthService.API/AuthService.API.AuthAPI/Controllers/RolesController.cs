@@ -1,5 +1,5 @@
-﻿using AuthService.Core.Application.Features.Role.GetRoleDetail;
-using AuthService.Core.Application.Features.Role.GetRoleListRequest;
+﻿using AuthService.Core.Application.Features.Role.Queries.GetRoleDtoQuery;
+using AuthService.Core.Application.Features.Role.Queries.GetRoleListRequest;
 using AuthService.Core.Application.Models.DTOs.Role;
 using CustomResponse;
 using MediatR;
@@ -22,14 +22,14 @@ namespace AuthService.API.AuthAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetRolesList()
         {
-            Response<List<RoleDto>> result = await _mediator.Send(new GetRoleListRequest());
+            Response<List<RoleDto>> result = await _mediator.Send(new GetRoleListQuery());
             return result.GetActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleDto>> GetRole(int id)
         {
-            Response<RoleDto> result = await _mediator.Send(new GetRoleDtoRequest() { Id = id });
+            Response<RoleDto> result = await _mediator.Send(new GetRoleDtoQuery() { Id = id });
             return result.GetActionResult();
         }
     }

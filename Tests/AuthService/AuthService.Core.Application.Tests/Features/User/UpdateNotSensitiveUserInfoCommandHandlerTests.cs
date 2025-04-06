@@ -1,5 +1,5 @@
 ﻿using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.UpdateNotSensitiveUserInfoCommand;
+using AuthService.Core.Application.Features.User.Commands.UpdateNotSensitiveUserInfoCommand;
 using AutoMapper;
 using CustomResponse;
 using NSubstitute;

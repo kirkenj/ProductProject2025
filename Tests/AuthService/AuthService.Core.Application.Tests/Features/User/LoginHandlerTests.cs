@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Application.Models.User;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.Login;
+using AuthService.Core.Application.Features.User.Queries.LoginQuery;
 using AuthService.Core.Application.Models.DTOs.User;
 using AutoMapper;
 using CustomResponse;
@@ -16,21 +16,21 @@ namespace AuthService.Core.Application.Tests.Features.User
         private readonly IUserRepository _userRepository;
         private readonly IHashProvider _hashProvider;
         private readonly IMapper _mapper;
-        private readonly LoginHandler _handler;
+        private readonly LoginQueryHandler _handler;
 
         public LoginHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _hashProvider = Substitute.For<IHashProvider>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new LoginHandler(_userRepository, _hashProvider, _mapper);
+            _handler = new LoginQueryHandler(_userRepository, _hashProvider, _mapper);
         }
 
         [Fact]
         public async Task Handle_UserNotFound_ReturnsBadRequest()
         {
             // Arrange
-            var request = new LoginRequest()
+            var request = new LoginQuery()
             {
                 Email = Guid.NewGuid().ToString(),
                 Password = Guid.NewGuid().ToString(),
@@ -51,7 +51,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         public async Task Handle_InvalidPassword_ReturnsBadRequest()
         {
             // Arrange
-            var request = new LoginRequest()
+            var request = new LoginQuery()
             {
                 Email = Guid.NewGuid().ToString(),
                 Password = Guid.NewGuid().ToString(),
@@ -84,7 +84,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         public async Task Handle_ValidPassword_ReturnsUserDto()
         {
             // Arrange
-            var request = new LoginRequest()
+            var request = new LoginQuery()
             {
                 Email = Guid.NewGuid().ToString(),
                 Password = Guid.NewGuid().ToString(),

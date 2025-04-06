@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using AuthService.Core.Application.Contracts.Application;
 using AuthService.Core.Application.Contracts.Persistence;
-using AuthService.Core.Application.Features.User.SendTokenToUpdateUserEmailCommand;
+using AuthService.Core.Application.Features.User.Commands.SendTokenToUpdateUserEmailRequest;
 using AuthService.Core.Application.Models.User.Settings;
 using Cache.Contracts;
 using CustomResponse;
@@ -46,7 +46,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         public async Task Handle_UserNotFound_ReturnsNotFound()
         {
             // Arrange
-            var request = new SendTokenToUpdateUserEmailRequest
+            var request = new SendTokenToUpdateUserEmailCommand
             {
                 Email = "SomeEmail",
                 Id = Guid.NewGuid(),
@@ -68,7 +68,7 @@ namespace AuthService.Core.Application.Tests.Features.User
         public async Task Handle_RequestValid_SendsNotificationCachesToken()
         {
             // Arrange
-            var request = new SendTokenToUpdateUserEmailRequest
+            var request = new SendTokenToUpdateUserEmailCommand
             {
                 Email = "SomeEmail",
                 Id = Guid.NewGuid(),
