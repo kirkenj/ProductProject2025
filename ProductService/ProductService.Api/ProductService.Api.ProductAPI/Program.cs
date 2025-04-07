@@ -1,7 +1,5 @@
-using System.Text.Json;
 using CentralizedJwtAuthentication;
 using ConfigurationExtensions;
-using Exceptions;
 using Messaging.Kafka;
 using ProductService.Api.ProductAPI.Middlewares;
 using ProductService.Core.Application;

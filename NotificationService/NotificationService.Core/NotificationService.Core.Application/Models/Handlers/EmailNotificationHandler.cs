@@ -20,7 +20,7 @@ namespace NotificationService.Core.Application.Models.Handlers
         public async Task Handle(T notification, CancellationToken cancellationToken)
         {
             var email = await GetEmailAsync(notification, cancellationToken);
-            if (email == null) 
+            if (email == null)
             {
                 _logger.LogWarning("Could not get email from notification. Sending canceled.");
                 return;

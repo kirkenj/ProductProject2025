@@ -14,7 +14,7 @@ namespace ConfigurationExtensions
                 return $"\"{name}\":{value}";
             });
 
-            var result = "{" + string.Join(",",keyValuePairStrings) + "}";
+            var result = "{" + string.Join(",", keyValuePairStrings) + "}";
 
             using var memStream = new MemoryStream();
 

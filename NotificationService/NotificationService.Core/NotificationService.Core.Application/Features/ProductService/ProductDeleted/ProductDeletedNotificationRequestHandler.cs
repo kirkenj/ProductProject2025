@@ -17,7 +17,7 @@ namespace NotificationService.Core.Application.Features.ProductService.ProductDe
         protected override async Task<IEnumerable<IMediatRSendableNotification>> GetNotificationsAsync(ProductDeletedNotificationRequest request)
         {
             var userDto = await _authApiClient.GetUser(request.Id);
-            
+
             return [new ProductDeletedNotification
             {
                 ProductId = request.Id.ToString(),

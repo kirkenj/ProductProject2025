@@ -190,7 +190,7 @@ namespace Gateway.Middlewares
             var swaggerUrl = $"/{serviceConfig.SwaggerUrl}";
             var uri = httpPrefix + host + port + swaggerUrl;
             //var uri = $"{serviceConfig.DownstreamScheme}://{serviceConfig.Host}:{serviceConfig.Port}/{serviceConfig.SwaggerUrl}";
-            
+
             try
             {
                 var result = await _httpClient.GetAsync(uri);

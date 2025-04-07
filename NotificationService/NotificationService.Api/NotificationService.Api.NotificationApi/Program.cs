@@ -1,8 +1,5 @@
-using System.Runtime.Serialization;
-using System.Text.Json;
 using CentralizedJwtAuthentication;
 using ConfigurationExtensions;
-using Exceptions;
 using Messaging.Kafka;
 using Messaging.Kafka.Consumer;
 using Microsoft.AspNetCore.SignalR;
