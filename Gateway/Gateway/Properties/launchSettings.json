@@ -15,9 +15,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5091",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "ServicesSettings": "{\"OpenApiPathPrefixSegment\":\"/OpenApi\",\"GatewayOpenApiDocumentName\":\"Dynamic Gateway\",\"ServiceConfigs\":[{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7067\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"AuthApi\"},{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7198\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"ProductApi\"},{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7183\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"NotificationApi\"},{\"DownstreamScheme\":\"wss\",\"Host\":\"localhost\",\"Port\":\"7183\",\"SwaggerUrl\":\"\",\"Name\":\"NotificationApiHub\"}]}"
+        }
     },
     "https": {
       "commandName": "Project",
@@ -25,9 +26,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7203;http://localhost:5091",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "ServicesSettings": "{\"OpenApiPathPrefixSegment\":\"/OpenApi\",\"GatewayOpenApiDocumentName\":\"Dynamic Gateway\",\"ServiceConfigs\":[{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7067\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"AuthApi\"},{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7198\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"ProductApi\"},{\"DownstreamScheme\":\"https\",\"Host\":\"localhost\",\"Port\":\"7183\",\"SwaggerUrl\":\"swagger/v1/swagger.json\",\"Name\":\"NotificationApi\"},{\"DownstreamScheme\":\"wss\",\"Host\":\"localhost\",\"Port\":\"7183\",\"SwaggerUrl\":\"\",\"Name\":\"NotificationApiHub\"}]}"
+        }
     },
     "IIS Express": {
       "commandName": "IISExpress",

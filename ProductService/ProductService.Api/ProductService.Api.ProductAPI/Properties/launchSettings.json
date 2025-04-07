@@ -21,7 +21,8 @@
             "UseDefaultCache": "false",
             "ProductDbConnectionString": "Host=localhost;Port=5432;Database=productService;User Id=postgres;Password=hello world;",
             "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}",
-            "AuthApiUri": "https://localhost:7067"
+            "AuthApiUri": "https://localhost:7067",
+            "KafkaSettings": "{\"BootStrapServers\": \"localhost:9092\"}"
         }
     },
     "IIS Express": {

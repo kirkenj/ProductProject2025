@@ -1,3 +1,4 @@
+using ConfigurationExtensions;
 using Gateway.Extensions;
 using Gateway.Middlewares;
 using Gateway.Models;
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<OpenApiMiddleware>();
+
+builder.Configuration.AddEnvironmentVariablesCustom(nameof(ServicesSettings));
 
 var openApiSettingsSection = builder.Configuration.GetSection(nameof(ServicesSettings));
 builder.Services.Configure<ServicesSettings>(openApiSettingsSection);

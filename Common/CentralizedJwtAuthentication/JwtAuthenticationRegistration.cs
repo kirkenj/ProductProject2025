@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -7,12 +8,15 @@ namespace CentralizedJwtAuthentication
 {
     public static class JwtAuthenticationRegistration
     {
-        public static IServiceCollection ConfigureJwtAuthentication(this IServiceCollection services, JwtSettings settings)
+        public static IServiceCollection ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpClient();
 
             services.AddScoped<CustomJwtBearerEvents>();
             services.AddScoped<IJwtValidatingService, JwtValidatingService>();
+
+            var settings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>() ??
+                throw new Exception(nameof(JwtSettings));
 
             services.Configure<JwtSettings>((configuration) =>
             {

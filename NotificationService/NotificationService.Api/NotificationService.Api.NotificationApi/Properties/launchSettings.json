@@ -11,7 +11,10 @@
                 "UseDefaultCache": "false",
                 "AuthApiAddress": "https://localhost:7067",
                 "ProductApiAddress": "https://localhost:7198",
-                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"
+                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}",
+                "MongoDbConfiguration": "{\"ConnectionString\": \"mongodb://127.0.0.1:27017\", \"DatabaseName\": \"NotificationDb\"}",
+                "KafkaSettings": "{\"BootStrapServers\": \"localhost:9092\"}",
+                "KafkaConsumerSettings": "{\"GroupId\": \"1\"}"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "http://localhost:5022"
@@ -27,7 +30,10 @@
                 "UseDefaultCache": "false",
                 "AuthApiAddress": "https://localhost:7067",
                 "ProductApiAddress": "https://localhost:7198",
-                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}"
+                "JwtSettings": "{\"DurationInMinutes\": 60, \"Issuer\": \"AuthApi\", \"IssuerTokenValidatePostMethodUri\": \"https://localhost:7067/AuthApi/Tokens/IsValid\"}",
+                "MongoDbConfiguration": "{\"ConnectionString\": \"mongodb://127.0.0.1:27017\", \"DatabaseName\": \"NotificationDb\"}",
+                "KafkaSettings": "{\"BootStrapServers\": \"localhost:9092\"}",
+                "KafkaConsumerSettings": "{\"GroupId\": \"1\"}"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "https://localhost:7183;http://localhost:5022"

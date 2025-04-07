@@ -1,6 +1,6 @@
-﻿using Constants;
+﻿using ClaimsPrincipalExtensions;
+using Constants;
 using CustomResponse;
-using Extensions.ClaimsPrincipalExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 ﻿using AuthService.Core.Application.Models.DTOs.Role;
 using AuthService.Core.Application.Models.DTOs.User;
+using ClaimsPrincipalExtensions;
 using Constants;
-using Extensions.ClaimsPrincipalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

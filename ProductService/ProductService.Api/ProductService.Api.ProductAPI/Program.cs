@@ -1,24 +1,23 @@
 using System.Text.Json;
 using CentralizedJwtAuthentication;
+using ConfigurationExtensions;
 using Exceptions;
+using Messaging.Kafka;
 using ProductService.Api.ProductAPI.Middlewares;
 using ProductService.Core.Application;
 using ProductService.Infrastucture.Infrastucture;
 using ProductService.Infrastucture.Persistence;
 
-const string JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME = "JwtSettings";
-
 Console.WriteLine("Application started");
 
-var settingsJson = Environment.GetEnvironmentVariable(JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME) ?? throw new CouldNotGetEnvironmentVariableException(JWT_SETTINGS_ENVIRONMENT_VARIBALE_NAME);
-JwtSettings jwtSettings = JsonSerializer.Deserialize<JwtSettings>(settingsJson) ?? throw new InvalidOperationException("Couldn't deserialize JwtSettings from environment");
-
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariablesCustom(nameof(JwtSettings), nameof(KafkaSettings));
 
 // Add services to the container.
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices();
-builder.Services.ConfigureJwtAuthentication(jwtSettings);
+builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();

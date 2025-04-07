@@ -10,13 +10,12 @@ namespace AuthService.Infrastructure.Infrastructure
 {
     public static class InfrastructureServiceRegistration
     {
-        private const string HASH_PROVIDER_SETTINGS_ENVIRONMENT_VARIBALE_NAME = "HashProviderSettings";
         private const string USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME = "UseDefaultCache";
         private const string REDIS_URL_ENVIRONMENT_VARIBALE_NAME = "RedisUri";
 
         public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<HashProviderSettings>(configuration.GetSection(HASH_PROVIDER_SETTINGS_ENVIRONMENT_VARIBALE_NAME));
+            services.Configure<HashProviderSettings>(configuration.GetSection(nameof(HashProviderSettings)));
 
             var useDefaultCacheStr = Environment.GetEnvironmentVariable(USE_DEFAULT_CACHE_ENVIRONMENT_VARIBALE_NAME);
 

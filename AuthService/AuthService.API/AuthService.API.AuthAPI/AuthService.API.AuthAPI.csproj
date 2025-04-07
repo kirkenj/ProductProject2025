@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Constants\Constants.csproj" />
-    <ProjectReference Include="..\..\..\Common\Extensions\Extensions.csproj" />
-    <ProjectReference Include="..\..\..\Common\HashProvider\HashProvider.csproj" />
+	<ProjectReference Include="..\..\..\Common\Extensions\ClaimsPrincipalExtensions\ClaimsPrincipalExtensions.csproj" />
+	<ProjectReference Include="..\..\..\Common\HashProvider\HashProvider.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\..\AuthService.Core\AuthService.Core.Application\AuthService.Core.Application.csproj" />
 	<ProjectReference Include="..\..\AuthService.Infrastructure\AuthService.Infrastructure.Infrastructure\AuthService.Infrastructure.Infrastructure.csproj" />

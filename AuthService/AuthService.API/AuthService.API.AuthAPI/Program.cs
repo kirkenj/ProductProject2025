@@ -3,19 +3,20 @@ using AuthService.API.AuthAPI.Registrations;
 using AuthService.Core.Application;
 using AuthService.Infrastructure.Infrastructure;
 using AuthService.Infrastructure.Persistence;
+using ConfigurationExtensions;
 using Constants;
+using Messaging.Kafka;
 
 Console.WriteLine("Application started");
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables();
+builder.Configuration.AddEnvironmentVariablesCustom(nameof(KafkaSettings));
 builder.Services.ConfigureApiServices(builder.Configuration);
 builder.Services.ConfigurePersistenceServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.ConfigureApplicationServices(builder.Configuration);
 builder.Services.ConfigureJwtAuthentication();
-
 
 builder.Services.AddMemoryCache();
 

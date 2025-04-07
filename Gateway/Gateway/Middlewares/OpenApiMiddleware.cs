@@ -184,7 +184,13 @@ namespace Gateway.Middlewares
 
         private async Task<(string Url, string? openApiDocument)> GetDocumentationForService(ServiceConfig serviceConfig)
         {
-            var uri = $"{serviceConfig.DownstreamScheme}://{serviceConfig.Host}:{serviceConfig.Port}/{serviceConfig.SwaggerUrl}";
+            var httpPrefix = string.IsNullOrWhiteSpace(serviceConfig.DownstreamScheme) ? string.Empty : serviceConfig.DownstreamScheme + @"://";
+            var host = string.IsNullOrWhiteSpace(serviceConfig.Host) ? string.Empty : serviceConfig.Host;
+            var port = string.IsNullOrWhiteSpace(serviceConfig.Port) ? string.Empty : $":{serviceConfig.Port}";
+            var swaggerUrl = $"/{serviceConfig.SwaggerUrl}";
+            var uri = httpPrefix + host + port + swaggerUrl;
+            //var uri = $"{serviceConfig.DownstreamScheme}://{serviceConfig.Host}:{serviceConfig.Port}/{serviceConfig.SwaggerUrl}";
+            
             try
             {
                 var result = await _httpClient.GetAsync(uri);

@@ -1,5 +1,5 @@
 ﻿using AuthService.API.AuthAPI.Contracts;
-using Extensions.ClaimsPrincipalExtensions;
+using ClaimsPrincipalExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
