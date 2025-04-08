@@ -1,5 +1,6 @@
 using CentralizedJwtAuthentication;
 using ConfigurationExtensions;
+using Constants;
 using Messaging.Kafka;
 using Messaging.Kafka.Consumer;
 using Microsoft.AspNetCore.SignalR;
@@ -23,6 +24,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy(ApiConstants.CORS_POLICY_NAME,
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        );
+});
+
 builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 
 builder.Services.AddHttpClient();
@@ -37,17 +47,16 @@ builder.Services.AddTransient<ISignalRNotificationService, SignalRNotificationSe
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapHub<NotificationHub>("/NotificationApiHub/hub");
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(ApiConstants.CORS_POLICY_NAME);
 
 app.MapControllers();
 

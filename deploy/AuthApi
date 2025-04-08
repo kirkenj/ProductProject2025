@@ -1,0 +1,51 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["AuthService/AuthService.API/AuthService.API.AuthAPI/AuthService.API.AuthAPI.csproj", "AuthService/AuthService.API/AuthService.API.AuthAPI/"]
+COPY ["Common/Constants/Constants.csproj", "Common/Constants/"]
+COPY ["Common/Extensions/ClaimsPrincipalExtensions/ClaimsPrincipalExtensions.csproj", "Common/Extensions/ClaimsPrincipalExtensions/"]
+COPY ["Common/HashProvider/HashProvider.csproj", "Common/HashProvider/"]
+COPY ["Common/Exceptions/Exceptions.csproj", "Common/Exceptions/"]
+COPY ["AuthService/AuthService.Core/AuthService.Core.Application/AuthService.Core.Application.csproj", "AuthService/AuthService.Core/AuthService.Core.Application/"]
+COPY ["Common/Cache/Cache.Contracts/Cache.Contracts.csproj", "Common/Cache/Cache.Contracts/"]
+COPY ["Common/CQRS/MediatRExtensions/MediatRExtensions.csproj", "Common/CQRS/MediatRExtensions/"]
+COPY ["Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Contracts/Messaging.Kafka.Producer.Contracts.csproj", "Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Contracts/"]
+COPY ["Common/Messaging/Messaging.Kafka/Messaging.Kafka.csproj", "Common/Messaging/Messaging.Kafka/"]
+COPY ["Common/Messaging/Messaging.Messages/Messaging.Messages.AuthService/Messaging.Messages.AuthService.csproj", "Common/Messaging/Messaging.Messages/Messaging.Messages.AuthService/"]
+COPY ["Common/Response/CustomResponse.csproj", "Common/Response/"]
+COPY ["AuthService/AuthService.Core/AuthService.Core.Domain/AuthService.Core.Domain.csproj", "AuthService/AuthService.Core/AuthService.Core.Domain/"]
+COPY ["Common/Repository/Repository.Contracts/Repository.Contracts.csproj", "Common/Repository/Repository.Contracts/"]
+COPY ["AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Infrastructure/AuthService.Infrastructure.Infrastructure.csproj", "AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Infrastructure/"]
+COPY ["Common/Cache/Cache.Models.InMemory/Cache.Models.InMemory.csproj", "Common/Cache/Cache.Models.InMemory/"]
+COPY ["Common/Cache/Cache.Models.Reddis/Cache.Models.Reddis.csproj", "Common/Cache/Cache.Models.Reddis/"]
+COPY ["Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/Messaging.Kafka.Producer.Models.csproj", "Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/"]
+COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Persistence/AuthService.Infrastructure.Persistence.csproj", "AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Persistence/"]
+COPY ["Common/Repository/Repository.Caching/Repository.Caching.csproj", "Common/Repository/Repository.Caching/"]
+COPY ["Common/Repository/Repository.Models.Relational/Repository.Models.Relational.csproj", "Common/Repository/Repository.Models.Relational/"]
+RUN dotnet restore "./AuthService/AuthService.API/AuthService.API.AuthAPI/AuthService.API.AuthAPI.csproj"
+COPY . .
+WORKDIR "/src/AuthService/AuthService.API/AuthService.API.AuthAPI"
+RUN dotnet build "./AuthService.API.AuthAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./AuthService.API.AuthAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "AuthService.API.AuthAPI.dll"]

@@ -20,14 +20,14 @@ namespace Gateway.Extensions
                     "[" +
                         "{" +
                             $"\"Host\": \"{config.Host}\"," +
-                            $"\"Port\": {config.Port}" +
+                            $"\"Port\": \"{config.Port}\"" +
                         "}" +
                     "]" +
                 "}");
 
             var joinedServiceConfigs = string.Join(", ", serviceConfigs);
             sb.Append(joinedServiceConfigs + "]}");
-
+            Console.WriteLine(sb.ToString());
             var str = sb.ToString();
 
             using var memStream = new MemoryStream();

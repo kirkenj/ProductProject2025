@@ -8,7 +8,6 @@ namespace AuthService.Core.Application.Features.User.Queries.LoginQuery
         public LoginQueryValidator()
         {
             Include(new IEmailDtoValidator());
-            Include(new IPasswordDtoValidator());
         }
     }
 }

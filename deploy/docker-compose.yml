@@ -1,0 +1,141 @@
+services:
+  authApi:
+    image: authapi:latest
+    environment:
+      - RedisUri=redis
+      - AuthDbConnectionString=Host=postgre;Database=userService;User Id=postgres;Password=${DbSaPassword};
+      - JwtSettings=${JwtSettings}
+      - KafkaSettings=${DefaultKafkaSettings}
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - postgre
+      - redis
+
+  productApi:
+    image: productapi:latest
+    environment:
+      - RedisUri=redis
+      - ProductDbConnectionString=Host=postgre;Database=productService;User Id=postgres;Password=${DbSaPassword};
+      - JwtSettings=${ClientJwtSettings}
+      - AuthApiUri=http://authApi
+      - KafkaSettings=${DefaultKafkaSettings}
+    ports:
+      - "8082:8080"
+      - "8083:8081"
+    depends_on:
+      - postgre
+      - redis
+
+  notificationService:
+    image: notificationservice:latest
+    environment:
+      - RedisUri=redis
+      - UseConsoleEmailSender=true
+      - AuthApiAddress=http://authApi
+      - ProductApiAddress=http://productApi
+      - JwtSettings=${ClientJwtSettings}
+      - MongoDbConfiguration={"ConnectionString":"mongodb://mongoDb","DatabaseName":"NotificationDb"}
+      - KafkaSettings=${DefaultKafkaSettings}
+      - KafkaConsumerSettings=${DefaultKafkaConsumerSettings}
+    ports:
+      - "8084:8080"
+      - "8085:8081"
+    depends_on:
+      - mongoDb
+      - kafka
+      - redis
+
+
+  gateway:
+    image: gateway:latest
+    ports:
+      - "8086:8080"
+      - "8087:8081"
+    environment:
+      - ServicesSettings={"OpenApiPathPrefixSegment":"/OpenApi","GatewayOpenApiDocumentName":"Dynamic Gateway","ServiceConfigs":[{"DownstreamScheme":"http","Host":"authApi","Port":"8080","SwaggerUrl":"swagger/v1/swagger.json","Name":"AuthApi"},{"DownstreamScheme":"http","Host":"productApi","Port":"8080","SwaggerUrl":"swagger/v1/swagger.json","Name":"ProductApi"},{"DownstreamScheme":"http","Host":"notificationService","Port":"8080","SwaggerUrl":"swagger/v1/swagger.json","Name":"NotificationApi"},{"DownstreamScheme":"ws","Host":"notificationService","Port":"8080","SwaggerUrl":"","Name":"NotificationApiHub"}]}
+    depends_on:
+      - notificationService
+      - productApi
+      - authApi
+
+  mongoDb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_volume:/data/db
+
+
+  postgre:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRES_PASSWORD=${DbSaPassword}
+    volumes:
+      - postgre:/bitnami/postgresql
+    ports:
+      - "5432:5432"
+      
+  redis:
+    image: redis
+    volumes:
+      - redis_volume:/data
+    ports:
+      - "3300:6379"
+
+  
+
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181" 
+    volumes:
+      - zookeeper_volume:/var/lib/zookeeper
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_volume:/var/lib/kafka/data
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - 8090:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    links:
+      - kafka
+      - zookeeper
+    depends_on:
+      - kafka
+volumes:
+  postgre:
+    external: true
+  redis_volume:
+    external: true
+  zookeeper_volume:
+    external: true
+  kafka_volume:
+    external: true
+  mongo_volume:
+    external: true

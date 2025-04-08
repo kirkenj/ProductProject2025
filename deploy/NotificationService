@@ -1,0 +1,61 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["NotificationService/NotificationService.Api/NotificationService.Api.NotificationApi/NotificationService.Api.NotificationApi.csproj", "NotificationService/NotificationService.Api/NotificationService.Api.NotificationApi/"]
+COPY ["Common/CentralizedJwtAuthentication/CentralizedJwtAuthentication.csproj", "Common/CentralizedJwtAuthentication/"]
+COPY ["Common/Response/CustomResponse.csproj", "Common/Response/"]
+COPY ["Common/Constants/Constants.csproj", "Common/Constants/"]
+COPY ["Common/Exceptions/Exceptions.csproj", "Common/Exceptions/"]
+COPY ["Common/Extensions/ClaimsPrincipalExtensions/ClaimsPrincipalExtensions.csproj", "Common/Extensions/ClaimsPrincipalExtensions/"]
+COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["NotificationService/NotificationService.Core/NotificationService.Core.Application/NotificationService.Core.Application.csproj", "NotificationService/NotificationService.Core/NotificationService.Core.Application/"]
+COPY ["Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/Clients.Adapters.AuthClient.Contracts.csproj", "Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/"]
+COPY ["Common/Clients/Adapters/ProductClient/Clients.Adapters.ProductClient.Contracts/Clients.Adapters.ProductClient.Contracts.csproj", "Common/Clients/Adapters/ProductClient/Clients.Adapters.ProductClient.Contracts/"]
+COPY ["Common/EmailSender/EmailSender.Contracts/EmailSender.Contracts.csproj", "Common/EmailSender/EmailSender.Contracts/"]
+COPY ["Common/EmailSender/EmailSender.Models/EmailSender.Models.csproj", "Common/EmailSender/EmailSender.Models/"]
+COPY ["Common/Messaging/Messaging.Messages/Messaging.Messages.AuthService/Messaging.Messages.AuthService.csproj", "Common/Messaging/Messaging.Messages/Messaging.Messages.AuthService/"]
+COPY ["Common/CQRS/MediatRExtensions/MediatRExtensions.csproj", "Common/CQRS/MediatRExtensions/"]
+COPY ["Common/Messaging/Messaging.Messages/Messaging.Messages.ProductService/Messaging.Messages.ProductService.csproj", "Common/Messaging/Messaging.Messages/Messaging.Messages.ProductService/"]
+COPY ["Common/Repository/Repository.Contracts/Repository.Contracts.csproj", "Common/Repository/Repository.Contracts/"]
+COPY ["NotificationService/NotificationService.Core/NotificationService.Core.Domain/NotificationService.Core.Domain.csproj", "NotificationService/NotificationService.Core/NotificationService.Core.Domain/"]
+COPY ["NotificationService/NotificationService.Infrastucture/NotificationService.Infrastucture.Infrastucture/NotificationService.Infrastucture.Infrastucture.csproj", "NotificationService/NotificationService.Infrastucture/NotificationService.Infrastucture.Infrastucture/"]
+COPY ["Common/Cache/Cache.Models.InMemory/Cache.Models.InMemory.csproj", "Common/Cache/Cache.Models.InMemory/"]
+COPY ["Common/Cache/Cache.Contracts/Cache.Contracts.csproj", "Common/Cache/Cache.Contracts/"]
+COPY ["Common/Cache/Cache.Models.Reddis/Cache.Models.Reddis.csproj", "Common/Cache/Cache.Models.Reddis/"]
+COPY ["Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Services/Clients.Adapters.AuthClient.Services.csproj", "Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Services/"]
+COPY ["Common/Clients/Clients.AuthServiceClient/Clients.AuthServiceClient.csproj", "Common/Clients/Clients.AuthServiceClient/"]
+COPY ["Common/HashProvider/HashProvider.csproj", "Common/HashProvider/"]
+COPY ["Common/Clients/Adapters/ProductClient/Clients.Adapters.ProductClient.Services/Clients.Adapters.ProductClient.Services.csproj", "Common/Clients/Adapters/ProductClient/Clients.Adapters.ProductClient.Services/"]
+COPY ["Common/Clients/Clients.ProductService/Clients.ProductServiceClient.csproj", "Common/Clients/Clients.ProductService/"]
+COPY ["Common/EmailSender/EmailSender.Services/EmailSender.Services.csproj", "Common/EmailSender/EmailSender.Services/"]
+COPY ["NotificationService/NotificationService.Infrastucture/NotificationService.Infrastucture.Persistence/NotificationService.Infrastucture.Persistence.csproj", "NotificationService/NotificationService.Infrastucture/NotificationService.Infrastucture.Persistence/"]
+COPY ["Common/Repository/Repository.Models.MongoDb/Repository.Models.MongoDb.csproj", "Common/Repository/Repository.Models.MongoDb/"]
+COPY ["NotificationService/NotificationService.Api/NotificationService.Api.Consumers/NotificationService.Api.Consumers.csproj", "NotificationService/NotificationService.Api/NotificationService.Api.Consumers/"]
+COPY ["Common/Messaging/Messaging.Kafka.Consumer/Messaging.Kafka.Consumer.csproj", "Common/Messaging/Messaging.Kafka.Consumer/"]
+COPY ["Common/Messaging/Messaging.Kafka/Messaging.Kafka.csproj", "Common/Messaging/Messaging.Kafka/"]
+RUN dotnet restore "./NotificationService/NotificationService.Api/NotificationService.Api.NotificationApi/NotificationService.Api.NotificationApi.csproj"
+COPY . .
+WORKDIR "/src/NotificationService/NotificationService.Api/NotificationService.Api.NotificationApi"
+RUN dotnet build "./NotificationService.Api.NotificationApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./NotificationService.Api.NotificationApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "NotificationService.Api.NotificationApi.dll"]

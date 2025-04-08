@@ -1,4 +1,5 @@
 using ConfigurationExtensions;
+using Constants;
 using Gateway.Extensions;
 using Gateway.Middlewares;
 using Gateway.Models;
@@ -22,7 +23,18 @@ builder.Configuration.ConfigureOcelot(openApiSettings);
 
 builder.Services.AddOcelot(builder.Configuration);
 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy(ApiConstants.CORS_POLICY_NAME,
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        );
+});
+
 
 var app = builder.Build();
 
@@ -32,6 +44,8 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint($"{openApiSettings.OpenApiPathPrefixSegment}", "API V1");
 });
+
+app.UseCors(ApiConstants.CORS_POLICY_NAME);
 
 app.UseMiddleware<OpenApiMiddleware>();
 

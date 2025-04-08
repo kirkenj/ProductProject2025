@@ -1,0 +1,56 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["ProductService/ProductService.Api/ProductService.Api.ProductAPI/ProductService.Api.ProductAPI.csproj", "ProductService/ProductService.Api/ProductService.Api.ProductAPI/"]
+COPY ["Common/CentralizedJwtAuthentication/CentralizedJwtAuthentication.csproj", "Common/CentralizedJwtAuthentication/"]
+COPY ["Common/Response/CustomResponse.csproj", "Common/Response/"]
+COPY ["Common/Constants/Constants.csproj", "Common/Constants/"]
+COPY ["Common/Extensions/ClaimsPrincipalExtensions/ClaimsPrincipalExtensions.csproj", "Common/Extensions/ClaimsPrincipalExtensions/"]
+COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["ProductService/ProductService.Core/ProductService.Core.Application/ProductService.Core.Application.csproj", "ProductService/ProductService.Core/ProductService.Core.Application/"]
+COPY ["Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/Clients.Adapters.AuthClient.Contracts.csproj", "Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/"]
+COPY ["Common/CQRS/MediatRExtensions/MediatRExtensions.csproj", "Common/CQRS/MediatRExtensions/"]
+COPY ["Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Contracts/Messaging.Kafka.Producer.Contracts.csproj", "Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Contracts/"]
+COPY ["Common/Messaging/Messaging.Kafka/Messaging.Kafka.csproj", "Common/Messaging/Messaging.Kafka/"]
+COPY ["Common/Messaging/Messaging.Messages/Messaging.Messages.ProductService/Messaging.Messages.ProductService.csproj", "Common/Messaging/Messaging.Messages/Messaging.Messages.ProductService/"]
+COPY ["ProductService/ProductService.Core/ProductService.Core.Domain/ProductService.Core.Domain.csproj", "ProductService/ProductService.Core/ProductService.Core.Domain/"]
+COPY ["Common/Repository/Repository.Contracts/Repository.Contracts.csproj", "Common/Repository/Repository.Contracts/"]
+COPY ["ProductService/ProductService.Infrastucture/ProductService.Infrastucture.Persistence/ProductService.Infrastucture.Persistence.csproj", "ProductService/ProductService.Infrastucture/ProductService.Infrastucture.Persistence/"]
+COPY ["Common/Cache/Cache.Contracts/Cache.Contracts.csproj", "Common/Cache/Cache.Contracts/"]
+COPY ["Common/Exceptions/Exceptions.csproj", "Common/Exceptions/"]
+COPY ["Common/Repository/Repository.Caching/Repository.Caching.csproj", "Common/Repository/Repository.Caching/"]
+COPY ["Common/Repository/Repository.Models.Relational/Repository.Models.Relational.csproj", "Common/Repository/Repository.Models.Relational/"]
+COPY ["ProductService/ProductService.Infrastucture/ProductService.Infrastucture.Infrastucture/ProductService.Infrastucture.Infrastucture.csproj", "ProductService/ProductService.Infrastucture/ProductService.Infrastucture.Infrastucture/"]
+COPY ["Common/Cache/Cache.Models.InMemory/Cache.Models.InMemory.csproj", "Common/Cache/Cache.Models.InMemory/"]
+COPY ["Common/Cache/Cache.Models.Reddis/Cache.Models.Reddis.csproj", "Common/Cache/Cache.Models.Reddis/"]
+COPY ["Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Services/Clients.Adapters.AuthClient.Services.csproj", "Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Services/"]
+COPY ["Common/Clients/Clients.AuthServiceClient/Clients.AuthServiceClient.csproj", "Common/Clients/Clients.AuthServiceClient/"]
+COPY ["Common/HashProvider/HashProvider.csproj", "Common/HashProvider/"]
+COPY ["Common/HttpDelegatingHandlers/HttpDelegatingHandlers.csproj", "Common/HttpDelegatingHandlers/"]
+COPY ["Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/Messaging.Kafka.Producer.Models.csproj", "Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/"]
+RUN dotnet restore "./ProductService/ProductService.Api/ProductService.Api.ProductAPI/ProductService.Api.ProductAPI.csproj"
+COPY . .
+WORKDIR "/src/ProductService/ProductService.Api/ProductService.Api.ProductAPI"
+RUN dotnet build "./ProductService.Api.ProductAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./ProductService.Api.ProductAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ProductService.Api.ProductAPI.dll"]

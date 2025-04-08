@@ -1,5 +1,6 @@
 using CentralizedJwtAuthentication;
 using ConfigurationExtensions;
+using Constants;
 using Messaging.Kafka;
 using ProductService.Api.ProductAPI.Middlewares;
 using ProductService.Core.Application;
@@ -25,6 +26,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy(ApiConstants.CORS_POLICY_NAME,
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        );
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -37,6 +47,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthorization();
+
+app.UseCors(ApiConstants.CORS_POLICY_NAME);
 
 app.MapControllers();
 
