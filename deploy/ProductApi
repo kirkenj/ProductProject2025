@@ -17,7 +17,7 @@ COPY ["Common/CentralizedJwtAuthentication/CentralizedJwtAuthentication.csproj",
 COPY ["Common/Response/CustomResponse.csproj", "Common/Response/"]
 COPY ["Common/Constants/Constants.csproj", "Common/Constants/"]
 COPY ["Common/Extensions/ClaimsPrincipalExtensions/ClaimsPrincipalExtensions.csproj", "Common/Extensions/ClaimsPrincipalExtensions/"]
-COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["Common/Extensions/ConfigurationExtensions/ConfigurationExtensions.csproj", "Common/Extensions/ConfigurationExtensions/"]
 COPY ["ProductService/ProductService.Core/ProductService.Core.Application/ProductService.Core.Application.csproj", "ProductService/ProductService.Core/ProductService.Core.Application/"]
 COPY ["Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/Clients.Adapters.AuthClient.Contracts.csproj", "Common/Clients/Adapters/AuthClient/Clients.Adapters.AuthClient.Contracts/"]
 COPY ["Common/CQRS/MediatRExtensions/MediatRExtensions.csproj", "Common/CQRS/MediatRExtensions/"]

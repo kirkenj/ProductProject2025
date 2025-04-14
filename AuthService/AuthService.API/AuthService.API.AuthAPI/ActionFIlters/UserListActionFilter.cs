@@ -11,7 +11,7 @@ namespace AuthService.API.AuthAPI.ActionFIlters
     public class GetUserActionFilterAttribute : Attribute, IAsyncResultFilter
     {
         public const string ADDRESS_PLACEHOLDER = "Contact administration to get this information";
-        public static RoleDto DefaultRole => new() { Id = 2, Name = ApiConstants.REGULAR_AUTH_ROLE_NAME };
+        public static readonly RoleDto DEFAULT_ROLE = new() { Id = 2, Name = ApiConstants.REGULAR_AUTH_ROLE_NAME };
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
@@ -51,7 +51,7 @@ namespace AuthService.API.AuthAPI.ActionFIlters
         {
             if ((context.HttpContext.User.GetUserId() ?? Guid.Empty) != user.Id)
             {
-                user.Role = DefaultRole;
+                user.Role = DEFAULT_ROLE;
                 user.Address = ADDRESS_PLACEHOLDER;
             }
             return user;

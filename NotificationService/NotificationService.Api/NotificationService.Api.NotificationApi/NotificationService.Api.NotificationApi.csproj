@@ -17,8 +17,8 @@
     <ProjectReference Include="..\..\..\Common\CentralizedJwtAuthentication\CentralizedJwtAuthentication.csproj" />
     <ProjectReference Include="..\..\..\Common\Constants\Constants.csproj" />
     <ProjectReference Include="..\..\..\Common\Exceptions\Exceptions.csproj" />
+    <ProjectReference Include="..\..\..\Common\Extensions\ConfigurationExtensions\ConfigurationExtensions.csproj" />
     <ProjectReference Include="..\..\..\Common\Extensions\ClaimsPrincipalExtensions\ClaimsPrincipalExtensions.csproj" />
-    <ProjectReference Include="..\..\..\ConfigurationExtensions\ConfigurationExtensions.csproj" />
     <ProjectReference Include="..\..\NotificationService.Core\NotificationService.Core.Application\NotificationService.Core.Application.csproj" />
     <ProjectReference Include="..\..\NotificationService.Infrastucture\NotificationService.Infrastucture.Infrastucture\NotificationService.Infrastucture.Infrastucture.csproj" />
     <ProjectReference Include="..\..\NotificationService.Infrastucture\NotificationService.Infrastucture.Persistence\NotificationService.Infrastucture.Persistence.csproj" />

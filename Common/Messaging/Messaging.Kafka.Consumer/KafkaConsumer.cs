@@ -35,6 +35,9 @@ namespace Messaging.Kafka.Consumer
             {
                 BootstrapServers = kafkaSettings.BootStrapServers,
                 GroupId = consumerSettings.GroupId,
+                AutoCommitIntervalMs = 5000,
+                EnableAutoCommit = true,
+                EnableAutoOffsetStore = true,
             })
             .SetValueDeserializer(new KafkaJsonDeserializer<TMessage>())
             .Build();
@@ -74,16 +77,20 @@ namespace Messaging.Kafka.Consumer
                 _logger.LogInformation("Consume started {Topic}", Topic);
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    var result = _consumer.Consume(stoppingToken);
-                    _logger.LogInformation("Got message: {message}", result);
-                    var command = _mapper.Map<TCommandOrNotification>(result.Message.Value);
                     try
                     {
+                        var result = _consumer.Consume(stoppingToken);
+                        if (result == null)
+                        {
+                            continue;
+                        }
+                        _logger.LogInformation("Got message: {message}", result);
+                        var command = _mapper.Map<TCommandOrNotification>(result.Message.Value);
                         await _mediatorAction(_mediator, command, stoppingToken);
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError("Handler for message {message} produced exception: {ex}", result, ex);
+                        _logger.LogError("Handler for message produced exception: {ex}", ex);
                     }
                 }
             }

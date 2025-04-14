@@ -15,7 +15,7 @@ WORKDIR /src
 COPY ["Gateway/Gateway/Gateway.csproj", "Gateway/Gateway/"]
 COPY ["Common/Constants/Constants.csproj", "Common/Constants/"]
 COPY ["Common/Exceptions/Exceptions.csproj", "Common/Exceptions/"]
-COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["Common/Extensions/ConfigurationExtensions/ConfigurationExtensions.csproj", "Common/Extensions/ConfigurationExtensions/"]
 RUN dotnet restore "./Gateway/Gateway/Gateway.csproj"
 COPY . .
 WORKDIR "/src/Gateway/Gateway"

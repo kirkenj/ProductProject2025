@@ -16,8 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\CentralizedJwtAuthentication\CentralizedJwtAuthentication.csproj" />
     <ProjectReference Include="..\..\..\Common\Constants\Constants.csproj" />    
-	<ProjectReference Include="..\..\..\Common\Extensions\ClaimsPrincipalExtensions\ClaimsPrincipalExtensions.csproj" />    
-	<ProjectReference Include="..\..\..\ConfigurationExtensions\ConfigurationExtensions.csproj" />
+    <ProjectReference Include="..\..\..\Common\Extensions\ConfigurationExtensions\ConfigurationExtensions.csproj" />
+	<ProjectReference Include="..\..\..\Common\Extensions\ClaimsPrincipalExtensions\ClaimsPrincipalExtensions.csproj" />
     <ProjectReference Include="..\..\ProductService.Core\ProductService.Core.Application\ProductService.Core.Application.csproj" />
     <ProjectReference Include="..\..\ProductService.Infrastucture\ProductService.Infrastucture.Persistence\ProductService.Infrastucture.Persistence.csproj" />
     <ProjectReference Include="..\..\ProductService.Infrastucture\ProductService.Infrastucture.Infrastucture\ProductService.Infrastucture.Infrastucture.csproj" />

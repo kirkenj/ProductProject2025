@@ -161,7 +161,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClaimsPrincipalExtensions", "Common\Extensions\ClaimsPrincipalExtensions\ClaimsPrincipalExtensions.csproj", "{91A30568-0EB9-D984-EB96-735E24B33805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationExtensions", "ConfigurationExtensions\ConfigurationExtensions.csproj", "{9AC09C51-2A7A-44B8-B343-52D741E203F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationExtensions", "Common\Extensions\ConfigurationExtensions\ConfigurationExtensions.csproj", "{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -369,10 +369,10 @@ Global
 		{91A30568-0EB9-D984-EB96-735E24B33805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A30568-0EB9-D984-EB96-735E24B33805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91A30568-0EB9-D984-EB96-735E24B33805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AC09C51-2A7A-44B8-B343-52D741E203F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AC09C51-2A7A-44B8-B343-52D741E203F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AC09C51-2A7A-44B8-B343-52D741E203F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AC09C51-2A7A-44B8-B343-52D741E203F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -451,7 +451,7 @@ Global
 		{960650B4-97DB-D86F-35C7-02795DDB2DE2} = {B0B8B80C-714A-4AFB-9EE4-CA20089C886B}
 		{3E767955-953D-4537-B697-D1DD25123C19} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{91A30568-0EB9-D984-EB96-735E24B33805} = {3E767955-953D-4537-B697-D1DD25123C19}
-		{9AC09C51-2A7A-44B8-B343-52D741E203F0} = {3E767955-953D-4537-B697-D1DD25123C19}
+		{4A2B6FEF-9036-BFCA-4CC8-7F9F44240E18} = {3E767955-953D-4537-B697-D1DD25123C19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2DB40AF-E389-4793-9CD8-CCD99624132A}

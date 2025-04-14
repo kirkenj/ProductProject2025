@@ -30,7 +30,7 @@ COPY ["AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Infrast
 COPY ["Common/Cache/Cache.Models.InMemory/Cache.Models.InMemory.csproj", "Common/Cache/Cache.Models.InMemory/"]
 COPY ["Common/Cache/Cache.Models.Reddis/Cache.Models.Reddis.csproj", "Common/Cache/Cache.Models.Reddis/"]
 COPY ["Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/Messaging.Kafka.Producer.Models.csproj", "Common/Messaging/Messaging.Kafka.Producer/Messaging.Kafka.Producer.Models/"]
-COPY ["ConfigurationExtensions/ConfigurationExtensions.csproj", "ConfigurationExtensions/"]
+COPY ["Common/Extensions/ConfigurationExtensions/ConfigurationExtensions.csproj", "Common/Extensions/ConfigurationExtensions/"]
 COPY ["AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Persistence/AuthService.Infrastructure.Persistence.csproj", "AuthService/AuthService.Infrastructure/AuthService.Infrastructure.Persistence/"]
 COPY ["Common/Repository/Repository.Caching/Repository.Caching.csproj", "Common/Repository/Repository.Caching/"]
 COPY ["Common/Repository/Repository.Models.Relational/Repository.Models.Relational.csproj", "Common/Repository/Repository.Models.Relational/"]
